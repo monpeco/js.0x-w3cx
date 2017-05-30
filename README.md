@@ -48,7 +48,7 @@ Live on Tuesday 20 June 2017 - 14:00 UTC
 
 Live on Tuesday 27 June 2017 - 7:00 UTC
 
-# Module 5: Working with forms
+## Module 5: Working with forms
 
 &nbsp;&nbsp;5.1 Introduction to Module 5  
 &nbsp;&nbsp;5.2 Built-in JavaScript objects  
