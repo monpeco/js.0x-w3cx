@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get 'static/change_title'
 
   get 'static/function_plot'
+  
+  get 'static/geolocation'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
