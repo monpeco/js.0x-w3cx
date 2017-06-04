@@ -51,3 +51,13 @@ p, img {
   font-size:40px;
 }
 
+/* funtion_plot */
+div {
+  float: left;
+}
+
+#myFunction {
+  padding: 25px;
+  width: 250px;
+  height: 250px;
+}
