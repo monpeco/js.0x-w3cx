@@ -39,3 +39,15 @@ p, img {
   margin-left:50px;
 }
 
+#hobbyTitle {
+  font-family: 'caveat';
+  font-size:40px;
+  text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+}
+
+.funny {
+  color:purple;
+  font-family: 'caveat';
+  font-size:40px;
+}
+
