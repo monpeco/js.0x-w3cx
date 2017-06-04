@@ -317,6 +317,884 @@ p, img {
 
 ```
 
+If you click on the CSS button on the top left of the previous codepen example, you will see the CSS rules that have been applied to the HTML document. Let's look at the first one:
+
+```css
+h1 {
+    color:red;
+    background-color:lightGreen;
+    border:12px solid violet;
+    padding: 5px;   
+    border-radius: 15px;
+    text-align: center;
+}
+
+```
+
+This rule turns all the h1s in the document into red text, centered horizontally, on a light green background, with a violet border of 12 pixels (a solid border, not a dashed one), and this border has rounded corners made of arcs of a circle whose radius is 15 pixels.
+
+The part before the opening brace (line 1) is the "CSS selector", it indicates the elements that will have their properties changed according to what is inside the braces.
+
+The part inside the braces is a set of properties and values that will be useful for setting the look and feel of the selected elements.
+
+Line 2 for example, says that all h1s will be colored in red.
+
+#### CSS rules are applied in sequence
+
+After the previous rule is applied, then the second rule is taken into account, then the next, etc. In this way, you can see that all h2s will be brown (second rule).
+
+The third rule uses what is called "a multiple selector":
+
+```css
+p, h1, h2 {
+   font-family: cursive
+}
+```
+This one says that all p, h1 and h2 will use a cursive font character. The "," means "and also".
+
+This is also how we indicate in the last rule that images and paragraphs should be moved to the right 50 pixels (property margin-right: 50px)
+
+The id and class attributes
+
+Basically, any given element on your Web page can be identified uniquely with an 'id' attribute, or grouped with a class of other elements by setting the 'class' attribute.
+
+```css
+<p id="paragraph-1" class="regular-paragraphs">
+    Call me Ishmael . . .
+</p>
+```
+
+The paragraph above has a unique identifier: the id attribute whose value is "paragraph-1" and is part of a class of "regular-paragraphs". The letters inside the quotes have no meaning to the computer, they just need to be consistent. They are actually strings. 
+
+Again, the fact that the computer does not care what we put in those strings (except for some restrictions) means we can use them to convey meaning to a human developer. I could just as easily have said id='x' and class='y', but anyone looking at that would have no hint what the significance of x and y are. Best practice is to name these things to increase clarity, consistency and brevity.
+
+Let's look at a modified version of the Michel Buffa's home page example:
+
+
+```css
+h1 {
+  color:red;
+  background-color:lightGreen;
+  border:12px solid violet;
+  padding: 5px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+h2 {
+  color:brown;
+}
+
+p, h1, h2 {
+  font-family: cursive 
+}
+img {
+    box-shadow: 10px 10px 15px grey;
+}
+
+p, img {
+  margin-left:50px;
+}
+
+#hobbyTitle {
+  font-family: 'caveat';
+  font-size:40px;
+  text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+}
+
+.funny {
+  color:purple;
+  font-family: 'caveat';
+  font-size:40px;
+}
+
+```
+
+The last two rules first target the element whose id is 'hobbyTitle', in our case it's the second h2 element:
+
+    <h2 id="hobbyTitle">My Hobbies</h2>
+    
+And here is the CSS rule:
+
+```css
+#hobbyTitle {
+  font-family: 'caveat';
+  font-size:40px;
+  text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+}
+```
+
+
+Line 1 uses the "#" character in the selector, meaning that we're going to select an element by its id attribute. In this case, the selector equal to #hobbyTitle, will select the element that has an attribute id="hobbyTitle".
+
+In that case we use a funny char font called 'caveat' we took from the Google font service (see fonts.google.com), and in order to be able to use it in a font-family CSS property, we included its definition using a <link> tag in the HTML part of the document:
+
+```hmtl
+<head>
+  <title>Your first HTML page</title>
+  <meta charset="utf-8"/>
+  <link href="https://fonts.googleapis.com/css?family=Caveat"
+        rel="stylesheet">
+</head>
+```
+
+The last rule targets all elements that have an attribute class="funny". Notice they can be different elements, we can have a p and an h3 element that have the class="funny" attribute:
+
+```css
+.funny {
+  color:purple;
+  font-family: 'caveat';
+font-size:40px;
+}
+```
+This rule will change the color, font family and size of two out of three paragraphs in the HTML element:
+
+```css
+...
+<p class="funny">I also play electric guitar and love coding WebAudio applications...</p>
+...
+<p class="funny">Music, Movies, Video Games, Traveling, Family, etc.</p>
+```
+
+There are many, many, many different CSS properties in existence, and many different ways to select elements. We recommend that you follow the W3Cx CSS Basics and HTML5&CSS Fundamentals courses to learn more about CSS and about HTML5 basics.
+
+#### Where can we put the CSS rules: In the HTML file? In another file? 
+
+You can do both! 
+
+You can embed the CSS rules between a `<style>...</style>` tag, located inside the `<head>...</head>` of the HTML documents, like in this example:
+
+```html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Your first HTML page</title>
+  <meta charset="utf-8">
+  <style>
+    h1 {
+       color:red;
+        background-color:lightGreen;
+        border:12px solid violet;
+        padding: 5px;
+        border-radius: 15px;
+        text-align: center;
+}
+  </style>
+</head>
+  <body>
+    <h1>My home page</h1> 
+    ...
+  </body>
+</html>
+
+```
+
+This is OK if you do not have too many CSS rules. In general it's better to put the CSS rules in one or more separate .css files, like this:
+
+https://plnkr.co/edit/vedmaDmnfiJzoiLPrInG?p=preview
+
+Note that when you use an online IDE, you usually type/paste the CSS rules in a "CSS tab" in the online editor, and it will hide all the plumbery for you (except the more complete ones such as plunker or c9.io that will enable you to manage files in the cloud).
+
+
+### Live coding video: mixing HTML and CSS
+
+https://youtu.be/fU0Exz045qw
+
+> In this video, I will show you how you can include CSS in your HTML
+> file, because we used online tools that hide, in a way, the location
+> of the different languages. So, if you take this example we described
+> in the previous video, and if I export it using CodePen… and if I look
+> at the zip file that has been dowloaded, you can see CSS file are
+> located in the subdirectory and in a .css file. This is a common way
+> for organizing source code when you make a project with HTML and CSS.
+> And if we open the "index.html" file, you can see that, what is really
+> going on if we look at the source code. Actually, in order to include
+> CSS file in an HTML file, we use the "link" tag with the attribute
+> "rel = "stylesheet" and "href" = the name of the file. So here, it
+> means the "style.css" file located in the "css" subdirectory. So if I
+> open this project with Sublime Text … I go to the directory I've just
+> downloaded, and if I open the directory, I can see my hierarchy, here.
+> The "index.html" file that includes the .css file. And if I open the
+> "style.css". I can see the CSS content here. And it's interesting to
+> use a real source code editor because you've got auto-completion on
+> the name of the properties: « background-color". You can use also some
+> wizard for indicating or choosing the colors. So if I take this color,
+> it will give me directly the value and so on. So you can edit your
+> CSS, edit your HTML and when you save the result, you can open
+> directly in your browser the file and see the result. Here, I change
+> the background-color of the heading 1. You can also used directly in
+> your HTML, the CSS rules. In that case, instead of using the "link"
+> element, you use the "style" element. <style>, </style>, and like that
+> you can directly include, in the HTML file, the style. So I've got
+> "h1" CSS rule, that will indicate how the "h1" will be rendered and
+> I'm no more including an external file. If I save this and "Open in
+> the Browser", I've go the same result here for the "h1". And if I look
+> at the source code, I will see directly in the HTML, the CSS rule. So,
+> to sum up, you can have your CSS in external file or inside the HTML
+> file using the "style" element.
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.2 JavaScript, HTML and CSS > JavaScript is "the interactive glue"
+
+# JavaScript is "the interactive glue"
+
+### Live coding video: JavaScript is the interactive glue between HTML and CSS
+
+https://youtu.be/EaIQ7Q9Xwbk
+
+### JavaScript is the interactive glue between HTML and CSS
+
+JavaScript is the third of the "magic trio": HTML5/CSS/JavaScript. It is the only programming language a browser can run (without installing any plugins or extensions), and it's a real standard of the Web (even if not standardized by the W3C).
+
+### Why do we call it "the interactive glue between HTML and CSS"? 
+
+Actually, this description does not do justice to JavaScript, which can do far more than just act as glue. JavaScript can be run outside of the browser (on a nodeJS interpreter on a remote server, or in scripts run by the operating system), but for this intro course, we will focus on "JavaScript" in the browser (an advanced course about "server side JavaScript" is on its way at W3Cx).
+
+So, in the browser, JavaScript lies between HTML and CSS and will be used together with these two languages. Let's take a look at two small examples:
+
+**Example 1: Push the button to modify the heading of the page.**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>JavaScript and HTML</title>
+  <meta charset="utf-8"/>
+  <script>
+    function changeTitle() {
+      var title = document.querySelector("#mainTitle");
+      title.innerHTML += "<br>This new <u>title</u> has been changed from JavaScript!";
+    }
+  </script>
+</head>
+  <body>
+    <h1 id="mainTitle">My home page</h1> 
+
+    <p>This is an example of interactivity between JavaScript and the HTML content of a document.</p>
+    <button onclick="changeTitle();">Click me to change the title of the page</button>
+  </body>
+</html>
+```
+
+**Example 2: Push another button to modify the CSS style (color, background-color, border) of a paragraph in the page.**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>JavaScript and HTML</title>
+  <meta charset="utf-8"/>
+  <script>
+    function changeTitleCSSStyle() {
+      var title = document.querySelector("#mainTitle");
+      title.style.color = 'black';
+      title.style.backgroundColor = "yellow";
+      title.style.border = "5px dashed red";
+    }
+  </script>
+</head>
+  <body>
+    <h1 id="mainTitle">My home page</h1> 
+
+    <p>This is an example of interactivity between JavaScript and the HTML content of a document.</p>
+    <button onclick="changeTitleCSSStyle();">Click me to change the CSS colors of the title of the page</button>
+  </body>
+</html>
+```
+
+We will take a detailed look at how these examples work in the subsequent parts of the course. These examples are just here to show you how JavaScript can interact with the HTML content and the CSS styles of a Web document.
+
+Notice that in these examples, the JavaScript code is located in the HTML of the document.
+
+
+> Hello, your Web browser can only understand three different languages
+> when you ask for a Web page to be rendered in the browser. So, let's
+> take this document for example. We type the URL here, and the document
+> arrives from a remote machine. And this document is a HTML source code
+> that has been interpreted and rendered to give you a nice looking
+> document. In this HTML, you can have CSS rules for specifying the look
+> and feel of the document as we saw in the previous example. But, you
+> can also have Javascript code and Javascript when its run inside the
+> browser can act as a glue between HTML and CSS. We will use Javascript
+> to provide interactivity to the documents. In this example, the fist
+> one on this page, I can click to change the content of the document.
+> So we modify what we call the document object model. It's exactly the
+> set of elements that compose the page. When I click, I change the
+> content of the heading. That was previously equal to ‘My home page’,
+> and then when I clicked on the button, (this is an HTML button), this
+> is how in Javascript we can indicate that we are going to do something
+> when you click on it. In that case, it means call the function named
+> "changeTitle" and the function is here defined between <script> and
+> </script> elements. In this example, the Javascript lies inside the
+> HTML file and the function is a piece of code that can be run on
+> different conditions. A click on the button executes these two lines
+> of code here. So, 1st use: interact with the document object model,
+> interact with the HTML elements of the page, add new ones, modify some
+> existing ones, remove some elements. It can be also use for
+> interactive for the CSS styles of the page. So, in this example, I
+> click on the button. And instead of modifying the content of the page,
+> I just change the look and feel. I change the CSS style of the
+> heading. If we look at the code quickly without going into details:
+> when I click on the button "button onclick", I call the
+> "changeTitleCSSStyle" function. In this function will use the "style"
+> attribute of some elements that correspond to the heading 1 and it
+> will indicate that we want the text to be black, the background color
+> to be yellow and the border to be 5 px wide, dashed and colored in
+> red. This was just an example. What we can do with Javascript goes
+> much further than this simple example. We can work with remote data,
+> upload and download data from a remote server. We can use it for
+> making multimedia players, for writing video games, for making music,
+> for building tables on the fly to display some dynamic data that you
+> came after, for example, we enter some text in the search form, etc.
+> During week 1, we will see other examples with different sort of
+> applications of JavaScript. And, we will first give some explanations
+> about variables, functions, some basics events handling: how to detect
+> a click? how to debug the code? What tools we’re going to uses for
+> writing Javascript code, and so on.
+
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.2 JavaScript, HTML and CSS > JavaScript history
+ 
+# JavaScript history
+ 
+### History of JavaScript
+ 
+ 
+JavaScript was born in 1995 as part of the work of Brendan Eich's team at Netscape (the ancestor of Mozilla). At that time, Netscape, in association with Sun MicroSystems, provided popular server and client-oriented solutions (Netscape Navigator, ancestor of Firefox) which depended on Java. (Sun Microsystems,  the company that created the Java programming language, no longer exists, having been bought by Oracle Corporation in 2009.)
+
+But Netscape realized that Java wasn't a suitable language for in-browser use. Netscape thought of JavaScript at the beginning, as a lightweight Java.
+
+JavaScript was initially inspired by Java, but in fact only some naming conventions remained the same. We highly recommend not even trying to look for similarities - this is actually a bad way to start learning JavaScript! We'd rather just say that the only real commonality between these two languages is their names. If you are coming to this course from Java, leave the Java thinking behind!
+
+JavaScript quickly became a success following its first appearance in Netscape Navigator 2 in March 1996, and it was quickly integrated into other popular browsers. Microsoft also created its own version named JScript (and shipped it with Internet Explorer 3 in 1996).
+
+Towards the end of 1996, JavaScript was standardized by ECMA as the EcmaScript standard. So no matter whether you see it called JavaScript or EcmaScript, don't worry, it's the same thing. EcmaScript has continued to be released right up to the present day.
+
+THE PRESENT: what is the current version? What about ES6/ES2015/ES2016 I saw on the Web, are these the new names of JavaScript?
+![THE PRESENT](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/98e8208d171bebf192a859a93932d84d/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/ecmascript-history.png)
+
+Since 1996, multiple versions of JavaScript have appeared. The stable version with 99% of features supported by all major browsers deployed on computers and smartphones is EcmaScript version 5 from 2010, but the latest official version is version 6, also called ES2015 or ES6. A 7th version is on its way (called ES2016, ES2016+, ES7, JavaScript 7...).
+
+ES2015 is a pseudonym for the latest version of the JavaScript programming language to be approved by ECMA International, the standards group responsible for vetting and approving different versions of the language. In June 2015, ECMA International approved the 6th edition of the language. The name, ES2015, is used because the latest version of JavaScript is identified as the 2015 version of ECMAScript (the alternative name for JavaScript). Read this blog post about all these naming incongruities!
+
+Up until relatively recently, ES2015 was referred to as ES6 and before that, Harmony. Moving forward, ES suffixed with the year of the latest approved standard is the naming convention. The next version should be standardized soon, and it's called... ES2016 or ES2016+! Browser vendors do not wait until ECMA standardizes a version, they start implementing it during the standardization process, which can take months or years (they also contribute to the standardization process all along its life cycle).
+
+Beware: even on recent Web browsers, ES2015 and ES2016 have supported feature sets are not completely implemented!
+
+Well, ES2016, the 7th version of JavaScript is not yet officially standardized, and its support, even by latest browser versions (with the exception of Firefox) is rather weak.
+
+Which version will we learn?
+
+First of all, this is an intro course! Not all features of JavaScript need to be covered, in particular the ones that you cannot run in your browser without using advanced tools (there are tools, such as Babel,  that can turn ES2016 source code into ES5 code that can be run in nearly any browser, but they are tricky to use and not for beginners).
+
+We will cover all the important features of ES5 and ES2015. From time to time we might say "in ES5 you would do this, but ES2015 also supports this syntax, which is simpler, more powerful, etc.", and we will, of course, provide examples.
+
+Is JavaScript an important language to learn? What about Java, PHP, C#, Python, Ruby and all the others?
+
+JavaScript is the only programming language you can run in your browser. Without JavaScript there would be no games, no fancy dynamic HTML forms, no interactive maps, no Gmail, no YouTube, no Twitch TV, no Netflix....
+
+JavaScript is integrated into nearly every popular Web browser and is probably the most frequently used language in the world. More than 90% of Web documents now use JavaScript too.
+
+Every computer, smartphone, and tablet uses JavaScript many times a day within the browser and even as native code! Indeed, some applications are compiled from their JavaScript/HTML/CSS version into "classic" applications that can be run without a browser. This compilation step can give an extra performance boost, the NetFlix application, or Office 365 are such applications.
+
+In the beginning, JavaScript was invented to work not only on the client side (in Web browsers) but also on the server side (on the Netscape HTTP Web server back in 1995).
+
+In recent years this trend has returned, thanks to the appearance of the Node.js server/JavaScript interpreter. It's common to see JavaScript applications running on a remote Web server. This particular use of JavaScript will be covered by another course that will be proposed by W3Cx, but mastering JavaScript basics is highly recommended before trying to learn JavaScript server side programming.
+
+#### JavaScript is an interpreted language
+
+JavaScript is an interpreted (or just-in-time compiled) language, which means that the code is converted into a machine language at, or just before, runtime. The most popular JavaScript engines are:
+
+*  SpiderMonkey (included in Mozilla Firefox)
+*  JavaScriptCore (included in Apple Safari)
+*  Chrome V8 (included in Google Chrome, in the Node.js server)
+*  Chakra (included in Microsoft Internet Explorer and now in the Microsoft Edge browser)
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.2 JavaScript, HTML and CSS > Discussion topics and project
+
+# Discussion topics and project
+
+### Discussion topics and project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and an optional project.
+
+#### Suggested topics
+
+Did you know about JavaScript history? Do you have stories to share?
+What online tools do you know about, that could be useful for other students?
+Do you prefer trying small examples using an online IDE or using a source code editor and working with files located on your hard disk?
+Do you know a good service for hosting Web sites made with HTML/CSS/JS files?
+Optional project
+
+Try to make a simple home page and add some interactivity to it, adapting the examples provided in the course (change the HTML content by clicking on a button, change the CSS style of some parts of the document).
+
+---
+
+
+#### Module 1: Introduction to JavaScript > 1.3 JavaScript overview > The best way to learn JavaScript
+
+# The best way to learn JavaScript
+
+### Live coding video: learn by the examples
+
+
+### What is the best method to learn JavaScript?
+
+#### FIRST: learn by looking at and tweaking the code in the examples
+
+Well, there is no definitive answer to this question, but I'd recommend firstly looking at small examples, tweaking them and trying to guess what they do. You will rapidly discover that you can learn a lot just by modifying a few lines of JavaScript code, even if you do not understand the whole thing. 
+
+During module 1, we will give you some basics:
+
+* How to write a simple HTML/CSS/JS page,
+* Suggest some regular source code editors to use,
+* How to use online environments that run in the browser, and offer an "instant preview" of your creations. These tools are generally not suited for full scale projects, but are really valuable for testing and learning.
+* We will present many examples (some short and some bigger ones) that will show what can be done with JavaScript. We strongly encourage you to tweak them, look at the code, download them on your hard disk, etc. Even if you do not understand everything, have a go at modifying them; further down this page we outline such an exercise.
+* Over the coming weeks we will be revisiting the examples, and discussing them in greater detail and with fuller explanations.
+
+#### SECOND: take some time to carefully read the sections titled "What you've learnt / let's detail ...."
+
+During the course, we will provide extra "reference pages" that will detail some important parts of the language. For example, in a later section this week we will explain the concepts of "variables", "values", "operators", "output", etc.
+
+Here is an example - we provide some clues, but it's your job to tweak it!
+
+Here is an example that uses an external JavaScript library useful for plotting math functions. Look at the JavaScript code (click on the JS button) and try to guess where the function is specified, where the range for the x and y values is set, etc. Notice that you can use your mouse wheel to zoom in/out the function plot.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Plotting functions in JavaScript using the 
+    function plot library</title>
+  <meta charset="utf-8"/>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://mauriciopoppe.github.io/function-plot/js/function-plot.js"></script>
+</head>
+<body>
+  <div id="myFunction"></div>
+</body>
+</html>
+```
+
+```css
+div {
+  float: left;
+}
+
+#myFunction {
+  padding: 25px;
+  width: 250px;
+  height: 250px;
+}
+
+```
+
+
+```javaScript
+var parameters = {
+  target: '#myFunction',
+  data: [{
+    fn: 'sin(x)', 
+    color: 'red'
+ }       
+        ],
+  grid: true,
+  yAxis: {domain: [-1, 1]},
+  xAxis: {domain: [0, 2*Math.PI]}
+};
+
+functionPlot(parameters);
+```
+
+By looking at this example (HTML and JS code), you will notice a few things:
+
+Two lines in the HTML code that correspond to the inclusion in the document of some external JavaScript code:
+
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://mauriciopoppe.github.io/function-plot/js/function-plot.js"></script>
+
+We will examine this soon in a later section of the course, but, in brief, it means that we will use the d3js plotting library that is apparently located at https://d3js.org (try to visit the site), and another from github (a famous repository for open source contributions), and located in the github account of a person named "mauriciopoppe", the repository is named "function plot". A rapid search will give this URL as the home page of the "function plot JavaScript library".
+
+Then, looking at the JavaScript code of the example (click the JS button on the CodePen example), we see:
+
+```javascript
+functionPlot({
+       target: '#myFunction',
+       data: [{
+       fn: 'sin(x)',
+       color: 'red'
+    }],
+    grid: true,
+    yAxis: {domain: [-1, 1]},
+    xAxis: {domain: [0, 2*Math.PI]}
+});
+```
+
+Ok, the syntax looks strange if you are not used to JavaScript, but I bet that you guessed that the function plotted is "sin(x)", that the color of the curve is "red", that the range of the x values is [0, 2*PI], and the range of the y values is [-1, 1].
+
+Your job:
+
+1. try to plot sin(x^2),
+2. try to change the domain for the x and y values,
+3. try to change the color of the curve, etc.
+
+To do this:
+
+* Edit directly the JS code in the embedded example, after a few seconds, you should see the updated result in the "Results" tab,
+* ...or just click on the "Edit on CodePen" title on the top right of the embedded example, then change  the code. Normally you should see the results of your modifications as soon as you stop typing (we call this "live coding"). (Here is an example of what you can obtain as a result).
+
+### What can you guess from this example?
+
+#### A function call
+
+You can think of this code in this way:
+
+    functionPlot(...);
+
+> Where the "..." corresponds to some sort of parameter. When you see a name followed by two parentheses (maybe with something in between) followed by a ";", this is "a function call". 
+
+A function is a piece of code defined somewhere else, that can accept parameters (the "thing" between the parentheses), and that will do something. In our case the function's name is "functionPlot" and we can assume (or we read the documentation of the library) that the goal of this function is to plot a mathematical function, as its name tells us.
+
+### Function parameters
+
+The "thing" between parentheses is what we call "the parameters of the function": the data we pass to the function so that it can plot different math functions, with different colors, with different ranges for the x and y values, with or without a grid, etc.
+
+Let's have a look at the parameters we used in our example (the ones you tweaked). They are in bold in the source code we saw earlier:
+
+```javascript
+{
+    target: '#myFunction',
+    data: [{
+             fn: 'sin(x)',
+             color: 'red'
+          }],
+    grid: true,
+    yAxis: {
+         domain: [-1, 1]
+    },
+    xAxis: {
+         domain: [0, 2*Math.PI]
+    }
+}
+```
+
+### JavaScript object
+
+In JavaScript you can have simple values like: 2, 5, "hello", "3.14", and you may also encounter more "structured" values that we call "objects". In week 3 we will address JavaScript objects, but for the moment we will just present them through examples, without too much detail.
+
+A JavaScript object can be defined by two braces with a set of properties/values inside, separated by a comma. Here is a simple object:
+
+```javaScript
+{
+   givenName: "Michel",
+   familyName: "Buffa"
+}
+```
+
+> We use the ":" separator between the property name and its value. We use a comma between two properties, and we omit the comma after the last property (or before the ending brace).
+
+In our examples, the properties of the object that is passed as a parameter to the functionPlot(...) call are in bold.
+
+They are respectively:
+
+* target: the ***CSS selector that corresponds to the HTML element that will contain the plot***. Look at the HTML code (<div id="myFunction"></div>), the id value corresponds to target: "#myFunction" in the object.
+* data: this is where we indicate the value of the function(s) to be plotted. We talk about this in greater detail below.
+* grid: this can be true or false (we call these "boolean values") and indicates whether or not we want a grid to be drawn in the background.
+* xAxis: the value specifies the domain (range) for the x values...
+* yAxis: the value specifies the domain (range) for the y values...
+
+Notice that after each property (color, grid, etc.) there is a ",". Notice that between the name of the properties and the value there is a ":", etc...
+
+### Embedded objects
+
+If we look at the values of the xAxis and yAxis properties, they are also objects.
+
+```javaScript
+xAxis: {
+    domain: [0, 2*Math.PI]
+}
+```
+
+The data object is even more complicated:
+
+```javaScript
+data: [{
+   fn: 'sin(x)',
+   color: 'red'
+}],
+```
+
+Instead of containing another object like xAxis or yAxis, it contains another sort of object, but inside brackets! In JavaScript, brackets are used to create arrays of "things" (multiple, enumerable things). In this example, the array contains one single object that has two properties:
+
+* fn: the value of the function to be plotted, in this case sin(x),
+* color: the color of the curve
+
+
+***In arrays, the different elements are separated by commas***. Let's try to plot an additional function in our example. We will add f(x) = cos(x) to our example, with a different color:
+
+```javaScript
+data: [
+    {
+       fn: 'sin(x)',  // First function
+       color: 'red'
+    },
+    {
+       fn: 'cos(x)',  // second function
+       color: 'blue'
+    }
+]
+```
+
+### Conclusion
+
+Just by looking at one example, and without going into the boring details, you saw:
+
+* How to plot a function using a third party library and how to include it in your code,
+* How to change some parameters without knowing JavaScript in depth,
+* You had a first encounter with concepts such as: "a function call", "function parameters", simple objects, embedded objects and arrays (we will discuss them as we move through the course, beginning in week 1 - as you will see very soon!).
+
+Not bad ;-)
+
+
+
+
+
+
+
+> So, what it the best method for learning JavaScript? When you are a
+> complete beginner, I will recommend to look at examples, tweak them,
+> change small things, try to understand how the syntax looks like. Even
+> without deep explanations, without reading a book, or studying in
+> details the different concepts of language, you can learn a lot. So,
+> in this section, I propose that you look at a small example without
+> understanding the details, and try to tweak it. So here is the example
+> we provide. It's just an example that draws, that plots, a
+> mathematical function. So you can use the mouse wheel to zoom in, zoom
+> out, and you can look at the HTML code. There is only very few CSS and
+> very few lines of JavaScript. So how can we do the such a complex
+> result? Complex thing drawing the grid with axes, with labels, with a
+> curve, and interact with the mouse. With only 10 lines of code: it's
+> because we are using what we call an external JavaScript library.
+> Actually, we are using 2 of them here. Because, this one: the
+> "function-plot" JavaScript library, is using internally another one
+> you must include also in the document. So, what I propose is that we
+> will start looking at this example. The best way is to click on "Edit
+> on CodePen" label here, it will open the code in the CodePen.io online
+> editor. And... just look at the HTML part here. Okay, we can just look
+> at the HTML part and zoom in a little bit. What do we see? We can see
+> that it uses 2 libraries here between <script> and </script> elements.
+> This is how we can insert in the document an external JavaScript file.
+> In that case, it's a remote JavaScript file because we are downloading
+> it using http. So it uses this "d3js" JavaScript library that is
+> located at "d3js.org". You can open this in another tab and you will
+> see the documentation and the Web site, the homepage of the Web site,
+> for the "d3js" library. By the way "d3js"is one of the most popular
+> JavaScript library for visualizing data. So let's go back to our
+> example, so you can just tweak the different elements. If I want to
+> plot a cosinus instead of a sinus, I don’t need to understand the
+> whole syntax here, but I guess that by just typing "cos" here, it will
+> do something. And indeed I have just drawn a cosinus. If I change this
+> for "green", it changes the color. If I change the grid, that is by
+> default "true", if I say "false", I don't have a grid anymore. Okay
+> let's put it back. And I've got some "xAxis" domain : "-1, +1". If I
+> change that for "-10, +10", I can see the result. So it's more
+> interesting, if you change this for the x values... instead of going
+> from PI to 2 PI. I went from 0 to 10 PI. So I can see the result here,
+> and so on... So now that you tweak the example, you can try to
+> understand what is going on. Okay, this thing is a name followed by a
+> parenthesis. an open parenthesis with a closing parenthesis. It's a
+> function call. When you've got something like that, in JavaScript,
+> function parenthesis with something in the middle, it's called a
+> "function call". We're going to call a function, that, in this case,
+> we haven’t written, so it's coming from one on the external libraries.
+> In that case, it's the "function-plot" library. What is inside? There
+> are the parameters. And I can use an external name. I can declare
+> that, here, it's equivalent. You see that it works the same here, but
+> I’ve just separated the two things. If I put directly this thing
+> inside here, like it was before, it still works. Okay, so what is this
+> syntax? In JavaScript, when you’ve got braces like that, opening
+> braces and closing braces, it’s called an object. And inside an
+> object, you've got properties and values. The properties have names:
+> target, data, function, color, grid. And the values are after a column
+> characters. The target is my function. The data is this thing. The
+> grid is true, and so on... So you separate the different properties of
+> the object using a comma and sometimes, you can have some properties
+> that in turn, have a value that is an object. So the xAxis property is
+> equal to an object that has a property domain, that has for values:
+> "-1, 1". And when you've got brackets, opening and closing brackets,
+> it's like that... That will define arrays of things in JavaScript. And
+> an array of things is a list of enumerable elements. So in that case,
+> the domain has two elements: the minimum value and the maximum value.
+> And here you can see that the data that are plotted, the cosinus
+> function, is also an array. So, if I use the comma and I introduce a
+> second element here. For example, the sinus function, and if I change
+> the color, let's make it pink... Look at the result: I've got 2
+> different functions that have been plotted in my graph. So I can,
+> instead of using this, I can maybe plot x2 (x square 2), like this,
+> okay. It should work. Ok, we can see a little bit of it here. So maybe
+> we will change the domain, so instead of stopping at 1, we go to 10.
+> Here we go! And if we look at the values, we see the x square function
+> that is a bit better, and if we just plot it for x=0 to x=2... ...In
+> that case, i've got another scale for looking at the functions. So, in
+> this first example, you saw how to use an external library, what is
+> the syntax to call a function, and how we can define objects in
+> JavaScript by using a set of properties and values, separated by a
+> comma. And we also had a first encounter with what we call arrays,
+> that are elements separated by commas inside brackets.
+
+
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.3 JavaScript overview > What can be done with JavaScript
+
+# What can be done with JavaScript
+
+### Live coding video: what can be done with JavaScript
+https://youtu.be/b27f2ZV-1ek
+
+### What can be done with JavaScript
+
+#### FIRST: interact with the HTML and CSS content of a document, respond to events
+
+We have already seen three examples in previous parts of this week's course material.
+
+This first example used the selector API for selecting a particular element in the document (the main title) and the DOM API for modifying its content.
+
+An API is an ***application programming interface***. In the case of JavaScript, the DOM API is implemented natively by the browser, and you can call several functions/methods or access properties of the DOM:  an object that represents the document (the Web page). 
+
+It uses the selector API to target a particular part of the DOM (in our case, the main title of the page), the HTML element with an id attribute equal to "mainTitle". The selector API uses the same syntax as CSS to select elements in the document. In our case, "#mainTitle" is a selector value that means "the element whose id is equal to mainTitle".
+
+    var title = document.querySelector("#mainTitle");
+
+It uses the DOM API to change the HTML content of the selected element:
+
+    title.innerHTML = "This new title has been changed from JavaScript!";
+
+It listens to click events in order to call the changeTitle() function when we click on the button:
+
+    <button onclick="changeTitle();">Click me to change the title of the page</button>
+
+And it executes the whole action (changing the title text) in a function (a block of code that is executed only when we call it by adding a parenthesis after its name, followed by a semi colon):
+
+```javaScript
+function changeTitle() {
+    var title = document.querySelector("#mainTitle");
+    title.innerHTML = "This new title has been changed from JavaScript!";
+}
+```
+
+The second example is nearly the same except that we changed the name of the function, and instead of using the DOM API to update the text content of the main title, we use its style property to change its look and feel. Using the style property is a way of altering the CSS property values of this HTML element.
+
+```javaScript
+function changeTitleCSSStyle() {
+    var title = document.querySelector("#mainTitle");
+    title.style.color = 'black';
+    title.style.backgroundColor = "yellow";
+    title.style.border = "5px dashed red";
+}
+```
+title is in reality what we call "an object" and style is a property of the title object. The style is an object as well and has attributes that correspond to the different CSS properties we set. For example, style.color returns the color that element has set on it. By calling title.style.color = "yellow"; you can apply the style change dynamically.
+
+> Some of you may be wondering what happens when the CSS property being set has a hyphen. The syntax has to be different here, because, for example, if you write title.style.background-color, JavaScript will try to subtract color from the title.style.background notation, which is not what you want to happen. To stop this problem from occurring, all the CSS properties are written out in CamelCase: the CSS name background-color becomes backgroundColor, text-size becomes textSize, border-color becomes borderColor etc.
+
+Don't worry, we will return to this later in this course, these first examples are just here as an introduction.
+
+The third example (outlined in the previous section), which showed how to plot math functions, illustrated that with a few lines of code you can reuse code from others (a third party JavaScript library).
+
+#### SECOND: use numerous APIs in addition to the DOM and selector APIs: multimedia, drawing, animating, geolocation, webcam, etc.
+
+Your browser comes with a lot of different "libraries" that are called "standards APIs" for "application programming interfaces". Such APIs are "W3C standards" and are present in all Web browsers that follow the Web Standards. You will have APIs for manipulating multimedia (audio and video), geolocation (getting the longitude and latitude), orientation (on mobile devices), accessing the webcam or the microphone, etc. In a later section we will provide a set of examples that use some of the most useful APIs provided by your Web browser.
+
+
+
+### THIRD: work with remote data / speak with a remote HTTP Web server
+
+You can also download or upload data from your browser to a remote Web server. When this is done from JavaScript the popular term to describe such operations is "AjaX" (Asynchronous JAvascript and Xml), even though XML is not used in any examples you'll see in this course (XML is a language for describing structured data that was very popular a few years ago).
+
+Here is an example that will display the current and past members of famous rock bands:
+
+#### Knowledge check 1.3.2 (not graded)
+
+In JavaScript, in order to change the content of an HTML document or the CSS style of HTML elements, we use:
+* The selector and the DOM API 
+
+#### Explanation
+In JavaScript, in order to dynamically modify an HTML document (content or style), we use the selector API to target a particular part of the DOM, then the DOM API to modify the HTML content or the style of HTML elements.
+
+For example:
+
+    var title = document.querySelector("#mainTitle");
+    title.innerHTML = "This new title has been changed from JavaScript!";
+
+---
+
+
+
+
+
+> Hello! So what can be done with JavaScript? Let me show you some
+> examples that are the most common ones. First, you can change
+> dynamically the content of a Web page. So here I've got a Web page, I
+> click on the button and I change the content of the page. Another
+> thing we can do is to change dynamically the CSS style of some part of
+> the document. I click on the button and I change the style of the
+> title. You can also use, from your JavaScript code, different objects,
+> methods and functions that are defined in your browser, in what we
+> called standard HTML or standard JavaScript APIs. HTML5 comes with
+> many of these APIs for the geolocation, for animation, for making
+> music, and so on. In this example, we use the standard W3C geolocation
+> API that comes with HTML5. You can get from your browser, your current
+> latitude and longitude. And here, we also use the Google Map APIs; we
+> pass it the longitude and latitude and it displays the map centered on
+> the current position and also displays the surface address. So, here
+> we go. So, I'm located near Antibes in the south of France. You can
+> also work with remote data. So in this code, I'm just sending what we
+> call an Ajax request to a remote server to get a list of users… and
+> once I get this list of users, I just use the HTML table JavaScript
+> API for building dynamically tables. And I use this API to display the
+> data that just came from a remote server. There is another example,
+> that uses another database, another online database, for getting the
+> members of a rock band. So, I type "The Beatles". I got from the
+> remote server the list of the members of The Beatles. So, these were
+> the most typical uses of JavaScript Web sites.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
