@@ -8,6 +8,14 @@
       var title = document.querySelector("#mainTitle");
       title.innerHTML += "<br>This new <u>title</u> has been changed from javascript"
     }
+    
+    function changeCSSStyle(){
+      //alert("enter")
+      var title = document.querySelector("#mainTitle");
+      title.style.color = "black";
+      title.style.backgroundColor = "yellow";
+      title.style.border = "5px dashed blue"
+    }
   </script>
 </head>
   <body>
@@ -15,5 +23,10 @@
 
     <p>This is an example of interactivity between JavaScript and the HTML content of a document.</p>
     <button onclick="changeTitle();">This is a button to change the title</button>
+    
+    <br>
+    <br>
+    <button onclick="changeCSSStyle();">This is another button, but it is to change CSS style</button>
+    
   </body>
 </html>
