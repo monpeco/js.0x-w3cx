@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get 'static/city'
 
   get 'static/home_page'
+  
+  get 'static/change_title'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
