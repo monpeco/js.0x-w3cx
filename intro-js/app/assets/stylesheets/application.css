@@ -52,12 +52,17 @@ p, img {
 }
 
 /* funtion_plot */
-div {
-  float: left;
-}
+
 
 #myFunction {
   padding: 25px;
   width: 250px;
   height: 250px;
 }
+
+#mySecondFunction {
+  padding: 100px;
+  width: 350px;
+  height: 350px;
+}
+

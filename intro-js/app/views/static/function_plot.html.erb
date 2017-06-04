@@ -9,6 +9,9 @@
 </head>
 <body>
   <div id="myFunction"></div>
+  <br>
+  <br>
+  <div id="mySecondFunction"></div>
   
   <script>
       var parameters = {
@@ -28,6 +31,20 @@
       
       functionPlot(parameters);
       
+      
+      var other_parameters = {
+          target: '#mySecondFunction',
+          data: [{
+            fn: 'sin(x^2)', 
+            color: 'red'
+          }],
+          grid: true,
+          yAxis: {domain: [-2, 2]},
+          xAxis: {domain: [0, 4*Math.PI]}
+      };
+      
+      functionPlot(other_parameters);
   </script>
+
 </body>
 </html>
