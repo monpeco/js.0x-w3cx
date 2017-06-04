@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get 'static/function_plot'
   
   get 'static/geolocation'
+  
+  get 'static/remote_http'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
