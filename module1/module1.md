@@ -1474,6 +1474,88 @@ Here is a running example that uses the paperJS library, included using an exter
 
 #### Module 1: Introduction to JavaScript > 1.3 JavaScript overview > How to debug JavaScript
 
+# How to debug JavaScript
+
+### Live coding video: how to open the browser devtool console
+
+
+### How to debug JavaScript
+
+You will make errors!
+
+When you are developing a Web Application that contains JavaScript code, you will make errors. 
+
+Repeat after me: "I WILL MAKE ERRORS!" ; "I WILL MAKE ERRORS!"
+
+So there will be error messages, and you will need to print messages for debugging your code. We will see more advanced debugging techniques at different points in this course, but for the moment, let's see the basics of JavaScript debugging: seeing error messages in the devtool console, or in the "console tab" of your source code editor.
+
+We will not look at the JavaScript syntax here, but more at "JavaScript in the browser", how it works, how to start writing code, etc.
+
+First of all, you need to find a way to debug your code and see errors. If your work does not produce any results, you need to know why!
+
+Your Swiss army knife: your browser devtools, especially the devtool console!
+
+For this you will use the dev. tools of your browser. Press F12 (or ctrl-shift-i) in Windows or cmd-alt-i in MacOS to open the dev. tools, then go to the console tab: this is where errors will be displayed, or messages of your own (use the console.log(string) JavaScript function in the JavaScript code embedded in your html page). In the console, you will be able to type any JavaScript command.
+
+Let's look at this example on JS Bin:
+
+```javascript
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset=utf-8 />
+  <title>Web Audio API</title>
+  <script>
+   console.log("Some JavaScript code has been executed");
+  </script>
+  </head>
+  <body>
+    <h1>JavaScript debugging using the dev tool console</h1>
+  </body>
+</html>
+
+```
+
+The simplest way to add JavaScript code in an HTML page is to use the `<script>...</script>` element.
+
+The code in this example is executed sequentially when the page is loaded: the JavaScript code is executed before the browser could see the rest of the page (as the `<script></script>` is located before the `<body>`).
+
+The H1 element, for example, does not exist in the Document Object Model, and has not yet been displayed when the JavaScript code is executed. If we move the `<script></script>` at the end of the document, then the H1 would have been built before the JavaScript code is executed.
+
+The only line of code we have is `console.log("Some JavaScript code has been executed");`
+
+This means "display in the JavaScript console the message...". If we open the console tab provided by jsbin.com in a dedicated tab (that redirects all console.log() messages), and re-execute the page (just type a space at the end of a line to re-render the page and display the message in the console), we see the message in the console tab, as well as in the dev. tools console. This is illustrated by the image below:
+
+
+It is also possible to use the "real dev. tool console", and for this, I recommend running the application in a single window, not in the JsBin editor. Press the black arrow on the top right of the output window - this will render the page as a standalone Web page, then press F12. You should see:
+
+Without such tools, debugging JavaScript code is impossible. So you need to look at some basic tutorials on how to use the dev. tools of your browsers, since they differ from one another in the way they work - although the principles remain the same.
+
+
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.3 JavaScript overview > Discussion topics and projects
+
+# Discussion topics and projects
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and optional projects.
+
+Suggested topics
+
+* Which source code editor(s) do you use?
+* If you use a source code editor that supports plugins/extension modules, which one do you recommend? Please share your experience with us in the forum!
+
+
+Optional projects
+
+* Share your versions of the examples from the course with improvements and changes!
+* We are pretty sure that you can do something better with the "rock band member example". Share your best work(s) ;)
+* Try to experiment further our "best way to learn JavaScript" and try to tweak an example of your own that uses the  paperJS library. Start from a simple example from the paperJS Web site, modify it and share it in the forum. You can look at the example from the course if you want to include paperJS in a shareable CodePen example (we use a version of paperJS located on a Content Delivery Network, a "CDN", no need to download it, and it's very easy to use it in online IDEs such as CodePen, JsBin, etc.).
+
 
 
 
