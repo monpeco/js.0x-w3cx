@@ -1166,7 +1166,313 @@ For example:
 > the most typical uses of JavaScript Web sites.
 
 
+--- 
 
+#### Module 1: Introduction to JavaScript > 1.3 JavaScript overview > Where to put JavaScript code
+
+# Where to put JavaScript code
+
+### Live coding video: where to put JavaScript code?
+
+
+
+### Where to put JavaScript code?
+
+JavaScript code can be located in different places
+
+1.  In your HTML code between `<script>` and `</script>` tag
+2.  In local files, usually ending with the .js prefix (i.e: in a script.js file), and included using, for example, a syntax such as: `<script src="style.js"></script>` tag
+3.  In external files located on the Web, using their URLs, also using the <script src="http://www.aserver.com/..../js/script.js"></script> tag
+Here are some examples:
+
+### 1 - The JavaScript code is included in an HTML file using the <script>...</script> tag
+
+***First variant:*** in the `<body>..</body>` of the HTML document
+
+Typically:
+
+```javascript
+	<body>
+	...
+	 <script>
+	   var x = 2;
+	   // show a message in the body of the html document
+	   document.body.innerHTML += "<b>JavaScript code executed. The value of the variable x is: " + x + "</b>";
+	   // also print a message in the devtool console
+	   console.log("JavaScript code executed");
+	 </script>
+	...
+	</body>
+```
+
+> Old JavaScript examples may use a type attribute: 
+> <script type="text/javascript">. 
+> The type attribute is now obsolete and should be ignored.
+	
+	
+	
+***Second variant:*** in the `<head>...</head>` of the document
+
+In this example, the `<script>...</script>` element is placed in the `<head>..</head>` section of an HTML page.
+
+This time, we placed a JavaScript function that is invoked (called) when a button is clicked:	
+
+```javascript
+	<head>
+	  <script>
+		 function addSomeText() {
+			// append a message in the body of the html document
+			document.body.innerHTML += "<br>Function executed!";
+		 }
+	  </script>
+	</head>
+	<body>
+	<button onclick="addSomeText();">Click me to call a JavaScript function that will add
+	   some content to this document
+	</button>
+	</body>
+```
+
+### 2 - Put the JavaScript code in local .js files
+
+Putting JavaScript code in external scripts files is easy, and offers many advantages:
+
+1.  It separates HTML and code (and also CSS code, if you use external CSS files)
+2.  It makes HTML and JavaScript easier to read and maintain
+3.  JavaScript files can be reused more easily in other projects
+4.  Cached JavaScript files can speed up page loads
+
+
+A typical example:
+
+```javascript
+	<head>
+	   ...
+	   <link rel="stylesheet" href="css/style.css">
+	   <script src="js/script.js"></script>
+	</head>
+```
+
+#### To use an external JavaScript file:
+
+1.  In the HTML, put the name of the script file in the src (source) attribute of a <script> tag, like in the typical example above,
+2.  JavaScript files must end with the .js extension,
+3.  Do no use any <script>...</script> tag in a .js file!
+4.  Using an external JavaScript file with <script src="..."></script> is 100% equivalent to using <script>...</script> with the file content between the opening and closing tags. 
+5.  It's possible to use more than one JavaScript file, just use multiple <script src="..."></script>
+
+#### Example that uses more than one JavaScript file:
+
+```javascript
+	<head>
+	   ...
+	   <link rel="stylesheet" href="css/style.css">
+	   <script src="js/script1.js"></script>
+	   <script src="js/script2.js"></script>
+	   <script src="js/anotherOne.js"></script>
+	   ...
+	</head>
+```
+#### A typical HTML/CSS/JS project folder structure, when working with external local files
+
+It is good practice to locate CSS files in a css subfolder, and JavaScript files in a js subfolder.
+
+Content of the index.html file:
+
+```javascript
+	...
+	<head>
+	   ...
+	   <link rel="stylesheet" href="css/style.css">
+	   <script src="js/script.js"></script>
+	</head>
+	<body>
+	<h1>Example 3: JavaScript and CSS in local files!</h1>
+	<button onclick="addSomeText();">Click me to call a JavaScript function that will add some content to this document</button>
+	</body>
+	</html>
+```
+
+Content of the js/script.js file (JavaScript file):
+
+```javascript
+function addSomeText() {
+   document.body.innerHTML += "<p>Function executed!</p>";
+}
+```
+
+Content of the style.css file:
+
+```css
+p {
+   color:green;
+}
+```
+
+How to run this example:
+
+1.  Download the zip file of this project: Example_3.zip
+2.  Unzip/unarchive it somewhere
+3.  Double click the index.html file, this will open your Web browser and load the index.html file.
+4.  Click on the button in the page
+
+### 3 - Use external references to JavaScript files/libraries located on the Web
+
+External JavaScript libraries (they are just big JS files) can be also referenced with a full URL, like in this example:
+
+```javascript
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.22/paper.js"></script>
+```
+
+Here, we just included in our HTML document the excellent paperJS library that can be used to make fancy animations in the HTML canvas 
+element - we will use it later in the course. 
+
+Once the library is included, the JavaScript code you will write can call functions located in this library. This "reuse existing" work 
+made by others is really common when working on JavaScript projects.
+
+Here is a running example that uses the paperJS library, included using an external URL:
+
+```html
+	<!DOCTYPE html>
+	<html>
+	  <head>
+		<title>Example 4: use an external JS file</title>
+		<meta charset="utf-8"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.22/paper.js"></script>
+	  </head> 
+	  <body>	
+			<canvas id="canvas" resize></canvas></body>
+
+	</html>
+```
+
+```css
+	body {
+		bleh:adf;
+		meh:d;
+	}
+	html {
+	}
+```
+
+```javascript
+	paperScript = function() {
+		var mousePoint = view.center;
+		var amount = 25;
+		var colors = ['red', 'white', 'blue', 'white'];
+
+		for (var i = 0; i < amount; i++) {
+			var rect = new Rectangle([0, 0], [25, 25]);
+			rect.center = mousePoint;
+			var path = new Path.Rectangle(rect, 6);
+			path.fillColor = colors[i % 4];
+			var scale = (1 - i / amount) * 20;
+			path.scale(scale);
+			
+		}
+
+		function onMouseMove(event) {
+			mousePoint = event.point;
+		}
+
+		var children = project.activeLayer.children;
+
+		function onFrame(event) {
+			for (var i = 0, l = children.length; i < l; i++) {
+				var item = children[i];
+				var delta = (mousePoint - item.position) / (i + 5);
+				item.rotate(Math.sin((event.count + i) / 10) * 7);
+				if (delta.length > 0.1)
+					item.position += delta;
+			}
+		}
+	}
+
+	var a = document.createElement('script')
+	a.setAttribute('type', 'text/paperscript');
+	a.setAttribute('canvas', 'canvas');
+	var src = paperScript.toString();
+	a.appendChild(document.createTextNode(src.substring(src.indexOf('\n') + 1, src.lastIndexOf('\n'))));
+	document.body.appendChild(a);
+```
+
+
+
+> Welcome! In this video, we will just look at the different locations
+> where we can put JavaScript code. So, the first place where you can
+> put JavaScript code is inside an HTML document, using the <script> and
+> </script> tags. So, we've prepared an example, it's called the
+> "Example 1" in the page, that shows how we can display the value of a
+> variable. A variable is a location in the memory of the computer where
+> we are going to store some values. And the variable has a name and
+> it's declared using the "var" keyword. There are others possibilities
+> we will see later. So here we've got the variable called "x" that has
+> the value of 2. And, we use some strange instruction
+> "document.body.innerHTML" for adding to the body of the document some
+> HTML code. So "document.body" corresponds in JavaScript to the body
+> element of the document, and the "innerHTML" property corresponds to
+> its HTML content. So, by doing this, we are adding a bold element
+> JavaScript code executing the value of the variable x=2 and we display
+> the value of the x variable in bold. So this is the result of the
+> execution of this code. And this code is not in a function, so it's
+> executed as soon as the page is rendered. When the browser receives
+> this document, it will first display the "h1" then display this
+> paragraph, then executes this code. It will define the variable x,
+> assign the value "2" to it, and then add this string, with the value
+> of "x" inside, to the body of the document. And finally, we display in
+> the dev tool console: "console.log("JavaScript code executed")". We
+> can open it by clicking on the console button in CodePen, or we can
+> also open the devtools using the "F12" key or "ctrl+alt+i" or
+> "cmd+alt+i" on a Mac. And you see that the "console.log" message has
+> been displayed in the devtool console of your browser. Here, notice
+> that we use the "script" element directly into the body of the
+> document. Another possibility is to a put this code in the head of the
+> document. It's also common practice because it separates clearly the
+> JavaScript code from the HTML body of the document. In that case, the
+> result is the same, except that the JavaScript code is displayed
+> before the rest of the page. Here we defined the variable x, we added
+> it to the body of the document , and later on we display the body,
+> where the browser renders the body of the document. Okay, what is
+> better? It depends on your application. For the moment, just stay with
+> knowing that you can put scripts in the body or in the head of a
+> document. Another possibility is to use an external JavaScript file.
+> In that case, the same way we showed you how to use an external file
+> for storing the CSS code, we can use the "script" tag with the "src"
+> attribute to include in the HTML document an external JavaScript file.
+> Notice than we can include more than one JavaScript file if we like,
+> like this. In that example, we are including 3 different JavaScript
+> files sequentially. So I prepared for you an example you can download
+> - it's called "Example_3.zip". So I click on it, download it, unpack it, and inside this element, I've got an HTML file. And I open it with
+> my Sublime Text editor. And what i've got here, is that you can see in
+> the HTML header in that case but you can also put this in the body if
+> you like, we included a "script.js" file located under the "js"
+> directory. So I can open also this file. I can see that I just display
+> the message called "Function executed" and a function "addSomeText"
+> directly in the script. When is this executed? It's executed when we
+> click on a button. So let's have the button "onclick" call the
+> function "addSomeText". Let's execute this, here is the result: "Click
+> me to call a JavaScript function that will add some content to this
+> document". I click and you see that the function have been executed.
+> And finally, the last thing you can do, is to include an external
+> JavaScript source code. So you've got an example here, where we use
+> the "paper.js" library and the "paper.js" library, if I open the
+> "paper.js" Web site, is a library for making graphic animations in
+> JavaScript, so you can have plenty of funny things you can do. Things
+> like that, or things like this… Just to be able to use what this
+> library proposes, you need to include the library. If you read the
+> documentation, they will tell that you what you need to include...
+> Okay -let's me open it in CodePen- ...you need to include this
+> JavaScript file. And once you included this JavaScript file... a bit
+> the same way we used the external library for plotting functions...
+> then you can use some functionalities that come from the "paper.js"
+> library. So you need to read the documentation to learn how to use it,
+> but here is an example: a set of squares, animated squares, that
+> follow the mouse.
+
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.3 JavaScript overview > How to debug JavaScript
 
 
 
