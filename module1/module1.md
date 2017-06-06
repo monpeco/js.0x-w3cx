@@ -1730,7 +1730,193 @@ Share your version of the application, do not hesitate to go further, change thi
 ### Live coding video: JavaScript variables
 
 
+### JavaScript variables and values
 
+In most of the examples that we have seen together we've used the concept of "variable", and we have used 
+them to "store values". It's time to take a break and talk about them :-)
+
+### Variables
+
+Introduction
+
+In order to remember a value, programming languages share the concept of "variables". When you write programs, 
+you will need to store values in the computer's memory. By saving these values in "variables", by giving them 
+a "name" (we call it an identifier), you can reuse them later for display, for computations, etc.
+
+#### Create (declaring) a variable
+
+With JavaScript versions < 5 (prior to 2015), there was a single way to create (we say "***declare***") a variable: 
+using the `var` keyword, but with the subsequent versions (called ES2015/ES2016 or JavaScript 6/7) we can also use 
+the keyword `let` (this has some subtle differences, which we'll explain later in the course when we will talk 
+about "functions").
+
+JavaScript is ***weakly typed***. Each variable is declared with the keyword var or let. So you are not required 
+to specify the type of variable you are creating. After the keyword `var` and a space, just give the name of the variable.
+
+#### Example:
+
+```javascript
+var myVar;
+let x;
+```
+
+
+The first letter of a variable can only be `$`, `_`, `a` to `z`, or `A` to `Z`. The other characters in a name must be 
+any of these, or numeric digits. The name is case sensitive. So variables `myVar` and `MyVar` are different variables.
+
+There are some reserved names that you can't use as a variable name: `boolean`, `if`, `delete`, `var`, `function`, etc. 
+as they are reserved words of the JavaScript language.
+
+#### Give a value to a variable (assign a value to a variable)
+
+A value can be assigned to a declared variable, or even directly in the variable declaration. For this, we use the 
+equal character, also called "the assignment operator". 
+
+#### Example:
+
+(notice at line 4 one way to introduce comments in your code: start a line with "//"!)
+
+```javascript
+var myValue;
+myValue = 78;
+
+// With the ES2015 syntax. BTW, lines staring with // are comments!
+let myNumber = 1.34;
+```
+
+At line 2, we are not saying that `myValue` and `78` are the same, we're saying "hey, I want to store the value 78, 
+and I'm putting it in a variable whose name is "myValue". It's like giving an id to a location somewhere in the 
+memory of the computer.
+
+Using the id `myValue`, we store 78 into a memory location identified by the name `myValue`: a variable, or if you 
+prefer, a value that can vary over time if we assign a new value to the variable `myValue` (for example by executing 
+`myValue = 5;`).
+
+You can also declare many variables at once by separating them with a comma. Always end each instruction line with 
+a semi colon.
+
+### Example:
+
+```javascript
+var myNumber1, myNumber2 = 34, myNumber3;
+ 
+// Or with the ES2015 syntax, you can also use "let"
+let x = 1, y = 3, z = 12;
+```
+
+Try the devtool console - you can type code in there too!
+
+***Reminder***: you can always open the devtool console using F12 on windows, or ctrl-shift i, or cmd-alt-i on other 
+computers.
+
+If we copy and paste the variable declarations from the previous example, and type `myNumber2` in the devtool console, 
+it will display `34` (while `myNumber1` will have an undefined value):
+
+```javascript
+> var myNumber1, myNumber2 = 34, myNumber3;
+undefined
+ 
+> // Or with the ES6 syntax you can also use "let"
+undefined
+ 
+> let x=1, y=3, z=12;
+undefined
+ 
+> x;
+1
+ 
+> z;
+12
+> myNumber2;
+34
+ 
+> myNumber1;
+undefined
+```
+
+### Name conventions for variables
+
+The JavaScript community has some conventions about naming variables:
+
+The camelCase notation is preferred: `mySpaceShip`, `sumOfAllGrades`, etc.
+
+For a variable, the first letter is lowercase and each first letter of each word is capitalized. 
+Example: var myVariableName
+
+#### Example:
+
+```javascript
+var myModel;
+// ES2015 syntax
+let michelBuffaAge = 51;
+```
+
+Most JavaScript examples you will find are written in the camelCase format. For harmony in the code source, it is a 
+good idea to keep this convention. Sometimes, you will see the snake_case naming convention, which separates each 
+word of a variable with an underscore.
+
+Here's an interesting article: CamelCase vs underscores: [Scientific showdown](https://whathecode.wordpress.com/2011/02/10/camelcase-vs-underscores-scientific-showdown/)
+
+### Constants
+
+Constants are variables that cannot be modified after a value has been set.
+
+The naming convention is to use uppercase letters with underscores.
+
+With JavaScript 5, constants were declared as normal variables, using the var keyword, and there were no verifications 
+by the JavaScript interpreter forbidding you to modify them after you assigned a value to them.
+
+With ES2015/2016 it is recommended that you use the keyword const instead of var to declare them. This means 
+that an error will be raised if you try to change their value in the future.
+
+### Example:
+
+```javascript
+var TIME_LIMIT;
+ 
+// ES2015 Syntax
+const MAX_GRADE = 20;
+```
+
+### Summary
+
+Here are a set of examples (using the let keyword, but they would also work with var):
+
+```javascript
+let a;
+let thisIsAVariable;
+let and_this_too; // but does not respect the usual naming convention
+let mix12three;
+// invalid!
+let 2three4five; // can't start with a digit!
+ 
+let a = 1
+let v1, v2, v3 = 'hello', v4 = 4, v5;
+ 
+// Beware with lowercase / uppercase
+let case_matters = 'lower';
+let CASE_MATTERS = 'upper';
+```
+
+#### Knowledge check 1.5.2 (not graded)
+
+An undefined variable is:
+
+A variable that has been declared but not initialized
+
+#### Explanation
+An undefined variable x is a variable that has been declared with var x; or with let x; but that has no value yet. 
+An error is triggered only when the variable is used in an expression such as var z = x + y;. A console.log(x) would 
+give the value "undefined".
+
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > Scope of variables
+
+# Scope of variables
+
+### Live coding video: scope of JavaScript variables
 
 
 
