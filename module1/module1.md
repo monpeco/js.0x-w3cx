@@ -1675,7 +1675,59 @@ And here is the same version with the polyfill for the <input type="color"> inpu
 #### Live coding video: using SublimeText
 
 
+> Now, I'm going to show you how we can do the same application using
+> files and a regular source code editor, and working on your local hard
+> disk. So, I'm going first to create a directory for storing the files
+> on my desktop. "Math plotter app" and I will work inside. In this
+> folder, I will create a subfolder named "js" for the js files and a
+> subfolder named "css" for the CSS files, and the HTML file will lie in
+> the current directory. So with Sublime Text, I can open this folder,
+> the one I just created. And I can start saving the current file as
+> "index.html". I will copy the HTML, CSS and JavaScript source code
+> from the previous example. So, I just took the previous application.
+> And I will copy it in the index.html file. I create a "style.css" and
+> a "script.js" file for holding the JavasCript and CSS files. I copy
+> the source code from the js part of the previous example. I create a
+> new file with the CSS code. "Save as" … I include the JavaScript code
+> :<script src="js/script.js"> Remember that the script tag has always a
+> closing tag at this end. It is not an auto-closing tag. And I use a
+> "link" tag for importing the CSS file. So I can check that my files
+> are located at the right place and now I can "Open in Browser".
+> Another way to do what we've done manually would have been to use the
+> "Export" button from CodePen. So it will download a zip file, that
+> will contain the whole architecture, the whole folders and subfolder
+> I’ve already prepared for you. And it will also make the HTML file for
+> you, that will include the JavaScript but in the end, instead of at
+> the beginning of the source file, like what I did manually. So, using
+> generated code can be useful, but most of the time for a big project
+> or a serious project, you will be certainly use a source code editor
+> like Sublime Text.
 
+
+
+
+---
+
+### Module 1: Introduction to JavaScript > 1.4 Your first HTML/CSS/JS page > Discussion and project
+
+# Discussion and project
+
+Discussions and project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+Optional project
+
+Share your version of the application, do not hesitate to go further, change things, etc.
+
+---
+
+
+#### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > JS variables and values
+
+# JS variables and values
+
+### Live coding video: JavaScript variables
 
 
 
