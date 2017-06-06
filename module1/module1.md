@@ -1558,7 +1558,121 @@ Optional projects
 
 
 
+---
 
+### Module 1: Introduction to JavaScript > 1.4 Your first HTML/CSS/JS page > Introduction
+
+# Introduction
+
+### Let's create a small HTML/CSS/JS project together
+
+It's time for you (and me) to create a small HTML/CSS/JS project, step by step, following some best practices. We will do this using different tools: source code editors + files but also two online IDEs (JsBin.com and CodePen.io). We will see how to write/debug the code and also how to migrate a project prototyped with online tools to a project you can run and edit on your hard drive using regular source code editors.
+
+Many things we use in this example may be new to you. Don't worry. We will cover them either later on this week or over the following weeks. It's time to throw you in the deep end of the JavaScript world, getting you to write code, and look at examples etc. And from time to time, we will take a break and have a "real", "academic", look at the concepts of the language you have been using. We think this is the best way for you to learn!
+
+#### Topic
+
+We will write a small, interactive HTML page that will use some HTML input fields for indicating the name of a math function we'd like to plot, the ranges for the x and y values, the color of the curve etc.
+
+We will first write this application online, using the JsBin.com editor, then we will do the same thing using the CodePen online editor, then, using a regular source code editor and .html, .css and .js files.
+
+Here is what the resulting Web page will look like:
+
+https://codepen.io/w3devcampus/pen/bqGboZ
+
+
+SAFARI users: here is a version that comes with a polyfill for the <input type="color"> element 
+
+This HTML element is not yet implemented in Safari (only in the Technical preview version).
+
+So, if you want to see a color picker, try this version on CodePen!
+
+We just added three lines in <head> of the HTML part, to include spectrum.js, the polyfill, and jQuery, that is used by this polyfill.
+
+
+---
+
+
+### Module 1: Introduction to JavaScript > 1.4 Your first HTML/CSS/JS page > Create the app with CodePen
+
+# Create the app with CodePen
+
+#### Live coding video: using CodePen
+
+> Hi! We're going to work from an example we already saw in the course:
+> the math function plotter. So, in this version, you can see that we
+> added some input fields for changing the color of the curve, for
+> changing the range of the x values, changing interactively the
+> functions we are going to plot, and so on. Let's start from the very
+> basic example we saw earlier on the course. We saw that, the function
+> is located in a "div". And we just added a "section" tag from HTML5,
+> just to identify the part of the document where the function is
+> plotted. Later on, we'll add another "section" about the input fields
+> and the different controls. You've got also a <body onload="plot();>",
+> that means that when the page is loaded, we execute a JavaScript
+> function named "plot()", that is located here. And it uses the
+> "functionPlot()" function from the external library we use. This one.
+> And it takes a set of parameters that are located at the beginning of
+> the JavaScript part. That will indicate, within the target property,
+> the "id" of the div where we are going to plot the function. In the
+> data property is the function itself: "sin(x)" and its color: red. So
+> what can we do to improve this? At first, we can add some CSS code to
+> make this nicer. I'm going to change the view with CodePen. So let's
+> resize that, and let's work on the CSS part: "Maximize CSS Editor". So
+> what I can do, is that I can indicate that the div that contains this
+> function wil have a rounded border, some shadows and so on. So now
+> it's rounded, you can have add some shadows, height, margin and so on.
+> So let's me just copy and paste some code I’ve prepared. So here we
+> are. So now, what I've got, is a nicer presentation of the function
+> itself. Now, I'm going to add a section that will contain the
+> different controllers that are input fields from HTML5. So let's do
+> it. I add a section called "plotSettings" that will contains all these
+> controllers. Let's start for example with a controller for the color.
+> So here we go. So, what we added here is a label color value and the
+> color input field from HTML5. So, if I click here, it asks for a
+> color. And we can also add an event listener: "onchange="plot(); ».
+> That means: "when the color has been selected, call the plot()
+> function". And you remember that this function is the one that plots
+> the mathematical function, here. The plot function is here. So what we
+> are going to do in this change color function ? It changes the
+> property of the parameters here. So let's add some code for that...
+> So, how can we get the value of the color from JavaScript before
+> plotting the function? We are going to use the selector API:
+> "document.querySelector(...)" for the input field whose id is "color".
+> The value, here, is the color itself. So what we do is that we are
+> going do use the color for changing this, here. So
+> "parameters.data"... it's an array. So 0 is the first index, the first
+> element that corresponds to the part that I highlight now.
+> .color=color If I change the color, this line is executed and the
+> color changes. We can use the same principles with other input fields.
+> So let me just copy and paste some code I prepared, that will add all
+> these different controllers. So, now I've got all the different
+> controllers, and if you look at them, they all have an "onchange" or
+> "oninput" event listener. Now, we’ve got 2 sections, 2 HTML sections:
+> one with an "id="plotSettings"" that corresponds to the different
+> input fields. And one with an "id="plot"" that corresponds to the
+> function itself (the drawing here). So, if I want to have a nice look
+> and feel, what I can do is to share the same borders and shadow
+> properties from CSS, put the first section with the different input
+> fields on the left and the plot on the right. So let me just cut and
+> paste some CSS rules here, that will factorize the common properties
+> for both sections in a section selector. OK, so what I've got now, is
+> that I've got a nice balanced view of the whole application.
+
+CodePen example with the starting code used in the video
+
+If you want to code while watching the video, please open this CodePen. It contains the source code of the example we started coding from. 
+
+And here is the same version with the polyfill for the <input type="color"> input field, not yet supported by Safari.
+
+---
+
+
+### Module 1: Introduction to JavaScript > 1.4 Your first HTML/CSS/JS page > Coding using SublimeText
+
+# Coding using SublimeText
+
+#### Live coding video: using SublimeText
 
 
 
