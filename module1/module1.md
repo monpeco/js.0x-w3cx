@@ -2241,6 +2241,295 @@ JavaScript 5 code (like **Traceur** or **Babel**).
 
 ### Live coding video: JavaScript data types
 
+>  video/transcript
+>! missing video/transcript
+
+### What kind of values can we assign to a variable?
+
+Well, there are multiple possibilities:
+
+1. What we call "primitive data types": for example a number, a string, etc. ex: 
+    var x = 3; var name = "Buffa";
+2. Objects (everything that is not a  "primitive data type" is an object): 
+    var michel = {firstName:'Michel', lastName:'Buffa'};
+
+There is a set of "predefined objects" in JavaScript (arrays, functions, etc). We will come back on these later in the course.
+
+
+#### JavaScript has a small set of primitive data types
+
+* **number**: 1,2,105,3.14 ...
+* **string**: 'a', "one", 'two' , 'World Wide Web' ...
+* **boolean**: true / false
+* **undefined**: absent or unknown value
+* **null**: special keyword, meaning no value or empty. The difference from undefined is that when a variable is null, it is still defined.
+
+These are the simplest forms of data we can use in programming.
+
+Anything that is not listed above is an object (JavaScript objects are covered later in Week 3). 
+
+### You said JavaScript does not have types for variables?
+
+No! I said that JavaScript is weakly typed; you do not declare the type of variable. In some other languages (Java language syntax, for instance) 
+instead of `var x=2;` or `let name="Buffa";` you would write `int x=2;` or `String name = "Buffa";`, with the datatype explicit in the variable 
+declaration.
+
+### Knowing the type of a JavaScript variable: the typeof operator
+
+The next section of the course talks about "operators" but there is one that is better introduced in this section: the `typeof` operator, that is 
+useful for knowing the type of a variable depending in its value (possible values: `number`, `string`, `boolean`, `undefined`, `object`, or `function`)
+
+We will use it in lots of examples in the next three sections.
+
+#### dynamic typing
+You can use the `typeof` operator to see the "dynamic type of a variable". For example, type `let n=3`; then `typeof n`, it 
+will display `number`. Then type `n="toto";` and `typeof n;` this time it displays `string`
+
+This operator is not often use in JavaScript programs, but it's useful for us, for explaining the data types.
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > Numbers
+
+# Numbers
+
+Number values can be:
+
+* **Integer**: 1, 4, 274929
+Type 343 in the devtool console, and after you press the Enter key,  the  corresponding value (343) will be displayed.
+
+* **Signed integer**: -17
+* **Decimal**: 3.46, -466.8770
+
+
+Examples of integer and decimals:
+
+```javascript
+> var n=1;
+undefined
+ 
+> typeof n;
+"number"
+ 
+> n=1234;
+1234
+ 
+> typeof n;
+"number"
+ 
+> n=1.23;
+1.23
+ 
+> typeof n;
+"number"
+ 
+> typeof 123;
+"number"
+```
+
+* **Scientific notation**: 3.46e4, 5.3e+6, 5344000e-5
+3.46e4 equals 3.46 x 10^4 equals 34600
+
+Examples:
+```javascript
+> 1e1;
+10
+ 
+> 1e+1;
+10
+ 
+> 2e+3;
+2000
+ 
+> typeof 2e+3;
+"number"
+ 
+> 2e-3;
+0.002
+ 
+> 123.456E-3;
+0.123456
+ 
+> typeof 2e-3;
+"number"
+```
+
+* **Octal**: 010
+Be careful with this, don't start an integer with 0 (zero), JavaScript will understand it as an octal value.
+
+010 equals 8 which means 1 * 8^1 + 0 * 8^0
+
+The number 0456 means 4 * 8^2 + 5 * 8^1 + 6 * 8^0
+
+**Question 1**: What's the result, as an integer, of the operation: 24 - 024?
+
+Explanation 1: 24 is an integer which equals 24 but 024 is an octal value which equals 20.
+
+**Question 2**: Which value will be displayed in the devtool console if you type 098 followed by the Enter key?
+
+Explanation 2: 9 and 8 don't exist in base 8 (only 0 to 7), so the typed number will be considered as an integer.
+
+
+* **Hexadecimal**: 0xF3
+0xFF equals 255, 0xF3 means 15 * 16^1 + 3 * 16^0 and the resulting value is 243
+
+Examples of octal and hexadecimal data types:
+
+```javascript
+> var n3 = 0377;
+undefined
+ 
+> typeof n3;
+"number"
+ 
+> n3;
+255
+ 
+> var n4 = 0x00;
+undefined
+ 
+> typeof n4;
+"number"
+ 
+> n4;
+0
+ 
+> var n5 = 0xFF;
+undefined
+ 
+> typeof n5;
+"number"
+ 
+> n5;
+255
+```
+
+
+* **Special values:**
+    * **+Infinity**
+    * **-Infinity**
+    * **NaN (Not a Number)**
+	
+The value `Infinity` (or `+Infinity`) represents all number values greater than 1.79769313486231570e+308 and `-Infinity` represents 
+values smaller than -1.79769313486231570e+308.
+
+Finally, `Nan` represents not-a-number values, for example if you try to divide 0 by 0 (type 0/0 in the devtool console).
+
+```javascript
+> 0 / 0;
+NaN
+ 
+> 3 / 0;
+Infinity
+```
+
+Examples:
+
+Any operation with Infinity gives Infinity as a result:
+
+```javascript
+> Infinity;
+Infinity
+ 
+> typeof Infinity;
+"number"
+ 
+> 1e309;
+Infinity
+ 
+> 1e308;
+1e+308
+ 
+> var a = 6 / 0;
+undefined
+ 
+> a;
+Infinity
+ 
+> var i = -Infinity;
+undefined
+ 
+> i;
+-Infinity
+ 
+> typeof i;
+"number"
+```
+
+"number"
+```javascript
+> Infinity - Infinity;
+NaN
+ 
+> -Infinity + Infinity;
+NaN
+"number"
+```
+
+```javascript
+> Infinity - 20;
+Infinity
+ 
+> -Infinity * 3;
+-Infinity
+ 
+> Infinity / 2;
+Infinity
+ 
+> Infinity - 9999999999999;
+Infinity
+```
+
+Examples with NaN:
+
+NaN is a special value and its type is "Number"!
+
+```javascript
+> typeof NaN;
+"number"
+ 
+> var a = NaN;
+undefined
+ 
+> a;
+NaN
+```
+
+### [ADVANCED] Optional explanations about numbers
+
+In JavaScript, numbers are represented with a double-precision 64-bit format (IEEE 754). These 64 bits are used with this table:
+
+|Total bits | Sign | Exponent | Significand|
+|-----------|------|----------|------------|
+| 64        | 1    | 11       | 52         |
+
+#### What does it mean?
+
+First, each number is represented as a float. For example, 1 equals 1.0. But there are approximation errors that are well-known in float calculations. One common example of errors due to the approximation of floating point numbers is that 0.1 + 0.2 does not equal 0.3. 
+
+```javascript
+> 0.1 + 0.2;
+0.30000000000000004
+```
+
+devtool console 0.1 + 0.2 is not equal to 0.3 but to 0.30000000000000004 
+
+Second, an integer has 2^52 relevant bits, so the biggest integer is 2^53. There is one bit that determines the sign of the number, so the smallest signed integer is -2^53.
+
+**Note**: Some arithmetic functions use only numbers with a 32-bit format. Larger numbers will be converted...
+
+(Advanced) For more information about floating point numbers, follow this link at [Wikipedia](https://en.wikipedia.org/wiki/IEEE_floating_point)
+
+
+---
+
+### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > JS operators and expressions
+
+# JS operators and expressions
+
+
+
+
 
 
 
