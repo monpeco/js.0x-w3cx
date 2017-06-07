@@ -1478,6 +1478,56 @@ Here is a running example that uses the paperJS library, included using an exter
 
 ### Live coding video: how to open the browser devtool console
 
+https://youtu.be/EAlHFMN_-j0
+
+> Hi, every programmer will make errors. So is very important that you
+> learn how to debug your JavaScript programs, how to see your errors,
+> how to write messages for debugging, tracing what is going on, etc.
+> Every browser comes with a very powerful set of tools called the
+> devtools. With my Mac, I can use command "alt + I". So the thing we
+> will going to use the most is the console. A console loads problems or
+> errors. So, if I can clear the messages from here and this is the
+> place where I will see the different error messages I've got in my
+> code. Here is an example in JsBin. So, you can click here to see the
+> console or it’s the same thing you can get here. If I type something
+> here: console.log("hello"). So this is the instruction you will use
+> the most for printing error messages in the dev toolconsole. If I
+> execute it, it prints "hello", and I can see also in the browser built
+> in console: "hello". So this just a comfortable way to display error
+> messages. So, if I make some errors, here I've got a script that will
+> display, as soon the page is loaded, "Some JavaScript code has been
+> executed". So if I run the code, here, it displays "Some JavaScript
+> code has been executed". If there is a mistake, if I make an error
+> here, for example, I write console with two "l". I can see, in red,
+> some messages: "consolle is not defined", bla, bla, bla... When you
+> use some online tools like JsBin or CodePen, and so on, it's a bit
+> difficult to debug your code because you are debugging at the same
+> time the code of the tool itself that is written in JavaScript too. So
+> each each these tools comes with a way to run your code in what we
+> decode ‘standalone mode’ or ‘debug mode’. So with JsBin, I click on
+> the small black arrow, here. And if I open the built-in browser
+> console, I can see the error message. And here, if I click on the link
+> on the right, it will just show the line where my program made a
+> mistake display, so, as an error. So here, I can see that console
+> needs only one "l", I can fix that. Another interested thing is that
+> when you use "console.log", you can use it to display some variable
+> values. So, if I declare a variable named x with a value of 10, I can
+> use «console.log" to display the value of x, using the "+" operator.
+> So in that case, if I run my code it will help me by displaying the
+> value of different variables when “console.log” is executed. With
+> CodePen, another tool we use a lot in the course, you've got the debug
+> mode. Just save your work and click on "change view mode" we’ve got
+> "debug mode" here. And you can also open the console. If you click on
+> the console button here, you can have a console here, and see what is
+> going on. CodePen does not display the error messages, so is better
+> for debugging to click on the "debug mode", here. So you've got the
+> page in standalone mode, and you can open the dev tool console. With
+> local files, I’ve got another example here with HTML code that uses it
+> some JavaScript code from a "script.js" file. If I make an error here,
+> an error in the name console, I save. I can run the result: "Open in
+> browser". I click, it does nothing. I open the dev tool console and I
+> see where the problem is and I can click on the link on the right and
+> it shows the line with the error.
 
 ### How to debug JavaScript
 
@@ -1599,6 +1649,8 @@ We just added three lines in <head> of the HTML part, to include spectrum.js, th
 
 #### Live coding video: using CodePen
 
+https://youtu.be/EQ8dZDuTGY8
+
 > Hi! We're going to work from an example we already saw in the course:
 > the math function plotter. So, in this version, you can see that we
 > added some input fields for changing the color of the curve, for
@@ -1674,6 +1726,7 @@ And here is the same version with the polyfill for the <input type="color"> inpu
 
 #### Live coding video: using SublimeText
 
+https://youtu.be/xB5p3SIKYM0
 
 > Now, I'm going to show you how we can do the same application using
 > files and a regular source code editor, and working on your local hard
@@ -1729,6 +1782,47 @@ Share your version of the application, do not hesitate to go further, change thi
 
 ### Live coding video: JavaScript variables
 
+https://youtu.be/4cwjixzYF4c
+
+> Hi! So, in JavaScript, a variable is a container for a value. And a
+> value can be many things: a number, or a string, an object or a
+> complex function. With variables, the value in the container can
+> change, and to use a variable you first have to declare it. Let’s see
+> some examples! So, you can declare a variable using the keyword "var",
+> and followed by the name of the variable, or you can also use the
+> keyword "let", that came with ES6, with JavaScript version 6. Before
+> ES6, you could only use "var". There are small differences that I will
+> explain later, but for the moment you can use "var" or you can use
+> "let". Once a variable is declared, you must initialize the variable,
+> this is where you give it a value. And this is done by using the equal
+> sign. As you can see, the console.log will display in the console the
+> value of the variable "myName". You can also initialize and declare a
+> variable at the same time. You see, I declare a variable called myDog
+> and I gave it a name: Rex. Also, you can use these variables in
+> instructions, in expressions like: "the name of my dog is". You can
+> use the “+” operator for concatenating strings, because “myDog” is a
+> string, and in that case you will see: "the name of my dog is" …
+> followed by the value of the “myDog” variable. There are also naming
+> rules and conventions for variables. You can give to variables names
+> like “x”, “y”, ”z”. If they are just single, one-word names, you use
+> lowercase. But the convention, when you start using composed words, is
+> to use the "lower camel case" syntax. If your variable name is made of
+> two or more words, write the first one in lowercase, and capitalize
+> every other words. Example: “myFastCar”, "my" is lowercase, "Fast" and
+> "Car" are capitalized. Also, variables are case sensitive: do not mix
+> a variable name in lower case and in uppercase. For example, if I give
+> to the small “x” a value of “2”, and to big “X” a value of “4”, and if
+> I display the value of big ”X”, then the JavaScript interpreter will
+> know that big “X” is different than small “x”. If you need to use
+> different names like if I’ve got two fast cars, just, my
+> recommendation: use “myFastCar1”, “myFastCar2”, etc. Also, you should
+> not use JavaScript reserved words such as "var", "let", "if", "for",
+> "function", etc. So, var function = 2; will raise an error, I can show
+> that to you in the devtool console, this raises an error. This also
+> raises an error. So, that’s all for the moment about the variables. We
+> will next talk about variable values and variable scopes, and you will
+> see that there is a small difference between “var” and “let” when you
+> declare variables.
 
 ### JavaScript variables and values
 
@@ -1918,6 +2012,7 @@ give the value "undefined".
 
 ### Live coding video: scope of JavaScript variables
 
+https://youtu.be/UNRPi4Omw2s
 
 > Hi! Let’s talk about "variable scopes". The scope of a variable
 > corresponds to the locations in your code where you can use this
