@@ -2245,7 +2245,6 @@ JavaScript 5 code (like **Traceur** or **Babel**).
 
 ### Live coding video: JavaScript data types
 
->  video/transcript
 >! missing video/transcript
 
 ### What kind of values can we assign to a variable?
@@ -2530,6 +2529,226 @@ Second, an integer has 2^52 relevant bits, so the biggest integer is 2^53. There
 ### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > JS operators and expressions
 
 # JS operators and expressions
+
+
+### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > JS operators and expressions
+
+# JS operators and expressions
+
+#### Introduction
+
+An expression is a small piece of code used to produce a value.
+
+For example, the expression `3 + 5` produces the value `8`, and the value `11` alone is also an expression. Within an expression, we can 
+find values, variables, operators, and expressions. The first two have been already described above, so all that's left are operators.
+
+In JavaScript, an operator can be **unary** or **binary** (plus one **ternary** operator). A **unary** operator is applied to one expression. It can be 
+prefixed or suffixed.
+
+
+### Unary operator example: 
+
+    typeof 'world';
+
+A **binary** operator is applied to two different expressions, and is both prefixed and suffixed.
+
+### Binary operator example:
+
+    var x = 45 / 32;
+
+The division operator is binary.
+
+
+Within an expression, we can also use parentheses to force the execution of the expression inside. Parentheses can be used to indicate precedence.
+
+For example, this is an expression: `(3 + 2)`. And the expression `(3 + 2) * 4`, which equals `20`, depends on the expression within the parentheses.
+
+In JavaScript, expressions can evaluate to four types, which are: `numbers`, `strings`, `booleans`, and `objects`. For example, an expression 
+with the operator `-` will evaluate to a number. But an expression with the operator + can evaluate to a number or a string (for addition or 
+concatenation).
+
+
+---
+
+#### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > Number operators
+
+# Number operators
+
+### Live coding video: number operators
+
+>! missing video/transcript
+
+Introduction
+
+The following arithmetic operators are **binary**:
+
+`+`, `-` , `/`, `*`, `%` (modulo)
+
+Example: `7 % 5` equals `2`, which is the remainder of the integer division of `7` by `5`
+
+Note: (7 / 5 = 5 * 1 + 2 ).
+
+
+And there are also **unary** operators:
+
+`++`, `--`, `-` (the opposite of a number)
+
+`++` and `--` operators increment or decrement the value of a variable. They can be both prefixed or suffixed, which have different effects:
+
+* Suffixed ++ adds one to the value of the variable, then returns the new value.
+* Prefixed ++ also adds one to the value, but returns the old value. Both of these must be used with variables.
+Examples typed in the devtool console of a browser:
+
+```javascript
+> 1 + 2;
+3
+ 
+> var a = 1;
+undefined
+ 
+> var b = 2;
+undefined
+ 
+> a + 1;
+2
+ 
+> b + 2;
+4
+ 
+> a + b;
+3
+ 
+> var c = a + b;
+undefined
+ 
+> c;
+3
+```
+
+```javascript
+> 1 + 2;
+3
+ 
+> 99.99 - 11;
+88.99
+ 
+> 2 * 3;
+6
+ 
+> 6 / 4;
+1.5
+```
+
+Example of pre and post increments:
+
+```javascript
+> var m = 0;
+undefined
+ 
+> m;
+0
+ 
+> // regular use of the + operator
+m = m + 1;
+1
+ 
+> m;
+1
+ 
+> m = m + 1;
+2
+ 
+> m;
+2
+ 
+> // post increment
+m++;
+2
+ 
+> m;
+3
+> console.log(m++); // will display 3 but after that m is incremented
+3
+ 
+> m;
+4
+```
+
+
+Other examples of post and pre increments:
+
+```javascript
+> var a = 123; var b = a++;
+undefined
+ 
+> b;
+123
+ 
+> a;
+124
+ 
+> var a = 123; var b = ++a;
+undefined
+ 
+> b;
+124
+ 
+> a;
+124
+ 
+> var a = 123; var b = a--;
+undefined
+ 
+> b;
+123
+ 
+> a;
+122
+```
+
+#### Short variant that mixes assignment and execution of an operator
+
+Binary operators can be used with a shorter syntax when we want to assign the resulting value to a variable at the same time:
+
+Example (try them in the devtool console of your browser)
+
+```javascript
+> var a = 10;
+> a *= 5; // equivalent to a = a * 5;
+> console.log(a);
+> 50
+```
+
+Other examples:
+
+```javascript
+> var a = 5;
+undefined
+ 
+> a += 3 // equivalent to a = a + 3;
+8
+ 
+> a -= 2; // equivalent to a = a - 2;
+6
+ 
+> a *= 10; // equivalent to a = a * 10;
+60
+ 
+> a /= 5; // equivalent to a = a / 5;
+12
+ 
+> a %= 2; // equivalent to a = a % 2;
+0
+ 
+> // this is normal, as a is even
+```
+
+---
+
+
+#### Module 1: Introduction to JavaScript > 1.5 Variables, values, functions, operators and expressions > Strings (part 1)
+
+# Strings (part 1)
 
 
 
