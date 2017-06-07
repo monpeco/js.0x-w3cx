@@ -201,9 +201,11 @@ Whatever that tag (or "open tag") does, it applies to the content following the 
 <p>This is my first paragraph!</p>
 ```
 
-The browser sees the letters '"p>" and decides "A new paragraph is starting, I'd better start a new line and maybe indent it". Then when it sees "</p>" it knows that the paragraph it was working on is finished, so it should break the line there before going on to whatever is next.
+The browser sees the letters `<p>` and decides "A new paragraph is starting, I'd better start a new line and maybe indent it". Then when it sees `</p>` it knows that the paragraph 
+it was working on is finished, so it should break the line there before going on to whatever is next.
 
-For example, the "<em>" tag is used for element that needs Emphasis.  The  "<" and ">" indicate that this is a tag, and the "little bits of text" in between tell us what kind of tag it is.  To completely describe the element, it needs an open and close tag, and everything in between the tags is the contents of the element:
+For example, the `<em>` tag is used for element that needs Emphasis.  The  `<` and `>` indicate that this is a tag, and the "little bits of text" in between tell us what kind of 
+tag it is.  To completely describe the element, it needs an open and close tag, and everything in between the tags is the contents of the element:
 
 ![tags](https://courses.edx.org/asset-v1:W3Cx+HTML5.0x+1T2016+type@asset+block@tags.png)
 
@@ -226,7 +228,9 @@ Most of what you can learn about HTML attributes is presented in the three W3Cx 
     <img src="https://pbs.twimg.com/profile_images/110455194/n666194627_2302_400x400.jpg"
          width=200 alt="Michel Buffa plays rock&roll">
      
-As you might guess, the <img> tag also has a height attribute, as well as others. Different HTML tags share some common attributes that we'll meet in the next section, which are particularly useful when coupled with CSS (id and class) for applying graphic styles (color, shadow, etc.), but  can also have specific attributes (for example: the src attribute can be found in the <video>, <audio>, <img> tags but not on a <p> or on an <h1> tag!)
+As you might guess, the `<img>` tag also has a height attribute, as well as others. Different HTML tags share some common attributes that we'll meet in the next section, which 
+are particularly useful when coupled with CSS (id and class) for applying graphic styles (color, shadow, etc.), but  can also have specific attributes (for example: the src 
+attribute can be found in the `<video>`, `<audio>`, `<img>` tags but not on a `<p>` or on an `<h1>` tag!)
 
 Try changing the value of the width attribute in the example below, or add a height attribute, and see the result:
 
