@@ -2790,6 +2790,166 @@ There are many reasons to use simple quotes when possible:
 ### Live coding video: strings and string operators
 
 
+>! Missing video/transcript
+
+### String operators
+
+#### The concatenation operator (+)
+
+The operator (`+`) used with strings is called the concatenation operator, and it allows you to concatenate strings.
+
+```javascript
+//the operator (+)
+var s1 = 'one';
+var s2= 'two';
+var s = s1 + s2;
+s;
+// returns 'onetwo'
+typeof s;
+//'string'
+```
+
+The shorthand assignment operator (`+=`)
+
+The shorthand assignment operator (`+=`) can also be used to concatenate strings.
+
+```javascript
+//the assignment operator (+=)
+var s1 = 'one';
+var s2 = 'two';
+s1+= s2; // or directly s1+='two'
+s1;
+//returns 'onetwo'
+```
+
+#### The method concat()
+
+Another way to concatenate strings is the method concat().
+
+```javascript
+//the 'concat' method
+var s1 = 'one';
+var s2 ='two';
+var s = s1.concat(s2);
+s;
+//returns 'onetwo'
+```
+
+All the methods shown above can be used with a variable number of arguments:
+
+```javascript
+var s1 = 'Hello';
+s1 = s1 + ' World' + ' JavaScript';
+var s2 = 'Hello';
+s2+= ' World' + ' JavaScript';
+var s3 = 'Hello';
+s3.concat(' World' , ' JavaScript' );
+//s1,s2 and s3 return 'Hello World JavaScript'
+```
+
+#### Converting strings
+
+A String number in an arithmetic expression is converted to Number, unless the formula is a pure addition.
+
+```javascript
+> var s = '1'; s = 3 * s; typeof s;
+"number"
+ 
+> s;
+3
+ 
+> var s = '1'; s++; typeof s;
+"number"
+ 
+> s;
+2
+ 
+> var s = "100"; typeof s;
+"string"
+ 
+> s = s * 1;
+100
+ 
+> typeof s;
+"number"
+ 
+> var d = "101 dalmatians";
+undefined
+ 
+> d * 1;
+NaN
+```
+
+#### How to convert a Number into a String
+
+There is trick for converting a Number into a String: we concatenate with an empty string, at the beginning of expression (type this in the devtools):
+
+```javascript
+var n = 1;
+typeof n;
+// returns "number"
+n = "" + n;
+// returns "1"
+typeof n;
+// returns "string"
+```
+
+#### Special character: the "\"
+
+The \ is useful for "escaping" special characters. Here are a few examples:
+
+```javascript
+var s = 'I don\'t know';
+var s = "I don\'t know"; // here the \ is useless
+var s = "I don't know";  // same result as previous line
+var s = '"Hello", he said.'; // ok, double quotes inside single one will be displayed
+var s = "\"Hello\", he said."; // double quotes inside double quotes need to be escaped
+```
+
+#### Escaping the escape! Use a double "\"
+
+```javascript
+var s = "1\\2"; s;
+// returns "1\2"
+```
+
+#### Special characters starting with "\"
+```
+"\n" for "next line":
+
+var s = '\n1\n2\n3\n';
+s
+// returns "
+1
+2
+3
+"
+```
+
+#### "\r" for "carriage return":
+
+```javascript
+var s = '1\r2';
+var s = '1\n\r2';
+var s = '1\r\n2';
+// the three previous lines give :
+"1
+2"
+```
+
+#### "\t" for "insert a tabulation":
+
+```javascript
+var s = "1\t2"
+// s is equal to
+"1 2"
+```
+
+---
+
+#### Module 1: Introduction to JavaScript   1.5 Variables, values, functions, operators and expressions   Objects (part 1)
+
+# Objects (part 1)
 
 
 
