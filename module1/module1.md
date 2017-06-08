@@ -2750,7 +2750,44 @@ undefined
 
 # Strings (part 1)
 
+### Introduction
 
+To declare or manipulate strings you must write them with single quotes `'` or double quotes `"` around them.
+Single quotes or double quotes are both accepted, and there is no difference between them in JavaScript. 
+However, the community prefers to use single quote for string - this is not a convention, but a 
+recommendation.
+
+And finally, you cannot start a string with a single and end with a double quotes, or the opposite.
+
+```javascript
+> "Hello World";
+"Hello World"
+ 
+> "JavaScript Course";
+"JavaScript Course"
+ 
+> 'With simple quotes';
+"With simple quotes"
+ 
+> "Do not mix double and simple quotes'; // here we opened the string with double and closed with simple quotes
+VM24763:1 Uncaught SyntaxError: Invalid or unexpected token
+```
+
+There are many reasons to use simple quotes when possible:
+
+* Double quotes are used in HTML
+* You must hold the Shift key to type `"`
+* Single quotes are easier to read and to type
+* To output HTML in JavaScript, single quotes are more useful
+
+---
+
+
+#### Module 1: Introduction to JavaScript   1.5 Variables, values, functions, operators and expressions   String operators
+
+# String operators
+
+### Live coding video: strings and string operators
 
 
 
