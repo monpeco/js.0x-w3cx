@@ -3169,6 +3169,104 @@ Examples:
 
 # Functions (part 1)
 
+### Definition of a function
+
+A function allows you to group code, give it a name and be able to execute it by calling it by name.
+
+#### Functions always return a value:
+
+* Explicitly, using the keyword return followed by the value (line 3 of the next example),
+* Implicitly, in which case the return value is undefined.
+
+#### Declaring a function
+
+```javascript
+function sum(a, b) {
+    var c = a + b;
+    return c;
+}
+```
+
+#### Calling a function
+
+```javascript
+var result = sum(1, 2);
+//result is equal to 3
+console.log(result)
+> 3
+```
+
+#### Function parameters
+
+If parameters are omitted during the call, JavaScript gives them the value undefined:
+
+```javascript
+> sum(1)
+NaN
+```
+
+#### Functions with a variable number of parameters
+
+An array named "argument" is created automatically in each function, it contains all the call parameters of the function:
+
+```javascript
+function f() {
+   return arguments;
+}
+
+...
+
+f();
+// returns []
+
+...
+
+f( 1, 2, 3, 4, true, 'Michel Buffa');
+// returns [1, 2, 3, 4, true, "Michel Buffa"]
+```
+
+#### Example of the sum with a variable number of arguments
+
+```javascript
+function newSum() {
+    var i, res = 0;
+    var numberOfParameters = arguments.length;
+    for (i = 0; i < numberOfParameters; i++) {
+       res += arguments[i];
+    }
+    return res;
+}
+...
+>>> newSum(1, 1, 1);
+3
+>>> newSum(1, 2, 3, 4);
+10
+```
+
+Knowledge check 1.5.11 (not graded)
+
+```javascript
+function f() {
+  // get the parameters
+  var allCallParameters = XXX;
+  // do something with the parameters
+  // ...
+}
+```
+
+A JavaScript function can have a variable number of parameters. What is the name of the array that is created automatically in each function, 
+and that contains the call parameters (what would you write instead of XXX in the code above)?
+```
+arguments
+```
+
+---
+
+#### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Introduction
+
+# Introduction
+
+
 
 
 
