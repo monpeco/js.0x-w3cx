@@ -3009,13 +3009,169 @@ var student1 = {
     fullName: "John Doe",
     ssn: "11-22-33-44"
 }
-`
+```
 
 ---
+
 
 #### Module 1: Introduction to JavaScript   1.5 Variables, values, functions, operators and expressions   Arrays (part 1)
 
 # Arrays (part 1)
+
+**Definition**: arrays are containers with indexes
+
+Arrays are a special datatype. You declare arrays using brackets, like this:
+
+```javascript
+var daysOfWeek = [];
+```
+
+You can fill them at declaration time:
+
+```javascript
+var daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+var gradesInMaths = [12, 7, 14, 18, 9, 11];
+```
+
+#### Elements in an array can be accessed using indexes
+
+Each element in an array has an index. The first element's index is 0, the second element's index is 1 etc.
+
+To access an element, you use the array variable and `[` followed by the index value followed by `]`, as shown in these examples:
+
+```javascript
+> var daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+undefined
+
+> daysOfWeek[0]
+"Monday"
+
+> daysOfWeek[1]
+"Tuesday"
+
+> daysOfWeek[2]
+"Wednesday"
+
+> daysOfWeek.length
+7
+```
+
+Use the length property of an array to know its length
+
+```javascript
+> var daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday', 'Saturday', 'Sunday'];
+undefined
+> daysOfWeek.length
+7
+```
+
+Indeed, there are seven days in a week and the daysOfWeek array has seven elements, indexed from 0 to daysOfWeek.length -1
+
+This way of enumerating all elements (from 0 to the length of the array -1) is very, very common, and will prove to be very useful 
+when you learn how to iterate on an array's elements (Week 2).
+
+You can add elements to an array using a new index
+
+If you want to add a new element at the end of an array, use the index equal to the length of the array
+
+```javascript
+> var daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+undefined
+
+> daysOfWeek.length
+6
+
+> daysOfWeek[6]
+undefined
+// NO ELEMENT AT INDEX 6 in an array of 6 elements, first index is 0 // last 6-1 = 5
+
+> daysOfWeek[6] = 'Sunday'
+"Sunday"
+
+> daysOfWeek.length
+7
+// Sunday, the 7th day of week is at index 6 !
+```
+
+#### Arrays are JavaScript objects!
+
+Well, this is not so important for the moment, but look:
+
+```javascript
+> var a = [];
+> typeof a;
+"object"
+
+> var a = [1,2,3];
+> a
+[1, 2, 3]
+
+> a[0]
+1
+
+> a[1]
+2
+```
+
+And indeed, when you write `daysOfWeek.length`, you are using the array as an object, and you are using the length property of array objects.
+
+
+#### Add an element at the end of an array using the push method
+
+Since arrays are objects, we can do much more with them - in particular, they have more properties and more methods than the push method. 
+You will learn more about this in a later lesson (Arrays part 2), but for the moment, let's focus on the most useful features...
+
+```javascript
+> var daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+undefined
+
+> daysOfWeek.length
+6
+
+> daysOfWeek.push('Sunday');
+7
+
+> daysOfWeek
+["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+> daysOfWeek.length
+7
+```
+
+#### Arrays and Strings
+
+Strings are arrays of characters! 
+
+Consequence:
+
+* They are objects too! 
+* They have a length property,
+* Each individual character can be accessed using an index.
+
+Examples:
+
+```javascript
+> var s = 'one';
+> s[0]
+"o"
+
+> s[1];
+"n"
+
+> s[2];
+"e"
+
+> s.length;
+3
+```
+
+#### Module 1: Introduction to JavaScript   1.5 Variables, values, functions, operators and expressions   Functions (part 1)
+
+# Functions (part 1)
+
+
+
+
 
 
 
