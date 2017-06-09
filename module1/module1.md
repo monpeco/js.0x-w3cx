@@ -2951,6 +2951,73 @@ var s = "1\t2"
 
 # Objects (part 1)
 
+### Introduction
+
+We have already encountered objects in different examples. You can easily recognize these objects:
+
+They are declared using `{` and `}`, such as in `var p = {givenName:'Michel', familyName: 'Buffa'}`, `givenName` and `familyName` are called "properties" and 
+Michel and Buffa are their respective values.
+We are using the `.` operator to access their properties or methods. Example : `daysOfTheWeek.length` (arrays are objects too - special ones, but objects), 
+or `document.body` or `window.innerWidth` (try typing that in the devtool console). There are plenty of predefined objects in JavaScript 
+(window, document, navigator, etc.). We have also used `console.log(...)`, and indeed console is a predefined JavaScript object. With the object 
+`var p = {givenName:'Michel', familyName: 'Buffa'}`, we can access the properties the same way, with: `p.givenName` and `p.familyName`.
+Take a look at some common objects and properties!
+
+Open your devtool console (F12 or ctrl-alt-i or cmd-alt-i on Mac), go to the console tab and type `window` followed by a `.`, normally you should see 
+an auto-completion menu. Start typing `inne` and you should see some possible completions.
+
+Try looking at the values of the size of the current browser window (type `window.innerWidth` followed by the "enter/return" key, type `window.innerHeight`, etc.).
+
+Try looking at the vendor of your browser: type `navigator.vendor`, try looking at the current URL displayed in your window: type `window.location`, etc.
+
+We will study these objects later, but for the moment, just play with objects :-)
+
+```javascript
+> window.innerHeight
+217
+> window.innerWidth
+1704
+> navigator.vendor
+"Google Inc."
+```
+
+You can define your own objects
+
+There are many ways to create your own JavaScript objects. For the moment, let's stick to the simplest one, **"singleton objects"**, and for now all 
+you need to know is that they can have properties that hold values. We will return to objects in Week 4 and cover them in further detail.
+
+```javascript
+var student1 = {
+    fullName:'John Doe',
+    age: 23,
+    city: 'New York',
+    ssn: "11-22-33-44" // no comma at the end of the last property
+}                      // declaration
+```
+
+#### Accessing an object's properties: we use the operator "."
+
+```javascript
+> student1.ssn
+"11-22-33-44"
+> student1.age
+23
+> student1
+[object Object] {
+    age: 23,
+    city: "New York",
+    fullName: "John Doe",
+    ssn: "11-22-33-44"
+}
+`
+
+---
+
+#### Module 1: Introduction to JavaScript   1.5 Variables, values, functions, operators and expressions   Arrays (part 1)
+
+# Arrays (part 1)
+
+
 
 
 
