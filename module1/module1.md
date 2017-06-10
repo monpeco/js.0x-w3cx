@@ -3428,6 +3428,1217 @@ console.log("The value of (x+y) is " + (x+y) + " and it's ok like that.");
 
 ### Modifying the content of a document dynamically
 
+Don't worry if we do not explain all the details of this example. In the first week, we're giving you "a taste" of what we can do with JavaScript. Over the following weeks we'll delve deeper into the details... 
+
+We've already seen some examples that modify the content of the document dynamically. We changed a title by clicking on a button, we displayed the value of a variable named x in the previous section, etc.
+
+The browser comes with some very powerful APIs (Application Programming Interfaces - a set of predefined objects/functions/variables you can use):
+
+**"The selection API"** is used for "selecting elements in the document". It uses the same syntax as CSS selectors. 
+1. The **"DOM API"** for "Document Object Model" API. When we used `document.body.innerHTML += "<p>The value of x is " + x + "</p>";` in a previous example, we used the DOM API for adding content to the 2. body of the page (page = document).
+3. Another API is called the HTML Table JavaScript API, and is useful for building tables on the fly,
+4. etc.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JavaScript can change table content on the fly</title>
+</head>
+<body>
+  <h2>Contact list</h2>
+  <button onclick="buildTable();">Click to build the table!</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Given name</th>
+        <th>Family name</th>
+      </tr>
+    </thead>
+    <tbody id="tableContactBody">
+    </tbody>
+  </table>
+    <footer>W3Cx JavaScript intro MOOC</footer>
+</body>
+</html>
+```
+
+```javascript
+function buildTable() {
+        addLineToHTMLTable("Michel", "Buffa");
+        addLineToHTMLTable("Marie-Claire", "Forgue");
+        addLineToHTMLTable("Tim", "Berners-Lee");
+}
+
+// Add a line to the HTML table
+function addLineToHTMLTable(firstName, lastName) {
+    // Get the body of the table using the selector API
+    var tableBody = document.querySelector("#tableContactBody");
+  
+    // Add a new row at the end of the table
+    var newRow   = tableBody.insertRow();
+
+   // add  new cells to the row
+   var firstNameCell  = newRow.insertCell();
+   firstNameCell.innerHTML = firstName;
+  
+   var lastNameCell   = newRow.insertCell();
+   lastNameCell.innerHTML = lastName;
+}
+```
+
+---
+
+#### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Modifying CSS styles on the fly
+
+# Modifying CSS styles on the fly
+
+We've already seen some examples in which we modify the style of some parts of a document using JavaScript. Here we show another example of what can be done.
+
+#### Example 1: change common properties (color, border, background color)
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JavaScript can change CSS properties on the fly</title>
+</head>
+<body onload="init();">
+
+  <p>Here is a div. Click the button below to change its style!</p>
+    <p>
+      <button onclick="changeStyle();">Change style of the div</button>
+  </p>
+  <div id="theDiv">
+  This is a div!
+</div>
+ 
+</body> 
+</html>
+
+```
+
+```css
+#theDiv {
+  width:105px;
+  height:33px;
+  background-color: pink;
+}
+```
+
+```javascript
+var divElem;
+
+function init() {
+  console.log("page loaded and DOM is ready");
+  
+  // use the selection API to select the div
+  divElem = document.querySelector("#theDiv");
+}
+
+function changeStyle() {
+  console.log("add border");
+  divElem.style.border = "5px dashed purple";
+  divElem.style.padding = "10px";
+  divElem.style.backgroundColor = "lightGreen";
+}
+```
+
+#### Example 2: change the background image property using an external image
+
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JavaScript can change CSS properties on the fly</title>
+</head>
+<body onload="init();">
+
+  <p>Here is a div. Click the button below to change its style!</p>
+    <p>
+  <button onclick="addImageIntoBackground();">Add background image</button>
+  </p>
+  <div id="theDiv">
+  This is a div!
+</div>
+ 
+</body> 
+</html>
+```
+
+```css
+#theDiv {
+  width:105px;
+  height:33px;
+  background-color: pink;
+}
+```
+
+```javascript
+var divElem;
+
+function init() {
+  console.log("page loaded and DOM is ready");
+  
+  // use the selection API to select the div
+  divElem = document.querySelector("#theDiv");
+}
+
+function addImageIntoBackground() {
+  divElem.innerHTML = "";
+  divElem.style.width= "100%";
+  divElem.style.height = "300px";
+  divElem.style.backgroundImage = "url(http://mainline.i3s.unice.fr/mooc/marioSprite.png)";
+}
+```
+#### Example 3: Use the background image as a sprite sheet -animate Mario!
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JavaScript can change CSS properties on the fly</title>
+</head>
+<body onload="init();">
+
+  <p>Here is a div. Click the button below to change its style!</p>
+    <p>
+  <button onclick="animateMario();">Animate Mario (click multiple times)</button>
+  </p>
+  <div id="theDiv">
+  This is a div!
+</div>
+   <p>Here is the Mario sprite sheet image used in this example:</p>
+  <img src="http://mainline.i3s.unice.fr/mooc/marioSprite.png"  alt="mario picture">
+</body> 
+</html>
+```
+
+```css
+#theDiv {
+  width:105px;
+  height:33px;
+  background-color: pink;
+}
+```
+
+```javascript
+var divElem;
+
+function init() {
+  console.log("page loaded and DOM is ready");
+  
+  // use the selection API to select the div
+  divElem = document.querySelector("#theDiv");
+}
+
+var currentImage = 0;
+var leftPos = 0;
+
+function animateMario() {
+  drawMario(currentImage);
+  // next time, show next sprite/subimage
+  currentImage = (currentImage +1) % 3;
+  // next time, move mario 5 pixels to the right
+  leftPos += 5;
+  // And if he moved 100 pixels, start back from the left
+  if(leftPos >= 100) 
+    leftPos = 0;
+}
+
+function drawMario(indexImage) {
+  // set the left pos of the div using the left margin
+  divElem.style.marginLeft = leftPos + "px";
+  // change the width and height of the div
+  divElem.style.width = "22px";
+  divElem.style.height = "32px";
+  // remove the text inside the div
+  divElem.innerHTML = "";
+  // set the background image
+  divElem.style.backgroundImage = "url(http://mainline.i3s.unice.fr/mooc/marioSprite.png)";
+  // remove the background color
+  divElem.style.backgroundColor = "transparent";
+  // select the starting pos in the background image
+  var offset = indexImage * 24;
+  divElem.style.backgroundPosition  = offset + "px";
+}
+```
+
+Notice how the CSS properties change when we use them from JavaScript:
+
+* background-color (CSS) becomes backgroundColor (JS)
+* margin-left (CSS) becomes marginLeft (JS)
+* etc.
+
+And the positions, widths and heights are always string values. In our example we used pixel units and a percentage, so we need to add the "px" and "%" character(s) when we manipulate these properties from JavaScript.
+
+
+---
+
+#### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Handling events
+
+# Handling events
+
+### Introduction
+
+With JavaScript, you can react to user interactions (keyboard, mouse, gamepad), to changes in the lifecycle of your document (page has just loaded or resized, screen has been rotated on a mobile device), or to be notified when a long process has been completed (loading a large image or sound from the network).
+
+We've already seen how we can make a <button> react to a mouse click with <button onclick="...">Click me</button>
+
+Here we outline some extra examples. In the next course module, we will go into detail about events, and in the following modules we will study some of the most useful events in even greater depth.
+
+Example 1: use input events on an HTML input field
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JavaScript and event handling</title>
+</head>
+<body onload="init();">
+
+  <p>Type some text in this input field :
+  <input type="text" oninput="showWhatWeTyped();" id="inputField" /></p>
+    <p>
+  You are typing:
+  </p>
+  <div id="theDiv">
+  </div>
+</body> 
+</html>
+```
+
+
+```javascript
+var field, theDiv;
+
+function init() {
+  console.log("page loaded and DOM is ready");
+  field = document.querySelector("#inputField");
+  theDiv = document.querySelector("#theDiv");
+}
+
+// The next function is called each type a key has been
+// typed in the input field
+function showWhatWeTyped() {
+  // fill the div with the content of the input field
+  theDiv.innerHTML = field.value;
+}
+```
+
+#### Example 2: listen to mouse events in an HTML5 canvas
+
+The HTML5 canvas is useful for drawing and animating at 60 frames/second. Very detailed tutorials are provided in the W3Cx HTML5 Coding Essentials and Best Practices course, while the W3Cx HTML5 Apps and Games course addresses how to write video games using the canvas 2D API.
+
+In this JavaScript intro course, we will use it for drawing curves, for making a small game, and also on diverse, small examples for illustrating some JavaScript data structures such as Arrays or Objects (weeks 2/3/4).
+
+```html
+<!DOCTYPE HTML>
+<html lang="fr">
+  <head>
+    <title>JavaScript and mousemove events</title>
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    This is a canvas, move the mouse inside it:<p></p>
+    <canvas id="myCanvas" width="578" height="200"></canvas>
+  </body>
+</html>
+```
+
+```css
+body {
+  margin: 20px;
+  padding: 0px;
+}
+
+canvas {
+  border:1px solid black
+}
+```
+
+```javascript
+var canvas, ctx, mousePos, mouseButton;
+
+window.onload = function init() {
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext('2d');
+
+    canvas.addEventListener('mousemove', function (evt) {
+        mousePos = getMousePos(canvas, evt);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+    canvas.addEventListener('mousedown', function (evt) {
+        mouseButton = evt.button;
+        var message = "Mouse down button " + evt.button + " down at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+    canvas.addEventListener('mouseup', function (evt) {
+        var message = "Mouse up at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+};
+
+
+
+function writeMessage(canvas, message) {
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '18pt Calibri';
+    ctx.fillStyle = 'black';
+    ctx.fillText(message, 10, 25);
+    ctx.restore();
+}
+
+function getMousePos(canvas, evt) {
+    // necessary to take into account CSS boudaries
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+```
+
+#### Example 3: a paint program - click and drag mouse, then release
+
+```html
+<!DOCTYPE HTML>
+<html lang="fr">
+    <head>
+        <title>Paint with the mouse !</title>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <p> 
+          This example shows how to paint in a canvas, with a "pencil"... 
+          The path that is drawn is made of several contiguous lines.
+        </p>
+        <canvas id="myCanvas" width="400" height="400">
+        </canvas>
+    </body>
+</html>
+```
+
+```css
+#myCanvas {
+  border: 1px solid black;
+}
+```
+
+```javascript
+var canvas, ctx, painting = false, previousMousePos;
+
+function getMousePos(canvas, evt) {
+  // necessary to take into account CSS boudaries
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
+}
+
+function drawLineImmediate(x1, y1, x2, y2) {
+  // a line is a path with a single draw order
+  // we need to do that in this example otherwise
+  // at each mouse event we would draw the whole path
+  // since the beginning. Remember that lines
+  // normally are only usable in path mode
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+}
+
+function handleMouseMove(evt) {
+  var mousePos = getMousePos(canvas, evt);
+
+  // Let's draw some lines that follow the mouse pos
+  if (painting) {
+    drawLineImmediate(previousMousePos.x, previousMousePos.y,
+                      mousePos.x, mousePos.y);
+
+    previousMousePos = mousePos;
+  }
+}
+
+function clicked(evt) {
+  previousMousePos = getMousePos(canvas, evt);
+  painting = true;
+}
+
+function released(evt) {
+  painting = false;
+}
+
+window.onload = function () {
+  canvas = document.getElementById('myCanvas');
+  ctx = canvas.getContext('2d');
+  painting = false;
+
+  canvas.addEventListener('mousemove', handleMouseMove, false);
+  canvas.addEventListener('mousedown', clicked);
+  canvas.addEventListener('mouseup', released);
+};
+```
+#### Example 5: move a monster in an HTML5 canvas using left and right arrow keys
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Script-based animation using requestAnimationFrame</title>
+  <meta charset="utf-8"/>
+</head>
+<body onload="init();">
+  <h1>Use left and right arrow keys to move the monster</H1>
+<canvas id="myCanvas" width="400" height="400"></canvas>
+</body>
+</html>
+```
+
+```css
+#myCanvas {
+  border: 1px solid black;
+}
+```
+
+```javascript
+var canvas, ctx;
+   var monsterX=100, monsterY=100, monsterAngle=0;
+   var incrementX = 0;
+  
+   function init() {
+     // This function is called after the page is loaded
+     // 1 - Get the canvas
+     canvas = document.getElementById('myCanvas');
+     // 2 - Get the context
+     ctx=canvas.getContext('2d');
+     // 3 add key listeners to the window element
+     window.addEventListener('keydown', handleKeydown, false);
+     window.addEventListener('keyup', handleKeyup, false);
+     
+     // 4 - start the animation
+     requestId = requestAnimationFrame(animationLoop);
+   }
+   
+  function handleKeydown(evt) {
+     if (evt.keyCode === 37) {
+        //left key 
+       incrementX = -1;
+     } else if (evt.keyCode === 39) {
+        // right key
+       incrementX = 1;
+     } 
+  }
+  function handleKeyup(evt) {
+    incrementX = 0;
+  }
+  
+  
+   function animationLoop() {
+      // 1 - Clear
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 2 Draw
+      drawMonster(monsterX, monsterY, monsterAngle, 'green', 'yellow');
+
+      // 3 Move
+      monsterX += incrementX;
+
+      // call again mainloop after 16.6 ms (60 frames/s)
+      requestId = requestAnimationFrame(animationLoop);
+ }   
+   function drawMonster(x, y, angle, headColor, eyeColor) {   
+     // GOOD PRACTICE : SAVE CONTEXT AND RESTORE IT AT THE END
+     ctx.save();
+     
+     // Moves the coordinate system so that the monster is drawn
+     // at position (x, y)
+     ctx.translate(x, y);
+     ctx.rotate(angle)
+     
+     // head
+     ctx.fillStyle=headColor;
+     ctx.fillRect(0,0,200,200);
+     
+     // eyes
+     ctx.fillStyle='red';
+     ctx.fillRect(35,30,20,20);
+     ctx.fillRect(140,30,20,20);
+     
+     // interior of eye
+     ctx.fillStyle=eyeColor;
+     ctx.fillRect(43,37,10,10);
+     ctx.fillRect(143,37,10,10);
+     
+     // Nose
+     ctx.fillStyle='black';
+     ctx.fillRect(90,70,20,80);
+     
+     // Mouth
+     ctx.fillStyle='purple';
+     ctx.fillRect(60,165,80,20);
+     
+     // GOOD PRACTICE !
+     ctx.restore();
+   }
+        
+function start() {
+   // Start the animation loop, targets 60 frames/s
+   requestId = requestAnimationFrame(animationLoop);
+ }
+ function stop() {
+   if (requestId) {
+      cancelAnimationFrame(requestId);
+   }
+ }
+```
+
+---
+
+####   Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Using built-in HTML5 APIs
+
+# Using built-in HTML5 APIs
+
+#### Introduction
+
+Your browser comes with a lot of standard W3C APIs. By standard, we mean "parts of HTML5" or real Web standards that will still work in 10 years. In contrast to "industry standards", W3C standards are meant to be supported by browsers for years to come. These standards are a joint effort by the industry, the community, and W3C to develop stable, reliable standards.
+
+The following example uses some of these APIs, simply to "show the possibilities". Others will be discussed later on in the course, or in other W3Cx courses.
+
+Using the WebCam (does not work yet with Safari, and is not supported by Internet Explorer)
+
+Look at the JavaScript tab! The W3Cx HTML5 Coding Essentials and Best Practices course will provide many other examples that use the WebCam.
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Using the WebCam</title>
+   <meta charset="utf-8"/>
+</head>
+<body>
+</body>
+</html>
+```
+
+
+```javascript
+navigator.mediaDevices.getUserMedia({
+    audio: false,
+    video: true
+}).then(function(stream) {
+    var video = document.createElement('video');
+    document.body.appendChild(video);
+    video.src = URL.createObjectURL(stream);
+    video.play();
+})
+```
+If you want to spend some time having fun with the WebCam, don't forget to try the WebCam Toy demo!
+
+Using the geolocation API to display a Google Map centered on your current position
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Simple example of HTML5 geolocation</title>
+  <meta charset="utf-8"/>
+  <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+</head>
+<body onload="init();">
+<!-- for position display -->
+<div id="myposition"></div>
+<!-- for gmap display -->
+<div id="map"></div>
+</body>
+</html>
+```
+
+```css
+#map {
+  width:640px;
+  height:480px
+}
+```
+
+```javascript
+function init() {
+    // Default position
+    var centerpos = new google.maps.LatLng(48.579400,7.7519);
+
+    // default options for the google map
+    var optionsGmaps = {
+      center:centerpos,
+      navigationControlOptions: {
+        style: google.maps.NavigationControlStyle.SMALL
+      },
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      zoom: 15
+    };
+
+    // Init map object
+    var map = new google.maps.Map(document.getElementById("map"), optionsGmaps);
+
+      // callback function, called by getCurrentPosition() in case of success
+      function success(position) {
+
+        var infopos = "Got position : <br>";
+        infopos += "Latitude : "+position.coords.latitude +"<br>";
+        infopos += "Longitude: "+position.coords.longitude+"<br>";
+        infopos += "Altitude : "+position.coords.altitude +"<br>";
+        document.getElementById("myposition").innerHTML = infopos;
+
+        // Make new object LatLng for Google Maps
+        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+        // Add a marker at position
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: map,
+          title:"You are here"
+        });
+
+          // center map on longitude and latitude
+        map.panTo(latlng);
+      }
+
+      // callback function, called by getCurrentPosition() in case of error
+      function error(error) {
+        var info = "Error during geolocation : ";
+        switch(error.code) {
+        case error.TIMEOUT:
+          info += "Timeout !";
+        break;
+        case error.PERMISSION_DENIED:
+          info += "You did not access to the geolocation API";
+        break;
+        case error.POSITION_UNAVAILABLE:
+          info += "Position could not be determined";
+        break;
+        case error.UNKNOWN_ERROR:
+          info += "Unknown error";
+        break;
+        }
+        document.getElementById("myposition").innerHTML = info;
+      }
+  
+      // Ask browser for the current position
+      // success and error are callbacks functions
+      navigator.geolocation.getCurrentPosition(success, error);
+    } 
+```
+
+Using the WebAudio API to build a small synthetizer
+
+Click on the piano keyboard. Use the different buttons, sliders, etc. This example uses the WebAudio API in order to synthesize sounds.
+
+https://codepen.io/w3devcampus/pen/oBRVgv
+
+
+---
+
+#### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Using third party JS APIs/libraries
+
+# Using third-party JavaScript libraries
+
+#### Introduction
+
+Thousands of JavaScript libraries exist. Their purposes range from making it easier to plot a math function, playing chiptune music, animating objects, through to visualizing data and much more. Below, we provide some examples, but feel free to look on the Web for other external libraries.
+
+Example 1: plot mathematical functions using the function plot JavaScript library (http://maurizzzio.github.io/function-plot/)
+
+There are numerous libraries for plotting math functions, but this one is pretty easy to use and very powerful. Here is an example that plots f(x) = x^2, then f(x) = sin(x) and finally a mix of fours functions : f(x) = x^2 (in red), f(x) = 3*x (in green), f(x) = cos(x) (in blue) and f(x) = -3*x^2 + x^2 (dashed)
+
+https://codepen.io/w3devcampus/pen/jyjEob
+
+Here is another much simpler example, please edit the code (click on "edit on codepen") and change the function for something like f(x) = x^3 and look at the result (don't forget to change the xRange and yRange values). If you have trouble, look here for a solution.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Plotting functions in JavaScript using the 
+    function plot library</title>
+  <meta charset="utf-8"/>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://mauriciopoppe.github.io/function-plot/js/function-plot.js"></script>
+</head>
+<body>
+  <div id="myFunction"></div>
+</body>
+</html>
+```
+
+```css
+div {
+  float: left;
+}
+
+#myFunction {
+  padding: 25px;
+  width: 250px;
+  height: 250px;
+}
+```
+
+```javascript
+var ttt = functionPlot({
+  target: '#myFunction',
+  data: [{
+    fn: 'sin(x^2)', 
+    color: 'red'
+ }],
+  grid: true,
+  yAxis: {domain: [-1, 1]},
+  xAxis: {domain: [0, 2*Math.PI]},
+});
+
+```
+
+#### Example 2: plot a force directed graph using the d3.js JavaScript library
+
+Try to click and drag nodes... All the graphics, animation and force repulsion, is done using the very powerful d3.js plotting library. Look at the HTML source code to see how we included this library in our HTML page. Look at the JS part; it seems complicated, but hey! I guess you can make your own graph with your own colors and your own node labels, without mastering JavaScript ;-) The beauty of this language is that you can find so many examples on the Web that you can easily learn by copying and pasting, tweaking code you haven't even written, etc. Go to codepen.io and use the search button for "d3" and you will find plenty of examples that use that library.
+
+https://codepen.io/w3devcampus/pen/Bpgypq
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Drawing a graph with the d3.js external library</title>
+  <meta charset="utf-8"/>
+  <script src="https://d3js.org/d3.v3.min.js"> </script>
+</head>
+<body>
+<h1>A force-directed draggable graph using circles as nodes, with accompanying text labels.</h1>
+</body>
+</html>
+
+```
+
+```css
+@import url(https://fonts.googleapis.com/css?family=Raleway:400);
+
+h1 {
+  font: 400 1.75em/1.5em "Raleway", "Helvetica Neue", Helvetica, sans-serif; 
+  text-align:center;
+}
+```
+
+```javascript
+var   w = 1000,
+      h =  800,
+      circleWidth = 5; 
+ 
+var palette = {
+      "lightgray": "#E5E8E8",
+      "gray": "#708284",
+      "mediumgray": "#536870",
+      "blue": "#3B757F"
+  }
+
+var colors = d3.scale.category20();
+
+var nodes = [
+      { name: "Skills"},
+      { name: "HTML5", target: [0], value: 58 },
+      { name: "CSS3", target: [0, 1], value: 65 },  
+      { name: "Javascript", target: [0, 1, 2, 8], value: 37 },
+      { name: "Scss", target: [0, 1, 2], value: 52 },
+      { name: "Compass", target: [0, 3], value: 48 }, 
+      { name: "Susy", target: [0,3,4], value: 40 }, 
+      { name: "Breakpoints", target: [0,3,4,5], value: 36 },
+      { name: "jQuery", target: [0, 1, 2], value: 52 },
+      { name: "PHP", target: [0,1,2], value: 20 },
+      { name: "Wordpress", target: [0,1,2,3,9], value: 67 },
+      { name: "Git", target: [0,1,2,3,4,5,6,7,8,10], value: 68 },
+      { name: "Snap.svg", target: [0,1,2,7,8 ], value: 16 },
+      { name: "d3", target: [0,1,2,7,8], value: 25 },
+      { name: "Gulp", target: [0,1,2,3,4,5,6,7,8,9,10,11,12], value: 45 },
+      { name: "Angular", target: [0,1,2,7,8], value: 25 },
+      { name: "Adobe CS", target: [0,1,2,12], value: 57 },
+      { name: "mySql", target: [0,9,10], value: 20 },
+      { name: "Grunt", target: [0,9,10], value: 37 },
+];
+
+// Array for linked nodes
+var links = [];
+
+// Link nodes together and push them in the links array
+for (var i = 0; i < nodes.length; i++){
+      if (nodes[i].target !== undefined) { 
+            for ( var x = 0; x < nodes[i].target.length; x++ ) 
+              links.push({
+                  source: nodes[i],
+                  target: nodes[nodes[i].target[x]]  
+              });
+      };
+};
+
+// use d3.js for creating a div in the body of the 
+// document, that will contain the graph
+var myChart = d3.select('body')
+      .append("div")
+        .classed("svg-container", true)
+      
+      .append('svg')
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 1000 800")
+        .classed("svg-content-responsive", true);
+
+// Settings for the force repulsion
+var force = d3.layout.force()
+      .nodes(nodes)
+      .links([])
+      .gravity(0.1)
+      .charge(-1000)
+      .size([w,h]); 
+
+      // Draw links first
+      var link = myChart.selectAll('line') 
+            .data(links).enter().append('line')
+            .attr('stroke', palette.lightgray)
+            .attr('strokewidth', '1');
+
+      // Draw nodes on top of links
+      var node =  myChart.selectAll('circle')  
+            .data(nodes).enter() 
+            .append('g') 
+            .call(force.drag); 
+
+     
+     node.append('circle')
+            .attr('cx', function(d){return d.x; })
+            .attr('cy', function(d){return d.y; })
+            .attr('r', function(d,i){
+                  console.log(d.value);
+                  if ( i > 0 ) {
+                        return circleWidth + d.value; 
+                  } else {
+                        return circleWidth + 35; 
+                  }
+            })
+            .attr('fill', function(d,i){
+                  if ( i > 0 ) {
+                        return colors(i);
+                  } else {
+                        return '#fff';
+                  }
+            })
+            .attr('strokewidth', function(d,i){
+                  if ( i > 0 ) {
+                        return '0';
+                  } else {
+                        return '2';
+                  }
+            })
+            .attr('stroke', function(d,i){
+                  if ( i > 0 ) {
+                        return '';
+                  } else {
+                        return 'black';
+                  }
+            });
+
+      // User interaction when we click and move a node
+      force.on('tick', function(e){ 
+            node.attr('transform', function(d, i){
+              return 'translate(' + d.x + ','+ d.y + ')'
+            });
+
+          link 
+              .attr('x1', function(d){ return d.source.x; }) 
+              .attr('y1', function(d){ return d.source.y; })
+              .attr('x2', function(d){ return d.target.x; })
+              .attr('y2', function(d){ return d.target.y; })
+      });
+
+      // Add text to the nodes
+      node.append('text')
+            .text(function(d){ return d.name; })
+            .attr('font-family', 'Raleway', 'Helvetica Neue, Helvetica')
+            .attr('fill', function(d, i){
+              console.log(d.value);
+                  if ( i > 0 && d.value < 10 ) {
+                        return palette.mediumgray;
+                  } else if ( i > 0 && d.value >10 ) {
+                        return palette.lightgray;
+                  } else {
+                        return palette.blue;
+                  }
+            })
+            .attr('text-anchor', function(d, i) {
+                  return 'middle';
+            })
+            .attr('font-size', function(d, i){
+                  if (i > 0) {
+                        return '.8em';
+                  } else {
+                        return '.9em';    
+                  }
+            });
+
+// Display the graph and start reacting to events
+force.start();
+
+
+```
+
+#### Example 3: play chiptune songs (songs that sound like they come straight from the 8bit computer/console music era of the late 70's to mid 80's), using the chiptune.js library
+
+I really like this example, as it takes me back to my youth playing games on the Commodore 64, the Nintendo NES console, etc. In that prehistoric age, there weren't a lot of kilobytes available in the memory, and most sounds were synthetized, not audio samples. The audio resolution was low as CPUs were rather weaker than today. Musicians used tools called "mod players/editors" for creating the music score (you can try a re-creation on the browser of a mod editor to see how it looked in the late 80's).
+
+To try the example below, click on "load demo song", then on the play button. If you want to try other compatible songs, look for any .mod, .it, .xm song on the Web and drag and drop it into the example page. A good resource for such files is The Mod Archive, you can download plenty of chiptune files from there.
+
+https://codepen.io/w3devcampus/pen/GrbgMB
+
+#### Example 4: animate a sprite in an HTML5 canvas using the sprite.js library
+
+This is just a small example of the use of the sprite.js library (https://github.com/IceCreamYou/Canvas-Sprite-Animations), which makes it easier to animate sprites (sub images from a big image called a "sprite sheet") in an HTML5 canvas. We will see how to use the HTML5 canvas later on in this course. The example is just here to illustrate what can be done using external libraries.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Canvas Sprite Animation Demo</title>
+  <meta charset="utf-8"/>
+    <script src="https://icecreamyou.github.io/Canvas-Sprite-Animations/sprite.js"></script>
+</head>
+<body onload="init();">
+  <h3>Animation done using the sprite.js library</h3>
+  <canvas id="canvas" width="304" height="320">
+  </canvas>
+  <p>The sprite sheet used in this example :</p>
+  <p><img src="https://icecreamyou.github.io/Canvas-Sprite-Animations/centipede-sprite.png" alt="monster picture" width=300></p>
+</body>
+</html>
+```
+
+```css
+canvas {
+  border:1px solid;
+}
+```
+
+```javascript
+function init() {
+  console.log("Page loaded and DOM is ready");
+  
+  // Get the canvas graphics context
+  context = document.getElementById('canvas').getContext('2d');
+  // These variables are used for switching animations, just for illustration
+  var animNo = 1, animNames = [
+    'ButtWalk', 'BodyWalk', 'BodyAltWalk', 'Walk'
+  ];
+  // Initialize the SpriteMap
+  spriteMap = new SpriteMap(
+    'https://icecreamyou.github.io/Canvas-Sprite-Animations/centipede-sprite.png', // sprite image
+    { // animation sequences
+      ButtWalk: {startRow: 0, startCol: 0, endRow: 1, endCol: 3},
+      BodyWalk: {startRow: 1, startCol: 5, endRow: 2, endCol: 8},
+      BodyAltWalk: {startRow: 3, startCol: 1, endRow: 4, endCol: 4},
+      Walk: {startRow: 4, startCol: 6, endRow: 6, endCol: 0},
+    },
+    { // options
+      frameW: 52, // Width of each frame of the animation in pixels
+      frameH: 60, // Height of each frame of the animation in pixels
+      projectedW: 104, // Displayed width (in this case 200% size)
+      projectedH: 120, // Displayed height (in this case 200% size)
+      interval: 50, // Switch frames every 50ms
+      useTimer: false, // Rely on requestAnimFrame to update frames instead of setInterval
+      postInitCallback: function (sprite) {
+        spriteMap.start('ButtWalk'); // Start running the animation
+        animate(); // Animate the canvas
+        setInterval(function() { // Switch animation sequence every 2.5 seconds for illustration
+          animNo = (animNo + 1) % animNames.length;
+          console.log(animNames[animNo])
+          spriteMap.use(animNames[animNo]); // Switch animation sequences
+        }, 2500);
+      } // Do something when the sprite finishes loading
+    }
+  );
+}
+
+function animate() { // Animation loop that draws the canvas
+  context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clear the canvas
+  spriteMap.draw(context, 100, 100); // Draw the sprite
+  requestAnimationFrame(animate); // Run the animation loop
+}
+
+```
+
+---
+
+#### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Working with remote data
+
+# Working with remote data
+
+#### Example 1: use remote structured data
+
+This example downloads and displays in a table a list of users (see the remote data, click here: https://jsonplaceholder.typicode.com/users)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Working with remote data</title>
+  <meta charset="utf-8"/>
+  <!-- Polyfill in case your browser does not support the fetch API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/0.10.1/fetch.js"></script>
+
+</head>
+<body>
+  <button onclick="search();">Get remote list of users' names and emails using the fetch API</button>
+  <div id="users"></div>
+</body>
+</html>
+```
+
+```css
+table {
+  margin-top: 20px;
+}
+table, tr, td {
+  border: 1px solid;
+} 
+```
+
+```javascript
+function search() {
+    var queryURL = "https://jsonplaceholder.typicode.com/users";
+
+    fetch(queryURL)
+            .then(function (response) {
+                // response is a json string,
+                // convert it to a pure JavaScript object
+                return response.json();
+            })
+            .then(function (users) {
+                // users is a JavaScript object here
+                displayUsersAsATable(users);
+            })
+            .catch(function (error) {
+                console.log('Error during fetch: ' + error.message);
+            });
+}
+
+function displayUsersAsATable(users) {
+    // users is a JavaScript object
+
+    // empty the div that contains the results
+    var usersDiv = document.querySelector("#users");
+    usersDiv.innerHTML = "";
+
+    // creates and populate the table with users
+    var table = document.createElement("table");
+
+    // iterate on the array of users
+    users.forEach(function (currentUser) {
+        // creates a row
+        var row = table.insertRow();
+        // insert cells in the row
+        var nameCell = row.insertCell();
+        nameCell.innerHTML = currentUser.name;
+        var cityCell = row.insertCell();
+        cityCell.innerHTML = currentUser.address.city;
+    });
+
+    // adds the table to the div
+    usersDiv.appendChild(table);
+}
+```
+
+
+#### Example 2: load and decode remote sounds for use in a video game
+
+This example just shows how to use the HowlerJS external library to load remote sounds, decode them and play them as samples in memory (useful for video games):
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Howler.js example</title>
+  <meta charset="utf-8"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.25/howler.min.js"></script>
+</head>
+<body>
+  <p>This example loads, decode and play sounds using the HowlerJS library</p>
+        <button id="explosion" disabled>BOOM !</button>
+        <button id="basic_explosion" disabled>Basic Explosion</button>
+        <button id="winner" disabled>Winner!</button>
+</body>
+</html>
+```
+
+
+
+```javascript
+function soundLoaded() {
+  
+  // enable buttons, the sounds are loaded
+    
+   var button1 = document.querySelector("#explosion");
+   button1.disabled = false;
+   button1.addEventListener("click", function() {
+     sound.play('blast');
+   });
+        
+   var button2 = document.querySelector("#basic_explosion");
+   button2.disabled = false;
+   button2.addEventListener("click", function() {
+     sound.play('laser');
+   });
+  
+   var button3 = document.querySelector("#winner");
+   button3.disabled = false;
+   button3.addEventListener("click", function() {
+     sound.play('winner');
+   });
+}
+```
+
+---  
+
+#### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Discussion topic and project
+
+# Discussion topic and project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for a suggested topic of discussion and an optional project.
+
+Suggested topic
+
+Please share any fun/interesting JS example that could interest your fellow students.
+Optional project
+
+You can tweak and share some of the examples provided in this section. No need to understand the whole code...
+
+---
+
+#### Module 1: Introduction to JavaScript   1.7 Exercises - Module 1   Intro. exercises - Module 1
+
+# Intro. exercises - Module 1
+
+These exercises are due on 17 July 2017 (at 23:30 UTC), but please try to complete them in a timely manner.
+
+As stated in the grading policy page, these exercises count towards 18% of your final grade.
+
+
+
+
+
 
 
 
