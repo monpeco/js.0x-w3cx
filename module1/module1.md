@@ -3266,24 +3266,175 @@ arguments
 
 # Introduction
 
+This 1.6 section ("Simple JavaScript examples to play with") does not detail the examples presented. Some of them will be studied in deep later in the course, some won't.
+
+The examples are just here to bring some fun whilst making you play with some various uses of JavaScript. You are invited to look at their source code, and to tweak the examples. Do not worry if you don't understand how they work. We are just giving you "a taste" of JavaScript. There will be no graded exercises about them.
+
+---
+
+#### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Writing messages to the devtool console
+
+# Writing messages to the devtool console
+
+#### One common way to debug your code: write messages to the devtool console!
+
+Using the console.log(...) instruction, you can write messages to the devtool console of your browser.
+
+For example, let's say you added a button to your Web page, but nothing happens when you click on it. Without using the devtool console and `console.log(...)` it can be very difficult to spot your error.
+
+#### Example: check that some parts of the code you wrote are executed correctly
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Write messages to the devtool console</title>
+  <meta charset="utf-8"/>
+  <script>
+    var x = 10;
+    
+    function addXToThePage() {
+      // This code is strangely never executed...
+      document.body.innerHTML += "<p>The value of x = " + x + "</p>";
+      x = X + 1;
+    }
+  </script>
+</head>
+  <body>
+    <button onclick="addXToToThePage();">Click me to display the value of the x variable</button>
+  </body>
+</html>
+```
+Normally, when the button is clicked, we should call the addXToThePage() function, which in turn should display the value of the variable x inside an HTML paragraph.
+
+Let's check if the function is really executed. We need to add a console.log("In the addXToThePage function"); as the first instruction of the function:
+
+ ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Write messages to the devtool console</title>
+  <meta charset="utf-8"/>
+  <script>
+    var x = 10;
+    
+    function addXToThePage() {
+      // THIS WILL DISPLAY A MESSAGE IN THE DEVTOOL CONSOLE
+      console.log("In The addXToThePage function");
+      
+      // This code is strangely never executed...
+      document.body.innerHTML += "<p>The value of x = " + x + "</p>";
+      x = X + 1;
+    }
+  </script>
+</head>
+  <body>
+    <button onclick="addXToToThePage();">Click me to display the value of the x variable</button>
+  </body>
+</html>
+```
+ 
+ And let's execute this with the devtool console open (use F12 on Windows, or Cmd-Alt-i on a Mac, or control-shift-i). First, as the provided example is located on codepen, an online IDE, it's better to execute it in "debug mode": the online IDE will just display a page with the code running:
+ 
+ Apparently the function name is wrong, addXToToThePage does not exist. We can check the source code by clicking on the YNbvoX:40 link on the right:
+ 
+ Ok, so our first error was that we typed the wrong name in the `onclick="..."`, the name we used : AddXToToThePage has "ToTo" instead of "To". Let's fix that now and try again:
+ 
+ ```html
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Write messages to the devtool console</title>
+  <meta charset="utf-8"/>
+  <script>
+    var x = 10;
+    
+    function addXToThePage() {
+      // THIS WILL DISPLAY A MESSAGE IN THE DEVTOOL CONSOLE
+      console.log("In The addXToThePage function");
+      
+      // This code is strangely never executed...
+      document.body.innerHTML += "<p>The value of x = " + x + "</p>";
+      x = X + 1;
+    }
+  </script>
+</head>
+  <body>
+    <button onclick="addXToThePage();">Click me to display the value of the x variable</button>
+  </body>
+</html>
+ ```
+ 
+ Ok, you understand the principle... by using console.log(...) with a string message as parameter, you can make the message appear in the devtool console, confirming that you have executed your code without error at least to this point...
+
+Let's fix this "X"! We'll replace it with an "x" and everything should be ok now:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Write messages to the devtool console</title>
+  <meta charset="utf-8"/>
+  <script>
+    var x = 10;
+    
+    function addXToThePage() {
+      // THIS WILL DISPLAY A MESSAGE IN THE DEVTOOL CONSOLE
+      console.log("In The addXToThePage function");
+      
+      // This code is strangely never executed...
+      document.body.innerHTML += "<p>The value of x = " + x + "</p>";
+      // THE ERROR WAS HERE! We replaced the "X" by "x"
+      x = x + 1;
+    }
+  </script>
+</head>
+  <body>
+    <button onclick="addXToThePage();">Click me to display the value of the x variable</button>
+  </body>
+</html>
+```
+
+#### Going further with console.log
+
+Displaying variable values
+
+Instead of just displaying pure string messages, you can also use the "+" operator to concatenate variable values to the pure character strings. Example :
+```javascript
+var x = 2;
+ 
+console.log("The value of x is " + x + " and it's ok like that.");
+```
+
+We typed this code in the devtool console to check what it does:
+
+You can use as many "+" as you like, the part right after the "+" will be turned into a string if the part in front is a string...
+
+You can also use parentheses in order to display results of simple calculations:
+```javascript
+var x = 2;
+var y = 4;
+console.log("x = " + x);
+console.log("y = " + y);
+ 
+console.log("The value of (x+y) is " + (x+y) + " and it's ok like that.");
+```
+
+---
+
+##### Module 1: Introduction to JavaScript   1.6 Simple JavaScript examples to play with   Modifying the content of an HTML document
+
+# Modifying the content of an HTML document
+
+### Modifying the content of a document dynamically
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
+ 
+ 
 
 
 
