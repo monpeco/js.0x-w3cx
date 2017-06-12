@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   
   get 'static/remote_http'
 
+  get 'static/exercises1'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
