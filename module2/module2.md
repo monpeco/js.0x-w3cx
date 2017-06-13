@@ -1058,3 +1058,91 @@ For working with input fields, look at section 1.4 from the first module, the ma
 
 #### Two ways to declare a function
 
+
+#### 1 - Standard function declaration
+
+We've already seen that functions can be **declared** using this syntax:
+```javascript
+function functionName(parameters) {
+// code to be executed
+}
+```
+
+A function declared this way can be **called** like this:
+
+```javascript
+functionName(parameters);
+```
+
+Notice that we do not add a semicolon at the end of a function declaration. **Semicolons are used to separate executable JavaScript statements**, 
+and a function declaration is not an executable statement.
+
+Here is an example:
+
+```javascript
+function sum(a, b) {
+  // this function returns a result
+  return (a + b);
+}
+
+function displayInPage(message, value) {
+  // this function does not return anything
+  document.body.innerHTML += message + value + "<br>";
+}
+
+var result = sum(3, 4);
+displayInPage("Result: ", result);
+
+// we could have written this
+displayInPage("Result: ", sum(10, 15));
+```
+
+In the above example, the sum function returns a value, and the displayInPage function does not return anything.
+
+#### 2 - Use a function expression
+
+A JavaScript function can also be defined using an expression that can be stored in a variable. Then, the variable can be used as a function:
+
+Here is a typical example:
+```javascript
+var sum = function(a, b) {
+  return (a + b);
+};
+
+var displayInPage = function(message, value) {
+  // this function does not return anything
+  document.body.innerHTML += message + value + "<br>";
+};
+
+var result = sum(3, 4);
+displayInPage("Result: ", result);
+
+// we could have written this
+displayInPage("Result: ", sum(10, 15));
+```
+
+Notice how the `sum` and `displayInPage` functions have been declared. **We used a variable to store the function expression**, then we 
+can call the functions using the variable name. And we added a semicolon at the end, since we executed a JavaScript instruction, giving 
+a value to a variable.
+
+The **function expression* is an ***anonymous function***, a function without a name, that represents a value that can be assigned to a 
+variable. Then, the variable can be used to execute the function.
+
+We say that functions are **first class objects** which can be manipulated like any other object/value in JavaScript.
+
+This means that functions can also be used as parameters to other functions. In this case they are called `callbacks`.
+
+### Callbacks
+
+
+
+
+
+
+
+
+
+
+
+
+
