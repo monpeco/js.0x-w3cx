@@ -819,4 +819,242 @@ console.log(" THE END");
 
 ### Live coding video: loop statements
 
+>! missing video/transcript
+
+Example from the video
+
+Example on CodePen
+https://codepen.io/w3devcampus/pen/qmGeYZ?editors=0012
+
+### Loops
+
+A loop is used to run the same block of code several times while a condition is satisfied.
+
+If you have trouble with loops, the online tool [slowmoJS](http://toolness.github.io/slowmo-js/) can be really useful: you just have to copy and paste an example into it to run it step by step and see how your program executes loops.
+
+### The while statement
+
+With a while statement, a block of code is executed repeatedly while the specified condition is satisfied (evaluates to true).
+
+Syntax:
+```javascript
+while ( condition ) statement
+
+```
+The condition is an expression, and the statement can be a block statement.
+
+Typical example of a while statement:
+
+```javascript
+var i = 1, j = 1;
+ 
+while ( i < 4 ) {
+    j += i;
+    i += 1; 
+}
+
+```
+### The do-while statement
+
+The do-while statement is very similar to the while statement, but its syntax is different:
+
+```javascript
+do statement while ( condition )
+
+```
+
+Typical example:
+
+```javascript
+var i = 0;
+ 
+do {
+    console.log('i = ' + i);
+    i++;
+} while(i < 20);
+ 
+console.log('Value of i after the do-while statement: ' + i);
+
+```
+
+The **do-while statement executes the content of the loop once before checking the condition of the while**, 
+whereas a **while statement will check the condition first before executing the content**.
+
+A do-while is used for a block of code that must be executed at least once.These situations tend to be relatively rare, thus the simple while-statement is more commonly used. 
+
+If you want to see the difference, look at the `do-while` statement with slowmoJS and the `while` statement slowmoJS. 
+
+### The for statement
+
+This statement adds some things to the while and do-while statements: an initialization expression and an incrementing expression.
+
+Its syntax is:
+
+```javascript
+for (initialization; condition; incrementation) statement
+
+```
+The three expressions within the parentheses are optional. If the condition is omitted, it is replaced by true (infinite loop).
+
+Typical example (counting from 0 to 10):
+
+```javascript
+for (var i = 0; i <= 10; i++) {
+   console.log('i = ' + i);
+}
+
+```
+We can have more than one instruction in the **initialization part**, and more than one instruction in the **incrementation part**. 
+Here is another example:
+
+```javascript
+for (var i = 1, j = 1; i <= 10; i++, j+=2) {
+    console.log('i = ' + i + ' j = ' + j);
+}
+
+```
+In this example, two variables are defined and assigned within the initialization expression. Before each execution of the block statement, 
+the condition is checked; here we need `i <=10`. After each execution of the block statement, the incrementation expression is executed 
+to increment the variables i by 1 and j by 2.
+
+Open the devtool console of your browser and copy and paste the above code, or look at the slowmoJS execution.
+
+### The for-in statement
+
+The for-in statement is used to iterate through an object (or through an array, which is also an object). 
+
+Its syntax is:
+
+```javascript
+for ( variable in expression ) statement
+
+```
+
+
+```javascript
+var michel = {              // michel is an object
+    familyName:'Buffa',     // familyName, givenName, age
+                            // are its properties
+    givenName: 'Michel',
+    age: 51
+}
+ 
+for(var property in michel) {   // the for-in will
+                                // enumerate properties
+    console.log(property);      // will print "familyName",
+                                // "givenName",
+                                // "age"
+    console.log(michel[property]);  // michel['givenName'] same 
+                                    // as michel.givenName
+}
+
+```
+Before each execution of the block statement, the variable named `property` is assigned with the name of one of the properties (the keys) 
+of the object.
+
+We will see further examples of this statement in module 4, which is devoted to the study of JavaScript objects.
+
+### [ADVANCED] Other statements
+
+The continue statement
+
+The continue statement is used to stop the execution of a block and start the next iteration of the loop. The difference from the "break" statement is that the loop continues.
+
+Syntax:
+
+```javascript
+continue [label]
+
+```
+The label is optional.
+
+Typical example:Typical example:
+
+```javascript
+for(var i = 1, k = 0; i < 5; i++) {
+    if (i === 3) {
+        continue;
+    }
+ 
+    k += 2*i;
+    console.log('k += ' + (2*i));
+}
+console.log('Final k value:' + k)
+
+```
+
+Copy and paste this example in your devtool console, but first, try to guess what the value of k will be!
+
+Hint: lines 2-4 mean that line 6 will never be executed for i = 3. That means that i*2 will only be added to k for i = 1, 2 and 4...
+
+### The break statement
+
+The break statement is used to stop an iteration, a switch or a labelled statement.
+
+Syntax:
+```javascript
+break [label]
+
+```
+break [label]
+
+```javascript
+var tab = ['michel', 'john', 'donald', 'paul']; // johh at index = 1
+ 
+function isNameInTheArray(name, theArray) {
+    console.log("Number of elements in the array : " + theArray.length);
+    for(var i=0; i < theArray.length; i++) {
+        console.log('comparing with element in the array at pos ' + i);
+ 
+        if(theArray[i] === name) {
+           console.log('the name ' + name +
+                       ' is in the array at pos: ' + i);
+           break;
+        } else {
+           console.log(name + ' is not at pos ' + i);
+        }
+    }
+}
+ 
+// Execute the function
+isNameInTheArray('john', tab);
+
+```
+
+Copy and paste in the devtool console. You'll see that the function that compares each element in the array passed as the second parameter with the name 'john', will stop looping after 'john' has been found at index = 1.
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.2 Conditional statements, loops and logical operators   Discussion and projects
+
+# Discussion and projects
+
+### Discussion and projects
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and optional projects.
+
+#### Suggested topic of discussion:
+
+Did you know about the === and !== operators we recommend you to use?
+
+#### Optional projects:
+
+If not allergic to High School math: try to write a piece of code that solves second degree equations. You pass the a, b, c parameters of: ax2 + bx + c, and the solve function will compute delta = b2 - 4a*c. Test the sign of delta, and if it's equal to zero, then display (in the console, or better, in the page) the roots of the equation.
+Try to write a small program that asks you to guess a number. It will choose randomly a number, and will ask you to enter a value in an input field. Then it will display "too small" or "too big", until you find the number.
+
+Hint: use the Math.random and Math.round methods, such as in let randomNumber = Math.round(Math.random() * 10); to get a random value between 0 and 10.
+
+For working with input fields, look at section 1.4 from the first module, the math function plotter example used input fields. Or look at the section about DOM in this module.
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.3 Functions (part2): callbacks   Functions and callbacks
+
+# Functions and callbacks
+
+#### Two ways to declare a function
 
