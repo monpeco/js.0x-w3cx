@@ -1167,12 +1167,247 @@ Callback functions are derived from a programming paradigm known as **functional
 
 ### Introduction
 
+Adding interactivity to a Web application can only be achieved with CSS, using the :hover pseudo CSS class, for instance. For example:
 
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Mouse over</title>
+  <meta charset="utf-8"/>
+</head>
+<body> 
+   <button>Put the mouse cursor over me</button>
+</body>
+</html>  
+```
+
+```css
+button:hover {
+  color:red;
+  border:2px solid;
+}
+```
+However, firing a specific action when the button is clicked, knowing which mouse button has been used, computing the (x, y) mouse 
+pointer position in the button system coordinate, or executing more complex tasks can only be done through JavaScript.
+
+With JavaScript, a button click, a move of the mouse, a resized window, and many other interactions create what are called `events`.  
+The timing and order of events cannot be predicted in advance. We say that **event processing* is asynchronous. Web browsers detect 
+events as they occur, and may pass them to JavaScript code. They do this by allowing you to register functions as event listeners, 
+also called handlers or callbacks for specific events.
+
+Each time an event occurs, the browser puts it in a **queue of events*.
+
+Then the browser looks at a list of "Event Listeners" and calls the ones that correspond to the type of event *they listen to*.
 
 
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Adding and removing event listeners
+
+# Adding and removing event listeners
+
+### Live coding video: adding an event listener to a document
+
+>! missing video/transcript
+
+Online example used in the above video:
+https://codepen.io/w3devcampus/pen/zzOVGB?editors=1000
 
 
+### Live coding video: adding an event listener to a specific HTML element
+
+>! missing video/transcript
+
+Online example used in the above video
+https://codepen.io/w3devcampus/pen/pwzXqb?editors=1000
+
+#### Adding and removing event listeners
+
+Event listeners: a typical example
+
+Here is one possible syntax for registering an event listener that listens to `click` events on any part of the window 
+(clicks anywhere on a web document will be processed by this event handler):
+
+```javascipt
+<script>
+    addEventListener('click', function(evt) {
+        document.body.innerHTML += 'Button clicked!';
+    });
+</script>
+```
+The addEventListener function is one possible syntax for registering a function to be called when a given type of event occurs.
+
+
+```javascipt
+addEventListener(type_of_elem, callback_function)
+```
+
+In the example below, the type of event is a 'click', and the callback function is the part in bold:
+
+```javascipt
+function(evt) {
+   console.log("Button clicked!");
+}
+```
+
+When this function is small (a few lines of code), it's common practice to put its body as the second parameter of the addEventListener function.
+
+In other words, this:
+
+
+```javascipt
+<script>
+addEventListener('click', function(evt) {
+    document.body.innerHTML += 'Button clicked!';
+});
+</script>
+```
+... is the same as this (the function called when a click occurs has its body "outside" of the addEventListener parameters, and we use its name as the second parameter):
+
+```javascipt
+<script>
+addEventListener('click', processClick);
+function processClick(evt) {
+    console.log("Button clicked!");
+}
+</script>
+```
+### Adding an event listener to specific HTML elements
+
+Instead of listening to event on the whole document (using `addEventListener` is the same as using `window.addEventListener`), we can 
+listen to specific DOM elements.
+
+For example, here is how we can listen to clicks on a specific button (whereas clicks on the rest of the document will be ignored).
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Second example of an event listener</title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <button id="myButton">Click me!</button>
+  <p></p>
+  <script>
+    var b = document.querySelector("#myButton");
+    b.addEventListener('click', function(evt) {
+      alert("Button clicked");
+    });
+  </script> 
+</body>
+</html>
+```
+
+In this example, instead of using the `addEventListener` method directly, we used it on a DOM object (the button):
+
+Get a reference of the HTML element that can fire the events you want to detect. This is done using the DOM API that we'll cover 
+in detail later this week. In this example we used one of the most common/useful methods: `var b = document.querySelector("#myButton");`
+
+Call the `addEventListener` method on this object. In the example: `b.addEventListener('click', callback)`
+Every DOM object has an `addEventListener` method. Once you get a reference of  any HMTL element from JavaScript, you can start 
+listening to events on it.
+
+An alternative method for adding an event listener to an HTML element: use an `on` attribute (ex: `onclick = "...."`)
+
+Instead of using `b.addEventListener('click', callback)`, it's possible to use an `onclick='doSomething();'` attribute directly 
+in the HTML tag of the element:
+
+In this example, instead of using the addEventListener method directly, we used it on a DOM object (the button):
+
+Get a reference of the HTML element that can fire the events you want to detect. This is done using the DOM API that we'll cover in detail later this week. In this example we used one of the most common/useful methods: var b = document.querySelector("#myButton");
+Call the addEventListener method on this object. In the example: b.addEventListener('click', callback)
+Every DOM object has an addEventListener method. Once you get a reference of  any HMTL element from JavaScript, you can start listening to events on it.
+
+An alternative method for adding an event listener to an HTML element: use an `on` attribute (ex: `onclick = "...."`)
+
+Instead of using `b.addEventListener('click', callback)`, it's possible to use an `onclick='doSomething();'` attribute directly 
+in the HTML tag of the element:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Third example of an event listener</title>
+    <meta charset="utf-8">
+      <script>
+         function processClick(evt) {
+          alert("Button clicked");
+        };
+  </script> 
+</head>
+<body>
+  <button id="myButton" onclick="processClick(event);">Click me!</button>
+</body>
+</html>
+```
+This syntax:
+
+
+```javascipt
+<button id="myButton" onclick="processClick(event);">Click me!</button>
+```
+... is ok when you only need a single event listener to click events for this button, as there can be **only one `onclick` attribute per element**.
+
+Using the `b.addEventListener('click', callback)` syntax,  you can register more than one event listener. You'll need rarely to do this, so in my 
+opinion it's fine to choose whichever syntax you like.
+
+Remember that for big projects, it's always better to separate the HTML, CSS and JavaScript code. In this case, I'd recommend that 
+you put all your event listener definitions in a separate JavaScript file, and use the addEventListener syntax in preference to the `on` 
+attributes syntax.
+
+### Removing event listeners
+
+When we click on the button, we execute the `processClick(evt)` callback function, and inside we remove the listener we previously 
+registered. Consequence: if we click on the button again, nothing happens as there is no longer a click event listener attached to it.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Removing an event listener</title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <button id="myButton">Click me, this will work only once!</button>
+  <p></p>
+  <script>
+    var b = document.querySelector("#myButton");
+    b.addEventListener('click', processClick);
+    
+    function processClick(evt) {
+     alert("Button clicked, event listener removed, try to click on the button again: nothing will happen anymore!"); 
+      b.removeEventListener('click', processClick);
+    }
+  </script> 
+</body>
+</html>
+```
+Note that to remove an event listener, you should have added it with its named function, so that we can pass it to both `addEventListener` 
+and `removeEventListener`.
+
+
+#### Knowledge check 2.4.1 (not graded)
+
+What precaution should you take when adding an event listener to a given HTML element?
+
+I need to be sure that the element is in the DOM before selecting it using the DOM API or the selector API correcto
+
+Explanation
+Indeed, we need to be sure that the element is in the DOM before quering it. You can do that by locating the JavaScript 
+code after the HTML tag that corresponds to the element, or do this in a JavaScript function that is called only when the 
+DOM is ready, for example using `<body onload="init()">`, and put the code in the init function.
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   The event object
+
+# The event object
+
+### The event object is the only parameter passed to event listeners
 
 
 
