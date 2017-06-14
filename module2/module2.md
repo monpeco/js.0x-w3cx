@@ -1409,5 +1409,69 @@ DOM is ready, for example using `<body onload="init()">`, and put the code in th
 
 ### The event object is the only parameter passed to event listeners
 
+Typical example:
 
+```javascript
+function processClick(evt) {
+    alert("Button clicked!");
+}
+```
+Each event listener has a single parameter that is  a "DOM event object". It has various properties and methods that can be very useful.
+
+For example, with a `keyup`, `keydown` or `keypress` event, the event object contains the code of the key that has been 
+pressed/released, with a `mousemove` listener we can get the relative position of the mouse in the DOM element that has generated 
+the event, etc.
+
+The event object contains some important properties and methods that are common to all types of events:
+
+* `evt.type`: the name of the event
+* `evt.target`: for example, is the HTML element that has fired the event. In our previous examples with the click listeners on a 
+button, `evt.target` in the event listener is the button itself.
+* `evt.stopPropagation()`: will not propagate the event to all other elements that listen to it. If several elements are registered 
+for a click event - for example, you have a click listener on a button and on the window (the whole page). If you click on the button, 
+and if in its click event listener you call `evt.stopPropagation();` then the click event listener on the window object will never be 
+called.
+* `evt.preventDefault()`: the default browser behavior will not be executed. For example, in a `contextmenu` event listener attached 
+to an object, if you call `evt.preventDefault()`, instead of having the right click default context menu of your browser displayed, 
+you'll be able to display your own context menu, like in this [example](http://jsbin.com/kuyorac/edit?html,css,js,console,output).
+
+It also contains properties that are associated with the type of the event, for example:
+
+* `evt.button`: the mouse button that has been used in the case of a mouse event listener
+* `evt.keyCode`: the code of the key that has been used
+* `evt.pageX`: coordinate of the mouse relative to the page
+* etc.
+
+In the subsequent sections of this course we will look at the most common types of events in detail.
+
+### Reference table
+
+The most useful common properties are:
+
+| Property  | Action performed    							|
+|-----------|-----------------------------------------------|
+|**type**	|Returns the name of the event.					|
+|**target**	|Returns the element that triggered the event.	|
+
+
+
+
+The most useful common methods are:
+
+| Property              | Action performed    							|
+|-----------------------|-----------------------------------------------|
+|**preventDefault()**	|Cancels the event if it is "cancelable", meaning that the default action that belongs to the event will not occur. It is useful for cancelling the default browser behavior. For example: if you want to create a context menu that pops up with a right click, you must prevent the default behavior of the browser that will pop up its default context menu.					|
+|**stopPropagation()**	|Prevents further propagation of an event during event flow.	|
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Page lifecycle events
+
+# Page lifecycle events
+
+### Live coding video: page 'load' event and the event object
+
+
+	
+	
 
