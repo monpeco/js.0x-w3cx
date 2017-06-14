@@ -1122,8 +1122,8 @@ displayInPage("Result: ", sum(10, 15));
 ```
 
 Notice how the `sum` and `displayInPage` functions have been declared. **We used a variable to store the function expression**, then we 
-can call the functions using the variable name. And we added a semicolon at the end, since we executed a JavaScript instruction, giving 
-a value to a variable.
+can call the functions using the variable name. And we **added a semicolon at the end, since we executed a JavaScript instruction, giving 
+a value to a variable**.
 
 The **function expression* is an ***anonymous function***, a function without a name, that represents a value that can be assigned to a 
 variable. Then, the variable can be used to execute the function.
@@ -1134,8 +1134,38 @@ This means that functions can also be used as parameters to other functions. In 
 
 ### Callbacks
 
+ndeed, as functions are first-class objects, we can pass a function as an argument, as a parameter to another function and later execute that passed-in function or even return it to be executed later. When we do this, we talk about callback functions in JavaScript: a function passed to another function, and executed inside the function we called.
 
+All the examples of event listeners that you've seen used callback functions. Here is another one that registers mouse click listeners on the window object (the window objects represent the whole HTML document):
 
+```javascipt
+// Add a click event listener on the whole document
+// the processClick function is a callback:
+// a function called by the browser when a click event
+// is detected
+window.addEventListener('click', processClick);
+
+function processClick(event) {
+  document.body.innerHTML += "Button clicked<br>";
+}
+
+// We could have written this, with the body of the callback as an argument of the addEventListener function
+window.addEventListener('click', function(evt) {
+  document.body.innerHTML += "Button clicked version 2<br>";
+});
+```
+
+In this case, the `processClick` function is passed as a parameter to the `addEventListener` method/function.
+
+Callback functions are derived from a programming paradigm known as **functional programming**. They are very, very common in JavaScript. We'll use them a lot in the next section of the course, called **Handling events**.
+
+---
+
+### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Introduction
+
+# Handling events  
+
+### Introduction
 
 
 
