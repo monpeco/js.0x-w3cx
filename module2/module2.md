@@ -1720,5 +1720,157 @@ All answers are correct. All of these syntaxes have the same effect: call init o
 # Key events: legacy API
 
 ### Dealing with key events
+
+#### Introduction
+
+This has been a bit of a nightmare for years, as different browsers have had different ways of handling key events and key codes (read [this](http://unixpapa.com/js/key.html) if you are fond 
+of JavaScript archeology). Fortunately it's much better today, and we are able to rely on methods that should work on any browser.
+
+When you listen to keyboard related events (`keydown`, `keyup` or `keypressed`), the event parameter passed to the listener function will contain 
+the code of the key that fired the event. Then it is possible to test which key has been pressed or released, like this:
+
+
+
+```javascript
+window.addEventListener('keydown', function(event) {
+   if (event.keyCode === 37) {
+     //left arrow was pressed
+   }
+});
+```
+
+At line 2, the value `37` is the key code that corresponds to the left arrow. It might be difficult to know which codes represent which real keyboard keys, so here are some handy pointers:
+
+Try key codes with this interactive example: http://www.asquare.net/javascript/tests/KeyCode.html
+And find a list of keyCodes (taken from: http://css-tricks.com/snippets/javascript/javascript-keycodes/) below:
+
+![JSKeyCodes](https://courses.edx.org/asset-v1:W3Cx+HTML5.1x+4T2015+type@asset+block@JSKeyCodes.jpg)
+
+
+### The different key events
+
+Event types related to keyboard
+
+| key events    | 					   																|
+|---------------|-----------------------------------------------------------------------------------|
+|**keydown**	|The event occurs when the user is pressing a key.									|
+|**keyup**		|The event occurs when the user releases a key.										|
+|**keypress**	|(now deprecated)	The event occurs when the user presses a key (up and release).	|
+
 	
+### keyboardEvent properties
+
+These are legacy properties, still used by many JavaScript code around the world. However, we do not recommend that you use them if you are targeting 
+modern browsers. `keyCode` has a more powerful/easy to use replacement called `code` (not yet supported by all browsers), that comes with a new `key` 
+property (see the following pages of the course).
+ 
+| keyboardEvent | 					   																|
+|---------------|-----------------------------------------------------------------------------------|
+|**keyCode**	|Returns the Unicode character code of the key that triggered the onkeypress ,onkeydown or onkeyup event.|
+|**shiftKey**	|Returns whether the "shift" key was pressed when the key event was triggered.	|
+|**ctrlKey**	|Returns whether the "ctrl" key was pressed when the key event was triggered.	|
+|**altKey**		|Returns whether the "alt" key was pressed when the key event was triggered.	|
+
+	
+#### Example 1: use keyup and keydown on the window object
+https://codepen.io/w3devcampus/pen/wJZJZp
+ 	
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Example of the 'keyup' and 'keydown' events on the window object</title>
+</head>
+  <body>
+    <p>Please type some keys and see what happens</p>
+    <div id="keys"></div>
+  </body>
+</html>
+```
+	
+
+```javascript
+window.onkeyup = processKeyUp;
+window.onkeydown = processKeyDown;
+
+/* or we could have written:
+   window.addEventListener('keyup', processKeyUp);
+   window.addEventListener('keydown', processKeyDown);
+*/
+
+function processKeyUp(evt) {
+  var keys = document.querySelector('#keys');
+  keys.innerHTML += "keydown: " + evt.key + " code: " + evt.keyCode + "<br>";
+}
+```
+
+#### Example 2: see  keypress on the window object
+
+See the Pen keyup and keydown events on window by W3Cx (@w3devcampus) on CodePen.
+https://codepen.io/w3devcampus/pen/WpWjey
+https://codepen.io/w3devcampus/pen/BWERyY
+
+#### Example 3: detect a combination of keys + modifier keys (shift, ctrl, alt)
+
+https://codepen.io/w3devcampus/pen/BWERyY
+
+Try to type shift-a for example, ctrl-shift-b or alt-f...
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Example of the 'keypress' event on the window object, awith shift, meta and alt</title>
+</head>
+  <body>
+    <p>Please type some keys and see what happens. Try typing key modifiers at the same time: shift, alt, control</p>
+    <div id="keys"></div>
+  </body>
+</html>
+```
+
+```javascript
+window.onkeydown = processKeyDown;
+
+/* or we could have written:
+   window.addEventListener('keypress', processKeyPress);
+*/
+
+function processKeyDown(evt) {
+  var keys = document.querySelector('#keys');
+  
+   keys.innerHTML += "keypress: " + evt.key + 
+                   " code: " + evt.keyCode + " Modifiers : ";
+
+  var modifiers = "";
+  
+  if(event.shiftKey)
+    modifiers += "SHIFT ";
+
+  if(event.altKey)
+    modifiers += "ALT ";
+
+  if(event.ctrlKey)
+    modifiers += "CTRL ";
+
+  if(modifiers === "")
+    modifiers = "NONE";
+  
+  keys.innerHTML += modifiers + "<br>";
+}
+
+```
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Dealing with different keyboard layouts
+
+# Dealing with different keyboard layouts
+
+### Internationalize your keyboard controls
 
