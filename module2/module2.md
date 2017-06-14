@@ -1471,7 +1471,254 @@ The most useful common methods are:
 
 ### Live coding video: page 'load' event and the event object
 
+>! misssing video/transcript
 
+Online example used in the above video
+https://codepen.io/w3devcampus/pen/XgrveY?editors=0001
 	
+### Page lifecycle events
+
+These events detect when the page is loaded and when the DOM is ready.
+
+Events related to the page lifecycle
+
+There are many other events related to the page life cycle. The most useful ones for an introduction course are shown below:
+
+| Event     | occurs when ...    							|
+|-----------|-----------------------------------------------|
+|**load**	|This event occurs when an object has loaded (including all its resources: images, etc.). This event is very useful when you want to run JS code and be sure that the DOM is ready (in other words, be sure that a `document.getElementById(...)` or `document.querySelector(...)` will not raise an error because the document has not been loaded and elements you are looking for are not ready).				|
+|**target**	|The event occurs when the document view is resized. Usually, we get the new size of the window inside the event listener using `var w = window.innerWidth;` and `var h = window.innerHeight;`	|
+|**scroll**	|The event occurs when an element's scrollbar is being scrolled. Usually in the scroll event listener we use things such as: `var max = document.body.scrollHeight - innerHeight;` `var percent = (pageYOffset / max);` ...to know the percentage of the scroll in the page.	|
+
+### Page event properties
+
+There are no particular properties that need to be mentioned here. Usually, the load event listener corresponds to a JavaScript function that 
+can be seen as **the main** function of your Web application. It is a best practice to start everything after the page has been completely loaded. 
+In the resize listener, you get the new size of the window, or the new size of some HTML elements in the page (as they might have been resized 
+too when the window was resized), and then you do something (redraw a graphic in an HTML canvas that takes into account the new canvas size, 
+for example).
+
+#### Example 1: wait until the page is loaded (when the DOM is ready) before doing something
+
+This first variant that uses `<body onload="init();">`
+	
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Example1 of the 'load' event</title>
+</head>
+<body onload='init();'>
+  <p>This page uses <code>&lt;body onload='init();'&gt;</code> in the JS code  to execute the init function ONLY WHEN THE PAGE HAS BEEN LOADED!</p>
+  
+  <p>This is important as very often we cannot do important things before the DOM is ready (all HTML elements have been created and can be manipulated from JavaScript).</p>
+  
+  <p>PAGE STATUS: <span id="pageStatus">NOT LOADED YET</span></p>
+</body>
+</html>
+
+```
+
+
+```css
+#pageStatus {
+  border:1px solid red;
+  padding: 2px;
+  color:red;
+}
+```
+
+
+```javascript
+function init() {
+  var status = document.querySelector('#pageStatus');
+  status.innerHTML = 'LOADED!';
+  
+  // start working!
+  // ....
+}
+```
+
+This second variant: using `window.onload = init;` in the JavaScript code...
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Example1 of the 'load' event</title>
+</head>
+<body>
+  <p>This page uses <code>window.onload = init;</code> in the JS code  to execute the init function ONLY WHEN THE PAGE HAS BEEN LOADED!</p>
+  
+  <p>This is important as very often we cannot do important things before the DOM is ready (all HTML elements have been created and can be manipulated from JavaScript).</p>
+  
+  <p>PAGE STATUS: <span id="pageStatus">NOT LOADED YET</span></p>
+</body>
+</html>
+```
+
+
+```css
+#pageStatus {
+  border:1px solid red;
+  padding: 2px;
+  color:red;
+}
+```
+
+
+```javascript
+window.onload = init;
+
+function init() {
+  var status = document.querySelector('#pageStatus');
+  status.innerHTML = 'LOADED!';
+  
+  // start working!
+  // ....
+}
+```
+
+#### Example 2: detect a resize of the window
+
+In this example, we're listening to page load and page resize events. When the window is loaded for the first time, or resized, we call the `resize()` 
+callback function. The `window.innerWidth` and `window.innerHeight` properties are used to display the updated size of the window. We also use `screen.width` 
+and `screen.height` to display the screen size.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Example1 of the 'resize' event</title>
+</head>
+<body>
+  <p>This page uses <code>window.onresize = resize;</code> in the JS code  to execute the resize function. Try to change the size of your window now!</p>
+ 
+  <p>Curent page size: <span id="pageSize"></span></p>
+  <p>Screen size: <span id="screenSize"></span></p>
+</body>
+</html>
+```
+
+
+```css
+#pageSize, #screenSize {
+  border:1px solid red;
+  padding: 2px;
+  color:red;
+}
+```
+
+
+```javascript
+window.onload = resize;
+window.onresize = resize;
+
+function resize(evt) {
+  console.log("resize");
+  var pageSizeSpan = document.querySelector('#pageSize');
+  pageSizeSpan.innerHTML = "Width: " + window.innerWidth + " Height: " + window.innerHeight;
+  
+ // screen size
+var screenSizeSpan = document.querySelector('#screenSize');
+  screenSizeSpan.innerHTML = "Width: " + screen.width + " Height: " + screen.height;
+  
+}
+```
+
+Example 3: do something as the page is being scrolled up or down
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Example of the 'scroll' event</title>
+</head>
+  <body>
+<div class="progress">
+  <div>Percentage</div>
+    </div>
+    <p id="text">Scroll me and the progress bar on the right will show 
+  the percentage of scroll. Look also at the CSS
+  code (body is 2000px height, for example)...</p>
+  </body>
+</html>
+```
+
+
+```css
+.progress {
+  border: 1px solid blue;
+  width: 100px;
+  position: fixed;
+  top: 10px; right: 10px;
+}
+
+.progress > div {
+  height: 12px;
+  background: lightBlue;
+  width: 0%;
+  font-size:8px;
+}
+
+#text {
+  margin-top:50px;
+}
+body {
+  height: 2000px;
+}
+```
+
+
+```javascript
+window.onload = init;
+
+var progressBar;
+
+function init() {
+  progressBar = document.querySelector(".progress div");
+
+  window.addEventListener("scroll", function() {
+      var max = document.body.scrollHeight - window.innerHeight;
+      var percent = (window.pageYOffset / max) * 100;
+      progressBar.style.width = percent + "%";
+  });
+}
+```
+
+#### Knowledge check 2.4.2 (not graded)
+
+
+```javascript
+function init(evt) {
+   console.log("Page loaded! DOM Ready!");
+   // access the DOM using the DOM API or the selector API
+   var elem = document.querySelector(...);
+   elem.innerHTML = ....;
+```
+
+Check the correct ways to call the function init only when the page has loaded and the DOM is ready:
+<body onload="init();"/> correcto
+In a JS code, add window.onload = init; correcto
+in a JS code, add window.addEventListener('load', init); correcto
+
+#### Explanation
+All answers are correct. All of these syntaxes have the same effect: call init once the page is loaded.
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Key events: legacy API
+
+# Key events: legacy API
+
+### Dealing with key events
 	
 
