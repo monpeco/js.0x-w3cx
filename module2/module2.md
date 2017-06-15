@@ -2646,7 +2646,257 @@ function menuItem2() {
 
 ### Forms
 
-Events related to forms
+#### Events related to forms
+
+|event |-------|
+|------|-------|
+|input	|The event occurs when an element gets user input (e.g., a key is typed on an input field, a slider is moved, etc.)|
+|change	|The event occurs when the content of a form element, the selection, or the checked state have changed (for `<input>`, `<select>`, and `<textarea>`). A change event listener on a slider will generate an event when the drag/move ends, while input events will be useful to do something as the slider is being moved.|
+|focus	|The event occurs when an element gets focus (e.g., the user clicks in an input field)|
+|blur	|The event occurs when an element loses focus (e.g., the user clicks on another element)|
+|select	|The event occurs after the user selects some text (for `<input>` and `<textarea>`)|
+|submit	|The event occurs when a form is submitted|
+
+### FormEvent properties
+
+There are no particular properties that need to be mentioned here. Usually, on a form event listener, we check the content of the different input fields, using their value property. See examples in the part of the course that deals with form events.
+
+#### Example 1: validating on the fly as the user types in a text input field
+
+First variant: using the `input` event:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Simple input field validation</title>
+</head>
+<body>
+  <h1>Simple input field validation using the 'input' event</h1>
+  <p>Just type a name in the input field and see what happens!</p>
+<label>
+  <span>Name (required):</span>
+  <input type="text" 
+         name="nom" 
+         maxlength="32" 
+         required
+         oninput = "validateName(this)">
+</label>
+  <p>
+  <span id="nameTyped"></span>
+</p>  
+</body>
+</html>
+```
 
 
+```javascript
+function validateName(field) {
+  // this is the input field text content
+  var name = field.value;  
+  
+  // get the output div
+  var output = document.querySelector('#nameTyped');
+  // display the value typed in the div 
+  output.innerHTML = "Valid name: " + name;
+  
+  // You can do validation here, set the input field to
+  // invalid is the name contains forbidden characters
+  // or is too short
+  // for example, let's forbid names with length < 5 chars
+  if(name.length < 5) {
+    output.innerHTML = "This name is too short (at least 5 chars)";
+  }
+}
+```
+
+#### Second variant: using the 'keyup' event:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Simple input field validation using keyup events</title>
+</head>
+<body>
+  <h1>Simple input field validation using the 'input' event</h1>
+  <p>Just type a name in the input field and see what happens! <span style="color:red"> TRY TO TYPE A "!" too</span></p>
+<label>
+  <span>Name (required):</span>
+  <input type="text" 
+         name="nom" 
+         maxlength="32" 
+         required
+         onkeyup = "validateName(event)">
+</label>
+  <p>
+  <span id="keyTyped"></span>
+</p>  
+</body>
+</html>
+```
+
+
+
+```javascript
+function validateName(evt) {
+  // this is the input field text content
+  var key = evt.key;  
+  
+  // get the output div
+  var output = document.querySelector('#keyTyped');
+  // display the value typed in the div 
+  output.innerHTML = "Valid key: " + key;
+  
+  // You can do validation here, set the input field to
+  // invalid is the name contains forbidden characters
+  // or is too short
+  // for example, let's forbid names with length < 5 chars
+  if(key === "!") {
+    output.innerHTML = "This key is forbidden!";
+    // remove the forbodden char
+    // current typed value
+    var name = evt.target.value;
+    // we use the substring JavaScript function
+    // to remove the last character
+    // first parameter = start index
+    // second = last index
+    evt.target.value = name.substring(0, name.length-1);
+  }
+}
+```
+Note that HTML5 forms and the multiple facets of form and input field validation are covered in depth in the HTML5 fundamentals course, which dedicates a whole week to this topic.
+
+#### Example 2: do something while a slider is being moved
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JavaScript slider use</title>
+</head>
+<body>
+  <h1>Simple <code>&lt;input type=range&gt;</code> field validation using the 'input' event</h1>
+  <p>Just move the slider</p>
+<label>
+ 1 <input type="range" 
+         min=1
+         max=12
+          step=0.1
+         oninput = "doSomething(event)"> 12
+</label>
+  <p>
+  <span id="sliderValue"></span>
+</p>  
+</body>
+</html>
+```
+
+
+```javascript
+function doSomething(evt) {
+  // this is the slider value
+  var val = evt.target.value;  
+  
+  // get the output div
+  var output = document.querySelector('#sliderValue');
+  // display the value typed in the div 
+  output.innerHTML = "Value selected: " + val;
+}
+```
+
+#### Example 3: detect value changes in a number input field
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JavaScript number input use</title>
+</head>
+<body>
+  <h1>Simple <code>&lt;input type=number&gt;</code> field validation using the 'input' event</h1>
+  <p>type a number or use the small vertical arrows</p>
+<label>
+  Type a number: 
+<input type="number" 
+         min=1
+         max=12
+          step=0.1
+         oninput = "doSomething(event)">
+</label>
+  <p>
+  <span id="numberValue"></span>
+</p>  
+</body>
+</html>
+```
+
+
+```javascript
+function doSomething(evt) {
+  // this is the slider value
+  var val = evt.target.value;  
+  
+  // get the output div
+  var output = document.querySelector('#numberValue');
+  // display the value typed in the div 
+  output.innerHTML = "Value selected: " + val;
+}
+```
+
+#### Example 4: choose a color and do something
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JavaScript color chooser use</title>
+</head>
+<body>
+  <h1>Simple <code>&lt;input type=color&gt;</code> use</h1>
+  <p>Pick a color to change the background color of the page</p>
+<label>
+<input type="color" 
+         onchange = "changePageBackgroundColor(this.value);">
+  <!-- we could have used oninput= in the previous line -->
+</label>
+  <p>
+  <span id="choosedColor"></span>
+</p>  
+</body>
+</html>
+```
+
+
+```javascript
+function changePageBackgroundColor(color) {
+document.body.style.backgroundColor = color;  
+  // get the output div
+  var output = document.querySelector('#choosedColor');
+  // display the value typed in the div 
+  output.innerHTML = "Color selected: " + color;
+}
+```
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Reference tables
+
+# Reference tables
+
+### Quick summary of event management in JavaScript
 
