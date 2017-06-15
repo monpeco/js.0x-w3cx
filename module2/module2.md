@@ -1874,3 +1874,46 @@ function processKeyDown(evt) {
 
 ### Internationalize your keyboard controls
 
+#### Introduction
+
+Please do not assume that each key is at the same location on the keyboard in every country!
+
+We've shown how to detect keyup, keydown and keypress events using the DOM API, and how to use the keyCode property of the DOM event.
+
+Be careful when you use the key events in your application, as keyboard layouts vary from one country to another. Most first person shooter games (FPS) use three keys located on the top left of your keyboard to move your character. French AZERTY keyboards will use ZQSD for this (Z = up/move forward, Q and D are for left/right and S is for down/move backward), while US keyboards will use WASD, for example. So keep in mind that keys are not located at the same place on keyboards from different countries.
+
+Extract from the "Internationalise your keyboard controls" article on MDN, by Julien Wajsberg:
+
+> "Recently I came across two lovely new graphical demos, and in both cases, the controls would not work on my French AZERTY keyboard.
+
+> There was the wonderful WebGL 2 technological demo After The Flood, and the very cute Alpaca Peck. Shaw was nice enough to fix the latter when I told him about the issue. It turns out the Web browser actually exposes a useful API for this."
+
+#### One keyboard, many layouts
+
+For details, see Wikipedia’s keyboard layout page!
+https://en.wikipedia.org/wiki/Keyboard_layout
+
+QWERTY layout, used in US, GB, etc.:
+
+![QWERTY keyboard layout](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/90b06977ee3a3e0a40aea0a7d0b4adbd/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/QWERTY.png)
+
+AZERTY layout, used in some French-speaking countries:
+
+![AZERTY keyboard layout](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/7cfadb8f6dd3bb3e51277685a1e3b4fa/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/AZERTY.png)
+
+In addition, QWERTZ keyboards are in use in Germany and other European countries, and DVORAK is another alternative to QWERTY:
+
+DVORAK:
+
+![DVORAK keyboard layout](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/9ff392064dff40eb73ff18574fbe08db/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/DVORAK.png)
+
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Key and code properties
+
+# Key and code properties
+
+### New recommended properties you can use with modern browsers: key and code
+
