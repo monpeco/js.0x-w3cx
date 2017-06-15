@@ -1917,3 +1917,736 @@ DVORAK:
 
 ### New recommended properties you can use with modern browsers: key and code
 
+You may have noticed that in some examples from the previous course page about key events, we used event.key in order to display the character that has been typed. The key property has been introduced with a new W3C API called UI Events (or DOM level 3 events), that has been discussed since 2000.  All major browsers have implemented this very practical key property. It comes with another property named code, which is what keyCode should have been. The value of the code property corresponds to a code that is more readable than the value of the old keyCode property.
+
+* **key**: when the pressed key is a printable character, you get the character in string form. When the pressed key is not a printable character (for example: Backspace, Control, but also Enter or Tab which actually are printable characters), you get a multi-character descriptive string, like 'Backspace', 'Control', 'Enter', 'Tab'.
+* **code**: Gives you the physical key that was pressed, in string form. This means it’s totally independent of the keyboard layout that is being used. So let’s say the user presses the Q key on a QWERTY keyboard. Then event.code gives you 'KeyQ' while event.key gives you 'q'.
+
+> But when an AZERTY keyboard user presses the A key, he also gets `KeyQ` as event.code, yet event.key contains `a`. This happens because the A key 
+> on a AZERTY keyboard is at the same location as the Q key on a QWERTY keyboard.
+
+As for numbers, the top digit bar yields values like 'Digit1', while the numeric pad yields values like 'Numpad1'.
+
+Unfortunately this feature is not yet implemented by Microsoft IE/Edge but support is coming soon to Edge.
+List of codes, the reference keyboard
+
+### List of codes, the reference keyboard
+
+There’s no existing keyboard with all the possible keys. That’s why the W3C published a specification just for this. You can read about the 
+existing mechanical layouts around the world, as well as their reference keyboard. For instance here is their reference 
+keyboard for the alphanumerical part:
+https://www.w3.org/TR/uievents-code/
+https://www.w3.org/TR/uievents-code/#keyboard-layout
+https://www.w3.org/TR/uievents-code/#code-value-tables
+
+![layout](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/e103f259d85894158e15443dd13b6802/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/keyboard-codes-alphanum1.png)
+
+You can also read this document published by the W3C with explanations about all the possible values for the code property.
+
+Also read through the examples given in the specification. They show very clearly what happens when the user presses various types of keys, both for code and key.
+https://www.w3.org/TR/uievents-key/
+https://w3c.github.io/uievents/#code-examples
+
+#### Example that displays the key and code values with your current keyboard
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>key and keyCode</title>
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+   <p>Press some keys on your keyboard and see the corresponding evt.key and evt.code values. If you are not using a QWERTY keyboard, notice that the values might be different. This is because an 'a' on an AZERTY keyboard, will correspond to the KeyQ code on the reference keyboard.</p>
+    <p>  You typed:</p>
+  </body>
+</html>
+```
+
+
+
+```javascript
+window.onkeydown = function(evt) {
+  document.body.innerHTML += "key = " + evt.key + "<br>";
+ document.body.innerHTML += "code = " + evt.code + "<br><br>";
+}
+```
+I encourage you to take a look and get at least an overview of this specification.
+
+Please note that the W3C has also published a sibling specification describing the values for the key property.
+
+Before looking at examples, let's see the current Web browser support for these properties:
+
+As of April 2017:
+
+http://caniuse.com/#feat=keyboardevent-code
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Mouse events
+
+# Mouse events
+
+### Mouse interaction, mouse events
+
+Important note: Remember that many people do not use the mouse and rely on the keyboard to interact with the Web. This requires keyboard access to all functionality, including form controls, input, and other user interface components (learn more).
+
+Detecting mouse events in a canvas is quite straightforward: you add an event listener to the canvas, and the browser invokes that listener when the event occurs.
+
+The example below is about listening to mouseup and mousedown events (when a user presses or releases any mouse button):
+
+
+
+```javascript
+canvas.addEventListener('mousedown', function (evt) {
+   // do something with the mousedown event
+});
+ 
+canvas.addEventListener('mouseup', function (evt) {
+   // do something with the mouseup event
+});
+```
+
+The event received by the listener function will be used for getting the button number or the coordinates of the mouse cursor. Before looking at different examples, let's look at the different event types we can listen to.
+
+#### Mouse events
+
+#### Event types related to mouse
+
+
+| Mouse events    | 					   																|
+|---------------|-----------------------------------------------------------------------------------|
+|**click**	    |The event occurs when the user clicks on an element (presses a button and releases it).									|
+|**dblclick**	|The event occurs when the user double-clicks on an element.										|
+|**mousedown**	|The event occurs when the user presses a key (up and release).	|
+|**mouseup**	|The event occurs when a user releases a mouse button over an element.	|
+|**mousemove**	|The event occurs when the pointer is moving while it is over an element.									|
+|**mouseenter**	|The event occurs when the pointer is moved onto an element.										|
+|**mouseleave**	|The event occurs when the pointer is moved out of an element.	|
+|**mouseover**	|The event occurs when the pointer is moved onto an element, or onto one of its children.									|
+|**contextmenu**		|The event occurs when the user right-clicks on an element to open a context menu.										|
+
+
+#### MouseEvent properties	
+	
+	
+| MouseEvent properties    | 					   																|
+|---------------|-----------------------------------------------------------------------------------|
+|**button**	    | Returns which mouse button was pressed when the mouse event was triggered.									|
+|**clientX and clientY**	| Returns the coordinates of the mouse pointer, relative to the element coordinate system that triggered the event. If you click in the left top corner the value will always be (0,0) independent of scroll position, these coordinates are relative to the VIEWPORT (the visible part of the document page).										|
+|**pageX and pageY**	| Returns the coordinates of the mouse pointer, relative to the document, when the mouse event was triggered. They are relative to the complete document/page, and will always be relative to the very beginning of the document/page, even if the top of the page is not visible because you've scrolled down. They will change when the page scrolls and the mouse does not move!.	|
+|**screenX and screenY**	| Returns the coordinates of the mouse pointer, relative to the screen, when an event was triggered.	|
+|**altKey, ctrlKey, shiftKey**	| Returns whether the "alt, ctrl and shif" key was pressed when an event was triggered.									|
+|**detail**	| Returns a number that indicates how many times the mouse was clicked.										|
+
+	
+Examples
+
+Example 1: detect a click on an element
+	
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>detect mouse clicks on elements</title>
+</head>
+  <body>
+    <button id="button1" onclick="processClick(event)">Button1</button>
+    <div id="myDiv" onclick="processClick(event)">Click also on this div!</div>
+    <div id="clicks"></div>
+  </body>
+</html>
+```
+
+
+```css
+#myDiv {
+  color:red;
+  background-color: pink;
+  width:100px;
+  height:100px;
+  text-align:center;
+  margin:20px;
+}
+```
+
+
+```javascript
+window.onclick = processClick;
+
+function processClick(evt) {
+  var clicks = document.querySelector('#clicks');
+
+  var target = evt.target.id;
+  
+  if(target === "") {
+    clicks.innerHTML += "You clicked on the window, not on a particular element!<br>";
+  } else {
+    clicks.innerHTML += "Element clicked id: " + target + "<br>";
+   
+  }
+  
+  evt.stopPropagation(); // try commenting it and click on the button or div
+}
+```
+
+#### Example 2: see the differences between clientX/clientY and pageX/pageY
+
+The source code is not meant to be understood. It uses the jQuery lib and comes from a stackOverflow thread. But it's interesting: move the mouse pointer, look at the different properties. Then scroll the page (the table at the top will not move), and look at the properties again; notice how pageX/pageY change, since they are relative to the top of the page, even if they are not visible. Click on the codePen label on top right and run this example! It does not work when embedded in this page!
+
+https://codepen.io/w3devcampus/pen/bqJWJJ
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<meta charset=utf-8 />
+<title>client - page - screen</title>
+</head>
+<body>
+    <table>
+      <tr>
+        <td>Mouse position inside:</td>
+        <td>X &nbsp;&nbsp;&nbsp; Y</td>
+      </tr>
+      <tr>
+        <td>- client:</td>
+        <td id="client"></td>
+        <td>Client Viewport</td>
+      </tr>
+      <tr>
+        <td>- page:</td>
+        <td id="page"></td>
+        <td>Document Page (scroll down to see the difference)</td>
+      </tr>
+      <tr>
+        <td>(scrollTop:</td>
+        <td id="scrollTop"></td>
+        <td>Scroll top [pageY-clientY] )</td>
+      </tr> 
+      <tr>
+        <td>- screen:</td>
+        <td id="screen"></td>
+        <td>Screen</td>
+      </tr>
+    </table>
+</body>
+</html>
+```
+
+
+```css
+body{
+  height:4000px;
+  font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;
+}
+
+
+table{
+  position:fixed;
+  width:100%;
+  padding:10px 20px;
+  background:#eee;
+  border-spacing:5px 0; 
+}
+table td{
+  vertical-align:bottom;
+  border:1px dashed #ddd;
+  padding:3px 10px;
+}
+table tr:first-child{
+  background:#ddd;
+}
+```
+
+
+```javascript
+
+
+var m = ['client','page','screen']; // mods
+$(document).mousemove(function(e){
+  for(var i=0; i<3; i++){
+    $('#'+m[i]).text((e[m[i]+'X'])+' '+ (e[m[i]+'Y']));
+  }
+  $('#scrollTop').text(
+    $('html, body').scrollTop()
+  );
+});
+```
+
+#### Example 3: detect a mousemove event and get the mouse position relative to the page
+
+https://codepen.io/w3devcampus/pen/OpGmjE
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>mousemove events relative to page</title>
+</head>
+  <body>
+    <h1>Please move the mouse on this window!"</h1>
+    <div id="mousePositions"></div>
+    <p>Yep! The above values are the same  when we're listening on the window and we did not scrolled the page!</p>
+        <div id="mouseScreenPositions"></div>
+
+  </body>
+</html>
+```
+
+```javascript
+window.onmousemove = processMouseMouve;
+
+function processMouseMouve(evt) {
+  var mousePositions = document.querySelector('#mousePositions');
+  mousePositions.innerHTML = "clientX: " + evt.clientX +
+                              " clientY: " + evt.clientY + "<br>" +
+                             " pageX : " + evt.pageX +
+                              "  pageY : " + evt.pageY +
+                              "<br>";
+
+  var mouseScreenPositions = document.querySelector('#mouseScreenPositions');
+  mouseScreenPositions.innerHTML = "screenX: " + evt.screenX +
+                             " screenY: " + evt.screenY + 
+                             "<br>";
+ }
+```
+
+
+#### Example 4: detect a mousemove and get the mouse position relative to the element that fired the event
+
+Here is a first version that does not work well due to a naive use of clientX/PageX and clientY/pageY mouse event properties:
+
+https://codepen.io/w3devcampus/pen/oZryVL
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>mousemove events relative to page</title>
+</head>
+  <body>
+    <h1>Please move the mouse on the grey canvas below!</h1>
+    <p>The mouse position is not correct (try to move the cursor at the top left corner of the cavas: it should be 0,0 but it isn't. And if you scroll the page it's worse). clientX and clientY cannot be used "as is".</p>
+    <canvas id="myCanvas" width=300 height=50></canvas>
+    <div id="mousePositions"></div>
+    
+        <div id="mouseScreenPositions"></div>
+
+  </body>
+</html>
+```
+
+
+```css
+canvas {
+  border:4px solid;
+  margin-left:20px;
+  background-color:lightGrey;
+}
+
+body {
+  height:2000px;
+}
+```
+
+
+```javascript
+window.onload = init;
+
+function init() {
+  // page has been loaded
+  canvas = document.querySelector('#myCanvas');
+  
+  canvas.addEventListener('mousemove', processMouseMouve)
+}
+
+function processMouseMouve(evt) {
+  var mousePositions = document.querySelector('#mousePositions');
+  
+  mousePositions.innerHTML = "mouse pos X: " + evt.clientX +
+                              " mouse pos Y: " + evt.clientY + 
+                              "<br>" 
+ }
+```
+Here is another version that uses clientX/clientY and the e.target.getBoundingClientRect() method that returns the bounding rectangle that contains the element that fired the event. The return value has top, left, width, and height properties that describe this rectangle. We can use the top and left properties along with evt.clientX and evt.clientY to fix the mouse position and to get a real position relative to the top left corner of the canvas:
+
+	
+	
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>mousemove events relative to page</title>
+</head>
+  <body>
+    <h1>Please move the mouse on the grey canvas below!</h1>
+    <p>You'll see that there is a no more a problem:  (0, 0) is now at the top left corner of the canvas, even if we scroll the page!</p>
+    <canvas id="myCanvas" width=300 height=50></canvas>
+    <div id="mousePositions"></div>
+    
+        <div id="mouseScreenPositions"></div>
+
+  </body>
+</html>
+```
+
+
+```css
+canvas {
+  border:4px solid;
+  margin-left:20px;
+  background-color:lightGrey;
+}
+
+body {
+  height:2000px;
+}
+```
+
+
+```javascript
+window.onload = init;
+
+function init() {
+  // page has been loaded
+  canvas = document.querySelector('#myCanvas');
+  
+  canvas.addEventListener('mousemove', processMouseMouve)
+}
+
+function processMouseMouve(evt) {
+  var mousePositions = document.querySelector('#mousePositions');
+  var rect = evt.target.getBoundingClientRect()
+  var mouseX = evt.clientX - rect.left;
+  var mouseY = evt.clientY - rect.top;
+  
+  mousePositions.innerHTML = "mouse pos X: " + mouseX +
+                              " mouse pos Y: " + mouseY + 
+                              "<br>" 
+ }
+```
+
+JavaScript source code extract:
+
+
+```javascript
+function processMouseMouve(evt) {
+    var mousePositions = document.querySelector('#mousePositions');
+    // adjust mouse position relative to the canvas
+    var rect = evt.target.getBoundingClientRect()
+    var mouseX = evt.clientX - rect.left;
+    var mouseY = evt.clientY - rect.top;
+    mousePositions.innerHTML = "mouse pos X: " + mouseX +
+                               " mouse pos Y: " + mouseY +
+                               "<br>"
+}
+```
+
+#### Example 5: combine mouseup, mousedown, mousemove to implement a click and drag behavior
+
+https://codepen.io/w3devcampus/pen/bqJRMV
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>mousemove events relative to page</title>
+</head>
+  <body>
+    <h1>Please click and drag the div below.</h1>
+   <div id="dragMe" class='draggable'>Drag me!</div>
+  </body>
+</html>
+```
+
+
+```css
+body {
+  padding:10px
+}
+
+.draggable {
+  width:100px;
+  height:100px;
+  background-color:#666;
+  color:white;
+  padding:10px 12px;
+  cursor:move;
+  position:absolute; /* important (all position that's not `static`) */
+}
+```
+
+
+```javascript
+window.onmousemove = moveElem;
+window.onmouseup = stopMovingElem;
+window.onload = init;
+
+var selected = null; // element to be moved
+var oldMouseX, oldMouseY; // Stores x & y coordinates of the mouse pointer
+var elemX, elemY;
+
+function init() {
+    document.querySelector('.draggable').onmousedown = function (evt) {
+        dragInit(evt);
+    };
+}
+  
+// Will be called when user starts dragging an element
+function dragInit(evt) {
+    // Store the elem
+    selected = evt.target;
+    elemX = selected.offsetLeft;
+    elemY = selected.offsetTop;
+  
+    oldMouseX = evt.clientX;
+    oldMouseY = evt.clientY;
+}
+
+// Will be called when user dragging an element
+function moveElem(e) {
+    // new mouse ps
+    var newMouseX = e.clientX;
+    var newMouseY = e.clientY;
+  
+    if(oldMouseX !== undefined) {
+        // how many pixels did we move the mouse?
+        var dx = newMouseX - oldMouseX;
+        var dy = newMouseY - oldMouseY;
+     }
+    
+    if (selected !== null) {  
+        // move the selected element dx, dy pixels hozontally/vertically
+        changePosOfSelectedElement(dx, dy);
+    }
+  
+    // update the old position of the mouse
+    oldMouseX = newMouseX;
+    oldMouseY = newMouseY;
+}
+
+function changePosOfSelectedElement(dx, dy) {
+  // update the old position of the selected element
+  elemX += dx;
+  elemY += dy;
+  
+  // change the pos on screen of the element
+  // by modifying its CSS left/top properties
+  selected.style.left = elemX + 'px';
+  selected.style.top = elemY + 'px';
+}
+
+// Destroy the object when we are done
+function stopMovingElem() {
+    selected = null;
+}
+
+```
+
+#### Example 6: create  and attach a right-click context menu to any element
+
+https://codepen.io/w3devcampus/pen/oZOweM
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Example of right click context menu in pure JS</title>
+</head>
+<body>
+    <div>
+      <nav id="context-menu" class="context-menu">
+        <ul class="context-menu__items">
+          <li class="context-menu__item" id="context-menu-learn" onclick="menuItem1();">
+            Learn
+          </li>
+          <li class="context-menu__item" onclick="menuItem2();">
+            Clear
+          </li>
+          <li class="context-menu__item" onclick="toggleMenuOff();">
+            Close
+          </li>
+        </ul>
+      </nav>
+    </div>
+  <p>Try to right click on this div:</p>
+  <div id="div1" class="div">A Div with a context menu</div>
+<p>  This one does not have a context menu attached, try also a right click:  </p>
+  <div id="div2" class="div">Another Div without a context menu</div>
+</body>
+</html>
+```
+
+
+```css
+          /* CONTEXT MENU */
+      /* context menu */
+
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  padding: 12px 0;
+  width: 240px;
+  background-color: #fff;
+  border: solid 1px #dfdfdf;
+  box-shadow: 1px 1px 2px #cfcfcf;
+}
+
+.context-menu--active {
+  display: block;
+}
+
+.context-menu__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu__item {
+  display: block;
+  margin-bottom: 4px;
+  padding: 4px 12px;
+  color: #0066aa;
+  text-decoration: none;
+}
+
+.context-menu__item:last-child {
+  margin-bottom: 0;
+}
+
+
+.context-menu__item:hover {
+  color: #fff;
+  background-color: #0066aa;
+}
+
+#div1 {
+  background-color:red;
+  height:100px;
+}
+
+#div2 {
+  background-color:green;
+  height:100px;
+}
+```
+
+
+```javascript
+window.onload = init;
+
+var menu, menuIsVisible;
+
+function init() {
+   menu = document.querySelector("#context-menu"); 
+  menuIsVisible = false;
+  /* to attach a context menu to all divs, you can do this:
+     var divs = document.querySelectorAll(".div");
+
+     divs.forEach(function(d) {
+          addContextMenu(d);
+     });
+  */
+
+  // attache the context menu to the first div
+  var div1 = document.querySelector("#div1");
+  addContextMenu(div1);
+
+  // Clicking anywhere on the window toggle the menu off
+  window.addEventListener('click', toggleMenuOff);
+}
+
+function addContextMenu(elem) {
+    elem.addEventListener("contextmenu", function(e) {
+            //console.log("contextmenu activated");
+            e.preventDefault(); // avoids default right click menu
+            toggleMenuOn();
+            positionMenu(e);
+    });
+}
+      
+function toggleMenuOn() {
+   if(!menuIsVisible) {
+       menuIsVisible = true;
+        menu.classList.add("context-menu--active"); // see further in the DOM section of the course
+    }
+}
+
+function toggleMenuOff() {
+    if(menuIsVisible) {
+       menuIsVisible = false;
+        menu.classList.remove("context-menu--active");
+     }
+}
+
+
+function positionMenu(e) {
+     // Mouse position is relative to the element clicked
+  
+     // We make the coords absolute in the page
+     var clickCoordsX = e.pageX;
+     var clickCoordsY = e.pageY;
+  
+
+     var menuWidth = menu.offsetWidth + 1;
+     var menuHeight = menu.innerHeight + 1;
+
+     var elementWidth = e.target.offsetWidth;
+     var elementHeight = e.target.offsetHeight;
+
+     if ((elementWidth - clickCoordsX) < menuWidth) {
+       menu.style.left = elementWidth - menuWidth + "px";
+     } else {
+       menu.style.left = clickCoordsX + "px";
+     }
+
+     if ((elementHeight - clickCoordsY) < menuHeight) {
+       menu.style.top = elementHeight - menuHeight + "px";
+     } else {
+       menu.style.top = clickCoordsY + "px";
+     }
+   }
+
+// Actions called when a menu item is choosen
+
+function menuItem1() {
+  console.log('learn');
+  toggleMenuOff();
+}
+
+function menuItem2() {
+  console.log('clear');
+  toggleMenuOff();
+}
+
+```
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.4 Handling events   Form and input field events
+
+# Form and input field events
+
+### Forms
+
+Events related to forms
+
+
+
