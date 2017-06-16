@@ -3730,3 +3730,133 @@ function reset() {
 # Changing the content of selected HTML elements
 
 ### Modifying selected HTML elements
+
+We've already seen many examples (even during week 1) in which we selected one or more elements, and modified their content. Let's summarise all the methods we've seen, and perhaps introduce a few new things...
+
+Properties that can be used to change the value of selected DOM node
+
+Using the innerHTML property
+
+This property is useful when you want to change all the children of a given element. It can be used to modify the text content of an element, or to insert a whole set of HTML elements inside another one.
+
+Typical use:
+
+
+```javascript
+var elem = document.querySelector('#myElem');
+ 
+elem.innerHTML = 'Hello '; // replace content by Hello
+ 
+elem.innerHTML += '<b>Michel Buffa</b>', // append at the end
+                                         // Michel Buffa in bold
+ 
+elem.innerHTML = 'Welcome' + elem.innerHTML; // insert Welcome
+                                             // at the beginning
+ 
+elem.innerHTML = ''; // empty the elem
+```
+
+Using the textContent property
+
+It's also possible, with selected nodes/elements that contain text, to use the textValue property to read the text content or to modify it. There are subtle differences that can be seen in the above example (click the 'edit on CodePen" part on the top left, and once in codePen, open the devtool console):
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Modifying content of selected DOM nodes</title>
+</head>
+<body>
+  <h1>Open the console and look at the JavaScript code!</h1>
+<p id="first">first paragraph</p>
+<p id="second"><em>second</em> paragraph</p>
+</body>
+</html>
+
+```
+
+
+```javascript
+window.onload = init;
+
+function init() {
+  // DOM is ready
+  var firstP = document.querySelector("#first");
+  console.log(firstP.textContent);
+  console.log(firstP.innerHTML);
+
+  firstP.textContent = "Hello I'm the first paragraph";
+  console.log(firstP.textContent);
+
+  var secondP = document.querySelector("#second");
+  console.log(secondP.textContent);
+  console.log(secondP.innerHTML);
+  
+  secondP.textContent = "Hello I'm the second paragraph";
+  console.log(secondP.textContent);
+  console.log(secondP.innerHTML);
+}
+```
+
+#### Changing the attributes of selected elements
+
+It's very common to modify the attributes of selected elements: the width of an image, CSS style with the style attribute, value of an input field, etc.
+
+This example shows some of the things we can do:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Modifying content of selected DOM nodes</title>
+</head>
+<body>
+  <h1>Try these</h1>
+<p>What is your name: <input type="text" id="name" value="Michel"> <button onclick="resetName();">Reset (click to empty the input field)</button></p>
+  <p>Pick a color: <input id="color" type="color" value='#FF0000'><button onclick="setToGreen();">Set color chooser to green</button></p>
+  <p>In the next example, click on the input field and use the small vertical arrows to increase the value. Notice that the numbers go 1 by 1 and that the maximum value is 20. Then click the button and do the same thing!</p>
+    <p>Pick a number between 0 and 20: <input id="number" type="number" min=0 max=20 step = 1 value='10'><button onclick="changeStep();">Change step and max attribute values </button></p>
+  <p>Click the next image to change its url and size:</p>
+<img src="https://www.paris-web.fr/2013/assets_c/2013/08/michel-buffa-thumb-143x143-372.jpg" onclick="changeAndResize(this)" alt="Michel Buffa">
+</body>
+</html>
+```
+
+
+```javascript
+function resetName() {
+  var inputField = document.querySelector("#name");
+  inputField.value = "";
+}
+
+function setToGreen() {
+  var colorChooser = document.querySelector("#color");
+  colorChooser.value = "#00FF00";
+}
+
+function changeStep() {
+  var number = document.querySelector("#number");
+  number.value = 10;
+  number.step = "0.1";
+  number.max = 11;
+}
+
+function changeAndResize(img) {
+    img.src="https://pbs.twimg.com/profile_images/110455194/n666194627_2302_400x400.jpg";
+  img.width=250;
+  img.style.border = "4px solid red";
+}
+```
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Adding new elements to the DOM
+
+# Adding new elements to the DOM
+
+### Adding new elements to the DOM
+
+
