@@ -3079,3 +3079,421 @@ There are no particular properties that need to be mentioned here. Usually, on a
 
 # Discussion topics
 
+Discussion topics and projects
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion.
+
+Suggested topics
+
+* Did you know the differences between clientX, pageX, etc. when dealing with mousemove events? Did you know the method we showed for getting the mouse position relative to the elements you're moving the mouse on?
+* Did you know the different keyboard layouts, and the code and key event properties?
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Introduction
+
+# Introduction
+
+### The DOM standard - exploring the DOM of a document
+
+When a user clicks on a link or enters a URL in the address of your Web browser, it downloads the page’s HTML text and builds up a model of the document’s structure called the DOM (Document Object Model). This model is used to render the HTML page on the screen.
+
+The DOM is a standard  that describes how a document must be manipulated. It defines a “language- and platform neutral interface”. So, every browser offers the same JavaScript DOM API.
+
+The DOM API is a programming interface the JavaScript programmer can use to modify the HTML content or the CSS style of HTML elements on the fly.
+
+The DOM API provides the document object as a structured object, a group of nodes represented as a tree. We saw this in Module 1 when we revised the basic principles of HTML .
+
+The document object also exposes a large set of methods to access and manipulate the structured document. Through the DOM, look for nodes (html elements that compose the page), move nodes, delete nodes, modify nodes (attributes, content), and also handle their associated events.
+
+In JavaScript, the DOM is accessible through the property document of the global object window. We rarely manipulate the window object directly as it is implicit: window.document is the same as document. 
+
+So by using this object, we can access and manipulate our page from JavaScript as a structured document.
+
+Reminder from Module 1: HTML and the DOM
+
+'Elements' are the pieces themselves, i.e., a paragraph, a header, and even the body are elements. Most elements can contain other elements - for example, the body element would contain header elements, paragraph elements, in fact pretty much all of the visible elements of the Document Object Model (developers call it the "DOM").
+
+Let's take, for example, a simplified version of the last HTML code we showed you:
+
+### There are different types of nodes in the DOM
+
+There are different types of nodes, but don't worry - the most useful ones are highlighted in bold.
+
+* Element (example: <ul></ul>)
+* Text (example: <p>the text within the element p is a node of type text</p>)
+* Document, DocumentFragment, DocumentType (example: <!doctype html> for html5), Comment (example: <!-- left column -->), ProcessingInstruction (example: <?php echo $name ?>)
+
+#### Exploring the DOM with the devtool console
+
+You can explore the DOM with the devtool console. This time we used Firefox for exploring the DOM, as it proposes a good structured view of the DOM and of its properties/methods:
+
+---
+
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   A warning about the DOM API
+
+# A warning about the DOM API
+
+The DOM and the DOM API can be cumbersome and complicated. There are many methods and properties for manipulating the DOM tree, that are not "very JavaScript". There are historical reasons for this: the DOM wasn’t designed exclusively for JavaScript. Rather, it tries to define a language-neutral interface that can be used in other systems as well — not just HTML but also XML, which is a generic data format with an HTML-like syntax.
+
+HTML5 made some additions that are not in the DOM API but which greatly help the JavaScript programmer (we'll see this in a minute with the "selector API", for example).
+
+So we've decided to focus on only 20% of the DOM API and on the selector API (for selecting elements in the DOM). These are the most useful parts and it will give you enough knowledge to solve nearly every problem where you need to manipulate the DOM.
+
+
+--- 
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Accessing HTML elements
+
+# Accessing HTML elements
+
+>! missing video/transcript
+
+### Accessing HTML elements
+
+#### 1 - With the selector API (recommended)
+
+Extract from HTML5 selectors API – It’s like a Swiss Army Knife for the DOM : "One of the many reasons for the success of JavaScript libraries like jQuery and Prototype, on top of their easing the pain of cross-browser development was how they made working with the DOM far less painful than it had previously been, and indeed how it was with the standard DOM. Being able to use arbitrary CSS selector notation to get matching elements from a document made the standard DOM methods seem antiquated, or at the very least, far too much like hard work.
+
+Luckily, the standards and browser developers took notice. The W3C developed the Selectors API, a way of easily accessing elements in the DOM using standard CSS selector concepts, and browser developers have baked these into all modern browsers, way back to IE8."
+
+The `querySelector(CSSSelector)` and `querySelectorAll(CSSSelector)` methods
+
+Ah... these methods owe a lot to jQuery! They introduce a way to use CSS selectors (including CSS3 selectors) for requesting the DOM, like jQuery introduced ages ago.
+
+Any CSS  selector can be passed as a parameter for these methods.
+
+* While `querySelector(selector)` will return the first element in the DOM that matches the selector (and you will be able to work with it directly),
+* `querySelectorAll(selector)` returns a collection of HTML elements corresponding to all elements matching the selector. To process the results, it will be necessary to loop over each of the elements in the collection.
+
+Typical use:
+
+Looking for an element in the whole document (the whole HTML page): call the querySelector method (or querySelectorAll) on the document object, that corresponds to the whole DOM tree of your web page:
+
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>querySelector and querySelector example 1</title>
+</head>
+<body>
+  <button onclick="addBorderToFirstImage();">
+    Add a border to the first image
+  </button>
+  <br>
+  <button onclick="resizeAllImages();">
+    Resize all images
+  </button>
+  <br>
+  <p>Click one of the buttons above!</p>
+<img src="http://mainline.i3s.unice.fr/mooc/Ntvj5rq.png" 
+     id="img1"
+     width=200 alt="image #1">
+<img src="http://mainline.i3s.unice.fr/mooc/yiU59oi.gif" 
+     width=200 alt="image #2">
+<img src="http://mainline.i3s.unice.fr/mooc/6FstYbc.jpg" 
+     width=200 alt="image #3">
+<img src="http://mainline.i3s.unice.fr/mooc/L97CyS4.png" 
+     width=200 alt="image #4">
+</body>
+</html>
+```
+
+
+```javascript
+window.onload = init;
+
+function init() {
+  // we're sure that the DOM is ready
+  // before querying it
+  
+  // add a shadow to all images
+  // select all images
+  var listImages = document.querySelectorAll("img");
+
+  // change all their width to 100px
+  listImages.forEach(function(img) {
+    // img = current image
+    img.style.boxShadow = "5px 5px 15px 5px grey";
+    img.style.margin = "10px";
+  });  
+  
+}
+
+function addBorderToFirstImage() {
+  // select the first image with id = img1
+  var img1 = document.querySelector('#img1');
+
+  // Add a red border, 3px wide
+  img1.style.border = '3px solid red';  
+}
+
+function resizeAllImages() {
+  // select all images
+  var listImages = document.querySelectorAll("img");
+
+  // change all their width to 100px
+  listImages.forEach(function(img) {
+    // img = current image
+    img.width = 100;
+  });
+}
+```
+Source code from the above example:
+
+HTML part: we have two buttons that will call a JavaScript function (lines 2 and 6) where we will manipulate the DOM), and we have four images, the first one with an id equal to "img1" (lines 11, 14, 16 and 18). 
+
+JavaScript part: the init function is executed as soon as the page is loaded (and the DOM is ready), in this function we add a shadow and margins to all images (lines 3-21). The two other functions are called when one of the HTML buttons is clicked (line 23 and line 31).
+
+
+```javascript
+window.onload = init; // run init once the page is loaded
+ 
+function init() {
+    // we're sure that the DOM is ready
+    // before querying it
+    // this function runs once the page is loaded
+    // add a shadow to all images
+    // select all images
+    var listImages = document.querySelectorAll("img");
+ 
+    // change all their width to 100px
+    listImages.forEach(function(img) {
+        // img = current image
+        // add a shadow 5px left, 5 pixel down, 15px blur, 5px spread
+        // grey
+        img.style.boxShadow = "5px 5px 15px 5px grey";
+        // add a margin 10px on each side
+        img.style.margin = "10px";
+    });
+}
+ 
+function addBorderToFirstImage() {
+    // select the first image with id = img1
+    var img1 = document.querySelector('#img1');
+ 
+    // Add a red border, 3px wide
+    img1.style.border = '3px solid red';
+}
+ 
+function resizeAllImages() {
+    // select all images
+    var listImages = document.querySelectorAll("img");
+ 
+    // change all their width to 100px
+    listImages.forEach(function(img) {
+        // img = current image, we resize it by changing its
+        // width attribute
+        img.width = 100;
+    });
+}
+```
+
+Miscellanous examples of use of querySelector(CSSSelector) and querySelectorAll(CSSselector)
+
+Here are some other examples that use more complicated CSS selectors. If you are not familiar with their syntax, we recommend that you follow the CSS basics, and HTML5 and CSS fundamentals courses from W3Cx.
+
+#### Example 1: get all `<li>` directly in a `<ul>` of class nav:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>querySelector and querySelector example 1</title>
+</head>
+<body>
+  <button onclick="firstLiClassRedInUl();">Select first li of class red and color it in red</button>
+  <br>
+  <button onclick="allLisInUlOfClassNav();">Underline All li in a ul of class nav</button>
+  
+<ul class="nav">
+    <li>Home</li>
+    <li class="red">Products</li>
+    <li>About</li>
+</ul>
+  Another list:
+  <ul>
+    <li>Apple</li>
+    <li class="red">Cherries</li>
+    <li>Oranges</li>
+</ul>
+</body>
+</html>
+
+```
+
+
+```javascript
+function firstLiClassRedInUl() {
+  // first li of class="red" in a ul
+  var elm = document.querySelector("ul li.red");
+  elm.style.color = 'red';
+}
+
+function allLisInUlOfClassNav() {
+  // get all li directly in a ul of class nav
+  var list = document.querySelectorAll("ul.nav > li");
+  
+  list.forEach(function(elm) {
+    elm.style.textDecoration = "underline";
+  })
+}
+```
+
+#### Example 2: display all checked <input type="checkbox"> elements located inside an element of a given id:
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>querySelector and querySelector example 1</title>
+</head>
+<body>
+  <button onclick="displayListOfCheckedItems();">Show Checked items</button>
+  <br>
+<ul id="fruits">
+    <li>
+       <input type="checkbox" name="fruit" value="apples">Apples
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="oranges">
+        Oranges
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="bananas">   
+        Bananas
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="grapes">
+        Grapes
+    </li>
+</ul>
+</body>
+</html>
+
+```
+
+```javascript
+function displayListOfCheckedItems() {
+  // all inputs that have been checked
+  var listOfSelectedValues="";
+  
+  var list = document.querySelectorAll("#fruits input:checked");  
+  list.forEach(function(elm) {
+    listOfSelectedValues += elm.value + " ";
+    
+    // Put the li in red.
+    // the li is the parent of the current input elem stored
+    // in the elm variable
+    elm.parentNode.style.color = 'green';
+  });
+  document.body.append("You selected: " + listOfSelectedValues);
+}
+```
+
+JavaScript code: we select all elements of type input that have an attribute checked equal to true, and located inside an element whose id is "fruits". Notice the use of document.querySelectorAll, for selecting more than one element (line 6), then, we iterate on the list (line 8) and concatenate to the string variable listOfSelectedValues the value of each element (located in its value attribute). This is done in line 9.
+
+Lines 9-12 use the parentNode property of the selected nodes in order to change the color of the <li> (parents of <input> elements selected) in red. In the DOM tree, we selected input elements that are each a child of a <li> element. The text displayed: "Apples", "Oranges" etc. belong to the <li> element. In order to access it from the <input> child we selected, we use elm.parentNode.
+
+#### Example 3: change the background of all paragraphs <p> in an element of a given id:
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Change background color of p under an element whose id is known</title>
+</head>
+<body>
+  <button onclick="changeBackGroundOfPs('firstDiv');">Change backgrounds of p under a given element known by id</button>
+  <br>
+<div id="firstDiv">
+  <p>First paragraph.</p>
+  <p>Second paragraph.</p>
+</div>
+</body>
+</html>
+
+```
+
+```javascript
+function changeBackGroundOfPs(id) {
+  var paragraphs = document.querySelectorAll("#" + id + " p");
+
+  // Another way to iterate on all elements in a collection
+  for (var i = 0; i < paragraphs.length; i++ ) {
+    paragraphs[i].style.backgroundColor = "lightGreen";
+  }
+}
+```
+
+JavaScript code: we build a CSS selector using the id passed as a parameter. In this example, the id is 'firstDiv', the id of the div at line 3 in the above code.
+
+So, the variable CSS selector at line 2 in the JavaScript code below will have a value equal to "#firstDiv p", that means: select all <p> under an element whose id is "firstDiv". The paragraphs variable is a list that contains the paragraphs selected. Then we iterate on this list (this time using a for loop, which is an alternative method to using the forEach method used in previous examples) (line 5-7), and we change the background of all selected paragraphs (line 6).
+
+```javascript
+// all elements li in ul elements in an element of id=nav
+var el = document.querySelector('#nav ul li');
+
+// all li in a ul, but only even elements
+var els = document.querySelectorAll('ul li:nth-child(even)');
+
+// all td directly in tr in a form of class test
+var els = document.querySelectorAll('form.test > tr > td');
+
+// all paragraphs of class warning or error
+querySelectorAll("p.warning, p.error");
+
+// first element of id=foo or id=bar
+querySelector("#foo, #bar");
+
+// first p in a div
+var div = document.getElementById("bar");
+var p = div.querySelector("p");
+```
+
+### 2 - With the DOM API (old fashioned)
+
+These methods are from the DOM API and can all be replaced by the `querySelector` and `querySelectorAll` methods that we've discussed. 
+They are still used in many JavaScript applications, and are very simple to understand.
+
+From the document we can access the elements composing our web page in a few ways:
+
+* `document.getElementById(identifier)` returns the element which has the id `identifier`.
+This is equivalent to `document.querySelector("#identifier');` (just add a `#` before the id when using a CSS selector). 
+
+Example: `var elm = document.getElementById('myDiv');` is equivalent to `document.querySelector('#myDiv');`
+
+* `document.getElementsByTagName(tagName)` returns a list of elements which are named `tagName`.
+This is equivalent to `document.querySelectorAll(tagName);`
+
+Example: `var list = document.getElementByTagName('img');` is equivalent to `document.querySelector('img');`
+
+* `document.getElementsByClassName(className)` returns a list of elements which have the class `className`.
+This is equivalent to `document.querySelectorAll('.className');` 
+
+Example: `var list = document.getElementByClassName('important');` is equivalent to `document.querySelector('.important');` (just add a `.` before the class name when using a CSS selector). 
+
+Notice that identifier, tagName and className must be of type String. 
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Changing the style of selected HTML elements
+
+# Changing the style of selected HTML elements
+
+### Changing the style of selected HTML elements
