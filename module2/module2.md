@@ -4036,4 +4036,151 @@ function reset() {
 # Moving HTML elements in the DOM
 
 
+The `append()`, `appendChild()` methods normally adds  a new element to an existing one, as shown in this example:
+
+```javascript
+var li = createElement('li');
+ul.append(li); // adds the new li to the ul element
+```
+
+One interesting thing to know is that if we do not create the new element, but rather get it from somewhere else in the 
+document, it is then removed from its parents and added to the new parent.
+
+In other words: it moves from its original location to become a child of the targetElem.
+
+Let's see a very simple example:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Moving elements using appendChild()</title>
+</head>
+<body>
+  <p>Click on a browser image to move it to the list of cool browsers:</p><br/>
+  <img src="http://mainline.i3s.unice.fr/mooc//ABiBCwZ.png" id="cr" 
+       onclick="move(this)" alt="Logo Chrome">
+  <img src="http://mainline.i3s.unice.fr/mooc//n7xo93U.png" id="ff" 
+       onclick="move(this)" alt="Logo Firefox">
+  <img src="http://mainline.i3s.unice.fr/mooc//ugUmuGQ.png" id="ie" 
+       onclick="move(this)" alt="Logo IE">
+  <img src="http://mainline.i3s.unice.fr/mooc//jfrNErz.png" id="op" 
+       onclick="move(this)" alt="Logo Opera">
+  <img src="http://mainline.i3s.unice.fr/mooc//gDJCG0l.png" id="sf" 
+       onclick="move(this)" alt="Logo Safari"><br/>
+  <div class="box" id="coolBrowsers">
+      <p>Cool Web browsers</p>
+  </div>
+</body>
+</html>
+```
+
+
+```css
+.box {
+  border: silver solid;
+  width: 256px;
+  height: 128px;
+  margin: 10px;
+  padding: 5px;
+  float: left;
+}
+```
+
+
+```javascript
+function move(elem) {
+  var targetList = document.querySelector('#coolBrowsers');
+  targetList.append(elem);
+  
+  // trick to remove the click listener once
+  // the image has been moved into the list
+  elem.onclick = null;
+}
+```
+
+### Another, more significant example, that also uses drag'n'drop
+
+Notice that this example comes from the HTML5 advanced course. Our plan here is not to explain drag'n'drop in detail, but to show how 
+`append()` can be used to move an element.
+
+In this example, when a user starts to drag an element, the `drag()` JavaScript function is called. In this function we use the 
+drag'n'drop clipboard to store the id of the image that is being dragged.
+
+When the image is dropped, the `drop()` method is called. As the drop event listener is declared on the two divs (on the left and 
+the right), we just call `append()` on the target div element, and this will add the dragged image to the div, while removing it 
+from its original location.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Drag and drop</title>
+     <meta charset="utf-8">
+  </head>
+<body>
+  <p id="text" ondragstart="drag(this, event)">Drag and drop browser images in a zone:</p><br/>
+  <img src="http://mainline.i3s.unice.fr/mooc/ABiBCwZ.png" id="cr" 
+       ondragstart="drag(this, event)" alt="Logo Chrome">
+  <img src="http://mainline.i3s.unice.fr/mooc/n7xo93U.png" id="ff" 
+       ondragstart="drag(this, event)" alt="Logo Firefox">
+  <img src="http://mainline.i3s.unice.fr/mooc/ugUmuGQ.png" id="ie" 
+       ondragstart="drag(this, event)" alt="Logo IE">
+  <img src="http://mainline.i3s.unice.fr/mooc/jfrNErz.png" id="op" 
+       ondragstart="drag(this, event)" alt="Logo Opera">
+  <img src="http://mainline.i3s.unice.fr/mooc/gDJCG0l.png" id="sf" 
+       ondragstart="drag(this, event)" alt="Logo Safari"><br/>
+
+  <div class="box" ondragover="return false" ondrop="drop(this, event)">
+      <p>Cool Web browsers</p>
+  </div>
+  
+  <div class="box" ondragover="return false" ondrop="drop(this, event)">
+      <p>Web browsers from the 90's</p>
+  </div>
+</body>
+</html>
+```
+
+
+```css
+.box {
+  border: silver solid;
+  width: 256px;
+  height: 128px;
+  margin: 10px;
+  padding: 5px;
+  float: left;
+}
+```
+
+
+```javascript
+function drag(target, evt) {
+    // When dragged, copy into the drag'n'drop clipboard
+    // the id of the dragged elem (it's target.id)
+        evt.dataTransfer.setData("browser", target.id);
+    }
+
+function drop(target, evt) {
+    // get the id of the element being dragged
+        var id = evt.dataTransfer.getData("browser");
+  
+        target.appendChild(document.getElementById(id));
+      // prevent default behavior
+      evt.preventDefault();
+}
+```
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Removing elements from the DOM
+
+# Removing elements from the DOM
+
+
+
+
 
