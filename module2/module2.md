@@ -3859,4 +3859,181 @@ function changeAndResize(img) {
 
 ### Adding new elements to the DOM
 
+The DOM API comes with a set of methods you can use on DOM elements.
+
+In general, to add new nodes to the DOM we follow these steps:
+
+#### 1. Create a new element by calling the createElement() method, using a syntax like:
+```javascript
+var elm = document.createElement(name_of_the_element).
+```
+
+```javascript
+var li = document.createElement('li');
+var img = document.createElement('img'); etc.
+```
+
+#### 2. Set some attributes / values  / styles for this element. 
+
+
+```javascript
+li.innerHTML = '<b>This is a new list item in bold!</b>'; // can add HTML in it
+li.textContent = 'Another new list item';
+li.style.color = 'green'; // green text
+img.src = "http://..../myImage.jpg"; // url of the image
+img.width = 200;
+```
+
+#### 3. Add the newly created element to another element in the DOM, using append(), appendChild(), insertBefore() or the innerHTML property
+
+
+```javascript
+var ul = document.querySelector('#myList');
+ul.append(li); // insert at the end, appendChild() could also be used (old)
+ul.prepend(li); // insert at the beginning
+ul.insertBefore(li, another_element_child_of_ul);// insert in the middle
+document.body.append(img); // adds the image at the end of the document
+```
+
+### A warning about append vs appendChild, prepend, etc...
+
+#### If the examples do not run on your browser (Edge, IE, old browsers), read this!
+
+The DOM specification recently added some jQuery like methods that are similar to the ones proposed by the jQuery library 
+(that was designed a long time ago to simplify DOM manipulations).
+
+For a long time, developers used `document.appendChild` to add an element to the DOM. Now you can use document.append, 
+which is shorter, along with some other methods such as `document.prepend` etc. All these methods are supported by recent 
+browsers except Microsoft Edge (but support is coming soon). See this table for compatibility.
+
+> In the course, we recommend that you use document.append, but if you are looking for maximum compatibility, you can either use document.appendChild instead of document.append (just search and replace all occurrences of document.append with document.appendChild in the examples), or add to your JavaScript code this polyfill.
+
+Just copy and paste the 10 lines of JavaScript from the polyfill to your code and append will work on browsers that do not yet 
+implement it.
+
+Here is an example in JsBin that uses all these new methods, and that includes the polyfill for append and prepend at the end 
+of the JavaScript code.
+
+#### Example 1: use of the createElement(), append() methods and of the textContent attribute:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Adding new elements to the DOM</title>
+</head>
+<body>
+<label for="newNumber">Please enter a number</label>
+<input type="number" id="newNumber" value=0>
+<button onclick="add();">Add to the list</button>
+<br>
+<button onclick="reset();">Reset list</button>
+ 
+<p>You entered:</p>
+<ul id="numbers"></ul>
+</body>
+</html>
+```
+
+
+```css
+input:invalid {
+  color:pink;
+}
+```
+
+
+```javascript
+function add() {
+  // get the current value of the input field
+  var val = document.querySelector('#newNumber').value;
+  if((val !== undefined) && (val !== "")) {
+    // val exists and non empty
+    // get the list of numbers. It's a <ul>
+    var ul = document.querySelector("#numbers");
+    // add it to the list as a new <li>
+    var newNumber = document.createElement("li");
+    newNumber.textContent = val;
+    // or newNumber.innerHTML = val
+    ul.append(newNumber);
+  }
+}
+ 
+function reset() {
+  // get the list of numbers. It's a <ul>
+  var ul = document.querySelector("#numbers");
+  // reset it: no children
+  ul.innerHTML = ""; 
+}
+```
+
+HTML code extract: we use an `<input type="number">` for entering a number (line 2). Then if one clicks on the **Add to the list** button, 
+the add() JavaScript function is called (line 3), this will add the typed number to the empty list at line 7. If one presses the **reset** 
+button, it will empty this same list by calling the `reset()` JavaScript function.
+
+JavaScript code extract: notice at line 25 the use of the innerHTML property for resetting the content of the `<ul>` list. `innerHTML` 
+corresponds to all the sub DOM contained inside the `<ul>...</ul>`. `InnerHTML` can be used for adding/deleting/modifying a DOM node's content.
+
+#### Example 2: using the innerHTML property to add new elements
+
+This is the same example, but in an abbreviated form, using the innerHTML property:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Adding new elements to the DOM</title>
+</head>
+<body>
+  <label for="newNumber">Please enter a number</label>
+  <input type="number" id="newNumber" value=0>
+  <button onclick="add()">Add to the list</button>
+  <br>
+  <button onclick="reset();">Reset list</button>
+
+<p>You entered:</p>
+<ul id="numbers"></ul>
+</body>
+</html>
+```
+
+
+```css
+input:invalid {
+  color:pink;
+}
+```
+
+
+```javascript
+function add() {
+  // get the current value of the input field
+  var val = document.querySelector('#newNumber').value;
+  
+  if((val !== undefined) && (val !== "")) {
+    // val exists and non empty
+    
+    // get the list of numbers. It's a <ul>
+    var ul = document.querySelector("#numbers");
+     
+    ul.innerHTML += "<li>" + val + "</li>";
+  }
+}
+
+function reset() {
+  document.querySelector("#numbers").innerHTML = "";
+}
+```
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Moving HTML elements in the DOM
+
+# Moving HTML elements in the DOM
+
+
 
