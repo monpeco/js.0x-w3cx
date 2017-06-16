@@ -3497,3 +3497,236 @@ Notice that identifier, tagName and className must be of type String.
 # Changing the style of selected HTML elements
 
 ### Changing the style of selected HTML elements
+
+The style attribute: how to modify an HTML element's CSS properties from JavaScript
+
+The most common way to modify the CSS style of one of several elements you selected using the DOM or Selector API, is to use the style attribute.
+
+Typical use:
+
+```javascript
+// select the paragraph with id = "paragraph1"
+var p = document.querySelector('#paragraph1');
+ 
+// change its color
+p.style.color = 'red';
+```
+
+### Warning: with the style attribute, you can modify (or read) any CSS property, but be careful: the syntax changes a little due to the fact that in JavaScript the "-" is a math operator, while in CSS it is used to separate properties made of multiple words, such as background-color.
+
+#### When using such properties from JavaScript, the rule is simple:
+
+1. Remove the `-` sign,
+2. Capitalize the word after the "-" sign!
+
+### Simple, isn't it?
+
+Examples:
+
+* `text-align` becomes `style.testAlign`
+* `margin-left` becomes `style.marginLeft`
+* etc.
+
+The most useful CSS properties (we do recommend that you follow the W3Cx courses CSS basics, CSS and HTML5 fundamentals from W3Cx to 
+learn more about CSS):
+
+* `color`: changing the color of the text content of selected element(s),
+* `background-color`: same but this time the background color,
+* `margin` and `padding` properties (external and internal margins), including their variants: `margin-left`, `margin-top`, `margin-right`, `margin-bottom`, also `padding-left`, etc.
+* `border` and `border-radius`: change the border, type (plain, dashed), color, thickness, rounded corners etc.
+* `box-shadow` to add shadows to selected elements, 
+* `font`, `font-style`: font characters and style (italic, bold, plain)
+* `text-align` (centered, etc.)
+
+
+Here are some examples:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Change background color of p under an element whose id is known</title>
+</head>
+<body>
+  <button onclick="changeCSSStyle();">Change different properties of the paragraphs, using the style attribute</button>
+  <br>
+<div id="firstDiv">
+  <p id="p1">Paragraph 1.</p>
+  <p id="p2">Paragraph 2.</p> 
+  <p id="p3">Paragraph 3.</p>
+  <p id="p4">Paragraph 4.</p>
+  <p id="p5">Paragraph 5.</p>
+  <p id="p6">Paragraph 6.</p>
+
+</div>
+</body>
+</html>
+
+```
+
+
+```javascript
+function changeCSSStyle(id) {
+  var p = document.querySelector("#p1");
+
+  p.style.color = 'red';
+  p.innerHTML = 'style.color used to change the color';
+
+  p = document.querySelector("#p2");
+
+  p.style.backgroundColor = 'lightGreen';
+  p.innerHTML = 'style.backgroundColor used';
+
+  p = document.querySelector("#p3");
+
+  p.style.marginLeft = '100px';
+  p.innerHTML = 'style.leftMargin used to shift this paragraph 100px to the right';
+  
+  p = document.querySelector("#p4");
+
+  p.style.border = '2px solid blue';
+  p.style.padding = "20px";
+  p.innerHTML = 'style.border and style.padding (internal margins) used';
+
+
+  p = document.querySelector("#p6");
+
+  p.style.textAlign = 'center';
+  p.style.border = "1px dashed red";
+  // for boxShadow: h-shadow v-shadow blur spread color
+  p.style.boxShadow = "2px 2px 5px 0px grey";
+  p.innerHTML = 'style.textAlign, style.border, style.bowShadow used';
+
+}
+```
+#### Using the ClassList interface to change more than one CSS property simultaneously
+
+External resources:
+
+* The W3C specification about the classList DOM interface - https://www.w3.org/TR/dom/#dom-element-classlist
+* An article from the Mozilla Developer's web site - https://hacks.mozilla.org/2010/01/classlist-in-firefox-3-6/
+
+Until now, to manipulate CSS classes of an HTML element was a bit complex, both for verifying the presence of a class name in an element, and for adding or removing classes associated with a given element.
+
+The ClassList interface simplifies it all by acting as a container object and by providing a set of methods to manipulate its content.
+
+The classList property applies to an HTML element, and returns a collection of class names:
+
+
+```javascript
+var elem= document.querySelector("#id1");
+ 
+var allClasses = elem.classList;
+```
+
+### The classList API
+
+The list of methods usable on a classList object are add(), remove(), toggle() and contains().
+
+```javascript
+// By default, start without a class in the div: <div class=""/>
+// Set "foo" as the class by adding it to the classList
+div.classList.add('foo'); // now <div class="foo"/>
+
+// Check that the classList contains the class "foo"
+div.classList.contains('foo'); // returns true
+
+// Remove the class "foo" from the list
+div.classList.remove('foo'); // now <div class=""/>
+
+// Check if classList contains the class "foo"
+div.classList.contains('foo'); // returns false: "foo" is gone
+
+// Check if class contains the class "foo",
+// If it does, "foo" is removed, if it doesn't, it's added
+div.classList.toggle('foo'); // class set to <div class="foo"/>
+div.classList.toggle('foo'); // class set to <div class=""/>
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>querySelector and querySelector example 1</title>
+</head>
+<body>
+  <button onclick="displayListOfCheckedItems();">Show Checked items</button>
+  <button onclick="reset();">Reset list</button>
+  <br>
+<ul id="fruits">
+    <li>
+       <input type="checkbox" name="fruit" value="apples">Apples
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="oranges">
+        Oranges
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="bananas">   
+        Bananas
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="grapes">
+        Grapes
+    </li>
+</ul>
+</body>
+</html>
+
+```
+
+
+```css
+.checked {
+    border: 2px dashed #000;
+    background-color: green;
+    color:yellow;
+}
+
+```
+
+
+```javascript
+function displayListOfCheckedItems() {
+  // all inputs that have been checked
+  var listOfSelectedValues="";
+  
+  var list = document.querySelectorAll("#fruits input:checked");  
+  list.forEach(function(elm) {
+    listOfSelectedValues += elm.value + " ";
+    
+    // get the li parent of the current selected input
+    var liParent = elm.parentNode;
+    // add the CSS class .checked
+    liParent.classList.add("checked");
+  });
+  document.body.append("You selected: " + listOfSelectedValues);
+}
+
+function reset() {
+  var list = document.querySelectorAll("#fruits input");  
+  list.forEach(function(elm) {
+    // uncheck
+    elm.checked = false;
+    
+    // remove CSS decoration
+    var liParent = elm.parentNode;
+    liParent.classList.remove("checked");
+  });
+}
+```
+
+... and the `classList.add(CSS_class)` and `classList.remove(CSS_class)` methods on the `<li>` elements
+
+---
+
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Changing the content of selected HTML elements
+
+# Changing the content of selected HTML elements
+
+### Modifying selected HTML elements
