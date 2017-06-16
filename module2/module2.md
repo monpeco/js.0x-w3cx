@@ -5414,6 +5414,555 @@ the iterator is the same as in the previous example. We did not have to modify t
 
 ### Mouse interactions, mouse events in a canvas
 
+Mouse interactions, mouse events
+
+INTRODUCTION
+
+Detecting mouse events in a canvas is quite straightforward: you add an event listener to the canvas, and the browser invokes that listener when the event occurs.
+
+The example below is about listening to `mouseup` and `mousedown` events (when a user presses or releases any mouse button):
+
+
+```javascript
+canvas.addEventListener('mousedown', function (evt) {
+    // do something with the mousedown event
+});
+ 
+canvas.addEventListener('mousedup', function (evt) {
+    // do something with the mouseup event
+});
+```
+
+The event received by the listener function will be used for getting the button number or the coordinates of the mouse cursor. Before 
+looking at different examples, let's look at the different event types we can listen to.
+
+### The different mouse events (reminder)
+
+In the last example, we saw how to detect the `mouseup` and `mousedown` events.
+
+There are other events related to the mouse:
+
+* `mouseleave`: similar to `mouseout`, fired when the mouse leaves the surface of the element. The difference between `mouseleave` and `mouseout` is that mouseleave does not fire when the cursor moves over descendant elements, and mouseout is fired when the element the cursor moves to is outside the bounds of the original element or is a child of the original element.
+* `mouseover`: the mouse cursor is moving over the element that listens to that event. A mouseover event occurs on an element when you are over it - coming from either its child OR parent element, but a mouseenter event only occurs when the mouse moves from the parent element to the child element.
+* `mousedown`: fired when a mouse button is pressed.
+* `mouseup`: fired when a mouse button is released.
+* `mouseclick`: fired after a mousedown and a mouseup have occured.
+* `mousemove`: fired while the mouse moves over the element. Each time the mouse moves, a new event is fired, unlike with mouseover or mouseenter, where only one event is fired.
+
+#### The tricky part: getting the position of the mouse relative to the canvas
+
+When you listen to any of the above events, the event object (we call it a "DOM event"), passed to the listener function, has properties 
+that correspond to the mouse coordinates: `clientX` and `clientY`.
+
+> However, these are what we call "viewport coordinates". Instead of being relative to the canvas itself, they are relative to the 
+> viewport (the visible part of the page).
+
+Most of the time you need to work with the mouse position relative to the canvas, not to the viewport, so you must convert the coordinates between the viewport and the canvas. This will take into account the position of the canvas in the viewport, and the CSS properties that may affect the canvas position (margin, etc.).
+
+Fortunately, there is a method for getting the position and size of any element in the viewport: `getBoundingClientRect()`.
+
+Here is an example that shows the problem:
+
+```html
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wrong way to get the mouse
+    position in a canvas</title>
+    <style>
+      body {
+        margin: 20px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    Move the mouse cursor to the
+    top left corner of the canvas:<p></p>
+    <p>Instead of (0, 0), you will see coordinates relative to the window object (page)</p>
+    <canvas id="myCanvas" width="300" height="200"></canvas>
+  </body>
+</html>
+```
+
+
+```javascript
+var canvas, ctx, mousePos, mouseButton;
+
+window.onload = function init() {
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext('2d');
+
+    canvas.addEventListener('mousemove', function (evt) {
+        mousePos = getMousePos(canvas, evt);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+      canvas.addEventListener('mousedown', function (evt) {
+        mouseButton = evt.button;
+        var message = "Mouse button " + evt.button + " down at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+    canvas.addEventListener('mouseup', function (evt) {
+        var message = "Mouse up at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+};
+
+
+
+function writeMessage(canvas, message) {
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '18pt Calibri';
+    ctx.fillStyle = 'black';
+    ctx.fillText(message, 10, 25);
+    ctx.restore();
+}
+
+function getMousePos(canvas, evt) {
+    // WRONG !
+    return {
+        x: evt.clientX,
+        y: evt.clientY
+    };
+}
+
+```
+
+#### WRONG code used in this example:
+
+
+```javascript
+...
+canvas.addEventListener('mousemove', function (evt) {
+    mousePos = getMousePos(canvas, evt);
+    var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+    writeMessage(canvas, message);
+}, false);
+ 
+...
+function getMousePos(canvas, evt) {
+   // WRONG!!!
+   return {
+      x: evt.clientX,
+      y: evt.clientY
+   };
+}
+```
+
+Here is the result, when the mouse is approximately at the top left corner of the canvas:
+![WRONG](https://courses.edx.org/asset-v1:W3Cx+HTML5.1x+4T2015+type@asset+block@badMouseCoords.jpg)
+
+A good version of the code: 
+
+
+```javascript
+var canvas, ctx, mousePos, mouseButton;
+
+window.onload = function init() {
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext('2d');
+
+    canvas.addEventListener('mousemove', function (evt) {
+        mousePos = getMousePos(canvas, evt);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+      canvas.addEventListener('mousedown', function (evt) {
+        mouseButton = evt.button;
+        var message = "Mouse button " + evt.button + " down at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+    canvas.addEventListener('mouseup', function (evt) {
+        var message = "Mouse up at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+};
+
+
+
+function writeMessage(canvas, message) {
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '18pt Calibri';
+    ctx.fillStyle = 'black';
+    ctx.fillText(message, 10, 25);
+    ctx.restore();
+}
+
+function getMousePos(canvas, evt) {
+   // necessary to take into account CSS boundaries
+   var rect = canvas.getBoundingClientRect();
+   return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+   };
+}
+
+```
+
+And here is the fixed version of the getMousePos function:
+
+```javascript
+function getMousePos(canvas, evt) {
+   // necessary to take into account CSS boundaries
+   var rect = canvas.getBoundingClientRect();
+   return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+   };
+}
+```
+Result (the cursor is approximately at the top left corner):
+
+![Result](https://courses.edx.org/asset-v1:W3Cx+HTML5.1x+4T2015+type@asset+block@mouseZeroZero.jpg)
+
+
+#### A good example that shows how to display the mouse position, and the mouse button that has been pressed or released
+
+This example uses the previous function for computing the mouse position correctly. It listens to `mousemove`, `mousedown` and `mouseup` events,
+ and shows how to get the mouse button number using the `evt.button` property.
+
+Example:
+
+
+```javascript
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>Wrong way to get the mouse
+    position in a canvas</title>
+    <meta charset="utf-8">
+    <style>
+      body {
+        margin: 20px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+   <p> Move the mouse cursor and click anywhere!</p>
+    <canvas id="myCanvas" width="300" height="200"></canvas>
+  </body>
+</html>
+```
+
+
+
+
+```html
+var canvas, ctx, mousePos, mouseButton;
+
+window.onload = function init() {
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext('2d');
+
+    canvas.addEventListener('mousemove', function (evt) {
+        mousePos = getMousePos(canvas, evt);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+      canvas.addEventListener('mousedown', function (evt) {
+        mouseButton = evt.button;
+        var message = "Mouse button " + evt.button + " down at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+
+    canvas.addEventListener('mouseup', function (evt) {
+        var message = "Mouse up at position: " + mousePos.x + ',' + mousePos.y;
+        writeMessage(canvas, message);
+    }, false);
+};
+
+```
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.6 Let's write a small game   Moving a player with the mouse
+
+# Moving a player with the mouse
+
+This time, we've added a mousemove event listener to the canvas in the init function, and reused the trick that you saw in the previous section to get the correct mouse position:
+
+Working example:
+
+
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Draw a monster in a canvas</title>
+</head>
+<body>
+  <canvas id="myCanvas"  width="400" height="400"></canvas>
+</body>
+</html>
+```
+
+
+
+
+```html
+// useful to have them as global variables
+var canvas, ctx, w, h; 
+var mousePos;
+
+// an empty array!
+var balls = []; 
+
+var player = {
+  x:10,
+  y:10,
+  width:20,
+  height:20,
+  color:'red'
+}
+
+window.onload = function init() {
+    // called AFTER the page has been loaded
+    canvas = document.querySelector("#myCanvas");
+  
+    // often useful
+    w = canvas.width; 
+    h = canvas.height;  
+  
+    // important, we will draw with this object
+    ctx = canvas.getContext('2d');
+  
+    // create 10 balls
+    balls = createBalls(10);
+  
+    // add a mousemove event listener to the canvas
+    canvas.addEventListener('mousemove', mouseMoved);
+
+    // ready to go !
+    mainLoop();
+};
+
+function mouseMoved(evt) {
+    mousePos = getMousePos(canvas, evt);
+}
+
+function getMousePos(canvas, evt) {
+    // necessary work in the canvas coordinate system
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function movePlayerWithMouse() {
+  if(mousePos !== undefined) {
+    player.x = mousePos.x;
+    player.y = mousePos.y;
+  }
+}
+
+function mainLoop() {
+  // 1 - clear the canvas
+  ctx.clearRect(0, 0, w, h);
+  
+  // draw the ball and the player
+  drawFilledRectangle(player);
+  drawAllBalls(balls);
+
+  // animate the ball that is bouncing all over the walls
+  moveAllBalls(balls);
+  
+  movePlayerWithMouse();
+  
+  // ask for a new animation frame
+  requestAnimationFrame(mainLoop);
+}
+
+
+function createBalls(n) {
+  // empty array
+  var ballArray = [];
+  
+  // create n balls
+  for(var i=0; i < n; i++) {
+     var b = {
+        x:w/2,
+        y:h/2,
+        radius: 5 + 30 * Math.random(), // between 5 and 35
+        speedX: -5 + 10 * Math.random(), // between -5 and + 5
+        speedY: -5 + 10 * Math.random(), // between -5 and + 5
+        color:getARandomColor(),
+      }
+     // add ball b to the array
+     ballArray.push(b);
+    }
+  // returns the array full of randomly created balls
+  return ballArray;
+}
+
+function getARandomColor() {
+  var colors = ['red', 'blue', 'cyan', 'purple', 'pink', 'green', 'yellow'];
+  // a value between 0 and color.length-1
+  // Math.round = rounded value
+  // Math.random() a value between 0 and 1
+  var colorIndex = Math.round((colors.length-1)*Math.random()); 
+  var c = colors[colorIndex];
+  
+  // return the random color
+  return c;
+}
+
+function drawAllBalls(ballArray) {
+    ballArray.forEach(function(b) {
+      drawFilledCircle(b);
+    });
+}
+
+function moveAllBalls(ballArray) {
+  // iterate on all balls in array
+  ballArray.forEach(function(b) {
+      // b is the current ball in the array
+      b.x += b.speedX;
+      b.y += b.speedY;
+  
+      testCollisionBallWithWalls(b); 
+  });
+}
+
+function testCollisionBallWithWalls(b) {
+    // COLLISION WITH VERTICAL WALLS ?
+    if((b.x + b.radius) > w) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = w - b.radius;
+  } else if((b.x -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = b.radius;
+  }
+  
+  // COLLISIONS WTH HORIZONTAL WALLS ?
+  // Not in the else as the ball can touch both
+  // vertical and horizontal walls in corners
+  if((b.y + b.radius) > h) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.y = h - b.radius;
+  } else if((b.y -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.Y = b.radius;
+  }  
+}
+
+function drawFilledRectangle(r) {
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(r.x, r.y);
+  
+    ctx.fillStyle = r.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.fillRect(0, 0, r.width, r.height);
+  
+    // GOOD practice: restore the context
+    ctx.restore();
+}
+
+function drawFilledCircle(c) {
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(c.x, c.y);
+  
+    ctx.fillStyle = c.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.beginPath();
+    ctx.arc(0, 0, c.radius, 0, 2*Math.PI);
+    ctx.fill();
+ 
+    // GOOD practice: restore the context
+    ctx.restore();
+}
+```
+
+Extract from the JavaScript source code:
+
+Line 9 defines a mousemove event listener: the `mouseMoved` callback function will be called each time the user moves the mouse on the 
+canvas.
+
+The `mouseMoved(evt)` function uses the trick from the previous section and puts the correct mouse position in the `mousePos` variable. 
+
+With this code, as soon as we move the mouse on top of the canvas, we'll have this `mousePos` global variable (line1) that will 
+contain the mouse position (in the form of the `mousePos.x` and `mousePos.y` properties).
+
+And here is the new `mainLoop` function. We added a call to the `mousePlayerWithMouse` function:
+
+```javascript
+function mainLoop() {
+    // 1 - clear the canvas
+    ctx.clearRect(0, 0, w, h);
+    // draw the ball and the player
+    drawFilledRectangle(player);
+    drawAllBalls(balls);
+ 
+    // animate the ball that is bouncing all over the walls
+    moveAllBalls(balls);
+    movePlayerWithMouse();
+    // ask for a new animation frame
+    requestAnimationFrame(mainLoop);
+}
+```
+
+And here is the code of the movePlayerWithMouse function:
+
+
+```javascript
+function movePlayerWithMouse() {
+    if(mousePos !== undefined) {
+        player.x = mousePos.x;
+        player.y = mousePos.y;
+    }
+}
+```
+
+If the mouse position is defined, the player's x and y position will equal to the positions of the mouse pointer.
+
+The mouse position may be undefined if the animation loop started without the mouse cursor being on top of the canvas. 
+Remember that the `mainLoop` starts as soon as the page is loaded.
+
+Perhaps it's occurred to you that it might be better to move the player **from its center** instead of from its top left 
+corner. We leave this improvement to you! :-)
+
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.6 Let's write a small game   Making it a game! Adding collision detection
+
+# Making it a game! Adding collision detection
+
+
+
 
 
 
