@@ -4180,6 +4180,132 @@ function drop(target, evt) {
 
 # Removing elements from the DOM
 
+Let's take an example that we've already encountered. This time, you will check the elements you want to remove from the list!
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>RemoveChild example</title>
+</head>
+<body>
+  <button onclick="removeSelected();">Remove selected items</button>
+  <button onclick="reset();">Reset in initial configuration</button>
+  <br>
+<ul id="fruits">
+    <li>
+       <input type="checkbox" name="fruit" value="apples">Apples
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="oranges">
+        Oranges
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="bananas">   
+        Bananas
+    </li>
+    <li>
+       <input type="checkbox" name="fruit" value="grapes">
+        Grapes
+    </li>
+</ul>
+</body>
+</html>
+```
+
+
+```javascript
+function removeSelected() {  
+  var list = document.querySelectorAll("#fruits input:checked"); 
+  var ul = document.querySelector("#fruits");
+  
+  list.forEach(function(elm) {
+    // elm is an <input type="checkbox">, its parent is a li
+    // we want to remove from the <ul> list
+    // when we remove the <li>, the <input> will also
+    // be removed, as it's a child of the <li>
+    var li = elm.parentNode;
+    ul.removeChild(li);
+  });
+}
+
+function reset() {
+  var ul = document.querySelector("#fruits");
+  // Empty the <ul>
+  ul.innerHTML = "";
+  
+  // Adds each list item to the <ul> using innerHTML += ...
+  ul.innerHTML += "<li><input type='checkbox' name='fruit' value='apples'>Apples</li>";
+
+  ul.innerHTML += "<input type='checkbox' name='fruit' value='oranges'>Oranges</li><br>";
+
+    ul.innerHTML += "<input type='checkbox' name='fruit' value='bananas'>Bananas</li><br>";
+
+    ul.innerHTML += "<input type='checkbox' name='fruit' value='grapes'>Grapes</li>";
+}
+```
+
+JavaScript code extract: we need to get the `<ul>` that contains all the `<li><input type="checkbox"></li>` elements (line 3). 
+This is the element we will use for calling `removeChild(...)`. The loop on the checked element (lines 5-12) iterates on a list 
+of checked input elements. In order to make both the text (Apples, Oranges, etc.) AND the checkbox disappear, we need to access 
+the different `<li>` elements that contain the selected checkboxes. This is done in line 10. Then, we can call `ul.removeChild(li)` 
+on the `<ul>` for removing the `<li>` that contains the selected element (line 11). 
+
+### Remove all children of an element using the innerHTML property
+
+In the same example, if you look at the reset() JavaScript function, we use the ul's `innerHTML` property both for emptying the 
+list (lines 3-4) and for appending to it all the initial HTML code (lines 6-17):
+
+
+```javascript
+function reset() {
+  var ul = document.querySelector("#fruits");
+  // Empty the <ul>
+  ul.innerHTML = "";
+  // Adds each list item to the <ul> using innerHTML += ...
+  ul.innerHTML += "<li><input type='checkbox' name='fruit'   
+                   value='apples'>Apples</li>";
+ 
+  ul.innerHTML += "<input type='checkbox' name='fruit' 
+                   value='oranges'>Oranges</li><br>";
+ 
+  ul.innerHTML += "<input type='checkbox' name='fruit'
+                   value='bananas'>Bananas</li><br>";
+ 
+  ul.innerHTML += "<input type='checkbox' name='fruit'
+                   value='grapes'>Grapes</li>";
+}
+```
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.5 The DOM API   Discussion topics
+
+# Discussion topics
+
+### Discussion topics
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion.
+
+Suggested topics
+
+* Did you know there were different keyboard layouts?
+* Did you know the best practices in order to make a Web application compatible with different keyboard layouts?
+* Did you know there were different properties for getting the mouse coordinates?
+* Did you know the method we proposed for getting the mouse coordinate relative to the element the mouse is being moved on?
+* Sometimes, detecting key events on a canvas HTML element is tricky. Do not forget to visit the HTML5 Coding essentials and Best practices MOOC at W3Cx, as we cover these in details in the section about the HTML5 canvas element.
+
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.6 Let's write a small game   Introduction to drawing/animating
+
+# Introduction to drawing/animating
+
+### Live coding video: basic example showing how to draw in a canvas
+
 
 
 
