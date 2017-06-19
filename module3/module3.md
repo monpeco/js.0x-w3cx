@@ -437,10 +437,246 @@ Indeed, there is no built-in function for that. We presented in the course a rem
 
 # Iterating on array elements
 
-### Live coding video: iterating on arrays
+### Live coding video: iterating on arrays 
 
 >! Missing video/trasncript
 
+Get the source code of the example shown in the video:
+
+https://codepen.io/w3devcampus/pen/VWYMNK
+
+### Iterating on array elements
+
+#### 1 - Iterating using the forEach method
+
+The `forEach` method takes a single argument that is a function/callback that can have one, two or three parameters:
+
+* The first parameter is the current element of the array,
+* The second parameter (optional) is the index of the current element in the array,
+* The third element is the array itself
+
+Typical use with only one parameter (the current element):
+
+
+```javascript
+var a = ['Monday', 'Tuesday', 'Wednesday'];
+ 
+a.forEach(function(day) {
+    // day is the current element
+    document.body.innerHTML += day +
+                "<br>"; // will display Monday, Tuesday, Wednesday
+})
+```
+This is the most practical way to iterate on each individual element of a collection (array, string);
+
+#### We iterate on an array of person, and use two parameters in the callback function in order to get the index of the current element:
+
+```javascript
+var persons = [
+  {name:'Michel', age:51},
+  {name:'Henri', age:20},
+  {name:'Francois', age:29}
+];
+
+persons.forEach(function(p, index) {
+  document.body.innerHTML += p.name + ", age " + p.age + ", at index " + index + " in the array<br>"; 
+});
+```
+
+#### Third example using three parameters, the last one being the array itself.
+
+This can be useful if we need to know the length of the array, or do special things within the array (add/change/move elements during the iteration):
 
 
 
+```javascript
+var persons = [
+     {name:'Michel', age:51},
+     {name:'Henri', age:20},
+     {name:'Francois', age:29}
+];
+ 
+persons.forEach(function(p, index, theArray) {
+     document.body.innerHTML += p.name + ", age " + p.age +
+                             ", at index " + index + " in the array of " +
+                            theArray.length + " elements<br>";
+});
+```
+In this example, we used the third parameter (the array) to access its length inside the iteration loop.
+
+### 2 - Iterating on an array using regular loop statements
+
+You can use any standard loop statement that we saw during in module 2. The most common way to iterate over an array is to use a for loop from 0 to length-1. 
+
+Using this method allows elements to be iterated two by two, or the loop to be broken in the middle using the break instruction, etc.
+
+Iterating over all elements in an array, using a for loop:
+
+```javascript
+var persons = [
+  {name:'Michel', age:51},
+  {name:'Henri', age:20},
+  {name:'Francois', age:29}
+];
+
+for(var i = 0; i < persons.length; i++) {
+  var p = persons[i]; // current element
+  
+  document.body.innerHTML += p.name + "<br>"; 
+}
+```
+Another example where we iterate two by two (just changed the increment in the for loop):
+```javascript
+var persons = [
+  {name:'Michel', age:51},
+  {name:'Henri', age:20},
+  {name:'Francois', age:29},
+  {name:'John', age:69}
+];
+
+for(var i = 0; i < persons.length; i+=2) {
+  var p = persons[i]; // current element
+  
+  document.body.innerHTML += p.name + "<br>"; 
+}
+```
+
+--- 
+
+#### Module 3: Playing with some HTML5 APIs   3.2 Arrays (part 2): iterators   Discussion topics and projects
+
+# Discussion topics and projects
+
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and an optional project.
+
+Suggested topics
+
+Which syntax do you prefer for iterating arrays?
+We decided not to explain all the things you can do with the splice method. It's a very powerful method, but showing all its features could be overwhelming. However, if you're curious, please look on the Web for more details. Do you think we've been right not to tell you all the possibilities of splice?
+Optional project: an interactive picture album browser
+
+We will start with an array variable like that:
+
+```javascript
+let myPicturesArray = [
+{
+    "albumId": 1,
+    "id": 1,
+    "title": "accusamus beatae ad facilis cum similique qui sunt",
+    "url": "http://placehold.it/600/92c952",
+    "thumbnailUrl": "http://placehold.it/150/92c952"
+},
+{
+    "albumId": 1,
+    "id": 2,
+    "title": "reprehenderit est deserunt velit ipsam",
+    "url": "http://placehold.it/600/771796",
+    "thumbnailUrl": "http://placehold.it/150/771796"
+},
+{
+    "albumId": 2,
+    "id": 51,
+    "title": "non sunt voluptatem placeat consequuntur rem incidunt",
+    "url": "http://placehold.it/600/8e973b",
+    "thumbnailUrl": "http://placehold.it/150/8e973b"
+},
+{
+    "albumId": 2,
+    "id": 52,
+    "title": "eveniet pariatur quia nobis reiciendis laboriosam ea",
+    "url": "http://placehold.it/600/121fa4",
+    "thumbnailUrl": "http://placehold.it/150/121fa4"
+},
+{
+    "albumId": 3,
+    "id": 127,
+    "title": "magnam quia sed aspernatur",
+    "url": "http://placehold.it/600/74456b",
+    "thumbnailUrl": "http://placehold.it/150/74456b"
+},
+{
+    "albumId": 3,
+    "id": 128,
+    "title": "est facere ut nam repellat numquam quia quia eos",
+    "url": "http://placehold.it/600/b0931d",
+    "thumbnailUrl": "http://placehold.it/150/b0931d"
+}
+];
+```
+It's an array of pictures, each picture having a URL, a URL for a tiny version of the picture, called a thumbnail, a title, and the name of the album it belongs to, that can be used as a picture description (HTML alt attribute) but also for displaying it next to the picture.
+Here is a small example that iterates on the pictures and create `<img>` elements on the fly:
+
+
+```javascript
+let myPicturesArray = [
+{
+"albumId": 1,
+"id": 1,
+"title": "accusamus beatae ad facilis cum similique qui sunt",
+"url": "http://placehold.it/600/92c952",
+"thumbnailUrl": "http://placehold.it/150/92c952"
+},
+{
+"albumId": 1,
+"id": 2,
+"title": "reprehenderit est deserunt velit ipsam",
+"url": "http://placehold.it/600/771796",
+"thumbnailUrl": "http://placehold.it/150/771796"
+},
+{
+"albumId": 2,
+"id": 51,
+"title": "non sunt voluptatem placeat consequuntur rem incidunt",
+"url": "http://placehold.it/600/8e973b",
+"thumbnailUrl": "http://placehold.it/150/8e973b"
+},
+{
+"albumId": 2,
+"id": 52,
+"title": "eveniet pariatur quia nobis reiciendis laboriosam ea",
+"url": "http://placehold.it/600/121fa4",
+"thumbnailUrl": "http://placehold.it/150/121fa4"
+},
+{
+"albumId": 3,
+"id": 127,
+"title": "magnam quia sed aspernatur",
+"url": "http://placehold.it/600/74456b",
+"thumbnailUrl": "http://placehold.it/150/74456b"
+},
+{
+"albumId": 3,
+"id": 128,
+"title": "est facere ut nam repellat numquam quia quia eos",
+"url": "http://placehold.it/600/b0931d",
+"thumbnailUrl": "http://placehold.it/150/b0931d"
+}
+];
+
+// Display picures
+
+myPicturesArray.forEach(function(currentImage) {
+   let image = document.createElement("img");
+   image.src = currentImage.thumbnailUrl;
+   image.alt = currentImage.title;
+   document.body.append(image);
+});
+```
+
+What you will have to do:
+* Improve the display, by adding margins (CSS), shadows, border, and changing the URLs for real pictures. Remember that you need to have a smaller versions of the pictures, i.e., thumbnails. You can use existing images (images.google.com is your friend) or images you upload somewhere.
+* Use JavaScript for adding a click event listener on each image, then when clicked, you will show a bigger version of each picture. For the moment, just change the value of the src attribute of the clicked image (set it to the URL of the full size image from the array).
+* Try to make something nicer: reserve a `<div>` on the right of the document so to display the clicked image with a bigger size. In that case, you will need to create an image (only once, after the first click), to set it to the size of the div (use the width and height attributes of the img element), and to append it to the div.
+* Try to add more images, and find a way to display them per album. Create buttons entitled "album1", "album2", etc., and when clicked, you will only display images from the selected album.
+* [Advanced] Add an option for deleting a picture. It should be removed from the document and from the array too...
+* Fell free to add any interesting feature you think about ;-)
+
+
+--- 
+
+#### Module 3: Playing with some HTML5 APIs   3.3 HTML5 multimedia and JavaScript API   Audio and video stream intro
+
+# Audio and video stream intro
