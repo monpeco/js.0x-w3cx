@@ -680,3 +680,39 @@ What you will have to do:
 #### Module 3: Playing with some HTML5 APIs   3.3 HTML5 multimedia and JavaScript API   Audio and video stream intro
 
 # Audio and video stream intro
+
+Play audio and video streams
+
+These examples are adapted from the ones in the W3Cx HTML5 Coding Essentials and Best Practices course, which covers multimedia 
+in depth. The HTML5 advanced course also gives further examples covering topics such as making a video player with chapter 
+navigation, clickable transcript, audio EQ, etc.
+
+### The <video> element
+
+INTRODUCTION
+
+The `<video>` element of HTML5 is one of the two "Flash killers" (the other being the `<canvas>` element). It was designed to 
+replace horrible things like embedded Flash objects that we used to encounter not so long ago.
+
+The new way of doing things is a lot better... (please open this live example at [JS Bin](http://jsbin.com/sisule/1/edit?html,output)).
+
+The source code of this example shows the typical usage of the <video> element:
+
+
+```javascript
+<video width="320" height="240" controls="controls">
+   <source src="movie.mp4" type="video/mp4" />
+   <source src="movie.ogg" type="video/ogg" />
+   Your browser does not support the <video> element.
+</video>
+```
+Please note that:
+
+* The controls attribute indicates that a control panel with play/stop/volume/progress widgets should be displayed;
+* Usually the browser  will use the first format it recognizes  (in this case, the browser checks whether mp4 is supported, and if not, it will check for the ogg format, and so on). Some browsers may use a different heuristic and choose a "preferred" format.
+* The `<video>` element is a DOM member, so  CSS styling can be applied, as well as manipulation using the DOM API.
+You will learn more about the different attributes of the <video> element later on in the course.
+
+RESTRICTION: You cannot embed a YouTube or a Daily Motion video using the <video> element
+
+Help! <video src="my youtube video URL"></video> does not work! 
