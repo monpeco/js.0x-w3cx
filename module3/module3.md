@@ -11,3 +11,245 @@ JavaScript arrays and strings: in this module, we continue to study fundamental 
 New HTML5 APIs - geolocation and video/audio APIs: in module 2, we looked at some HTML5 APIs already: the selector and the DOM APIs, respectively for selecting and manipulating HTML elements dynamically. We also had a taste of the HTML5 canvas API for drawing and animating. This time, we will look at the audio and video elements APIs, and the geolocation API.
 We will also add background Music and sound effects to the small game we started writing during module 2.
 
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.2 Arrays (part 2): iterators   Arrays
+
+# Arrays
+
+### Live coding video: arrays (indexed, length property, sort, splice, push and pop methods)
+
+>! Missing video/transcript
+
+Source code of the example in the video:
+https://codepen.io/w3devcampus/pen/owgeyJ
+
+JavaScript arrays
+
+In JavaScript, arrays represent a collection of "things", which may be strings, integer values, decimal values, boolean values, or any sort of JavaScript object.
+
+
+```javascript
+> var myarr = ['red', 'blue', 'yellow', 'purple'];
+undefined
+ 
+> myarr;
+["red", "blue", "yellow", "purple"]
+ 
+> myarr[0];
+"red"
+ 
+> myarr[3];
+"purple"
+"purple"
+```
+Below is an another example with an array containing three integers. The first element is at index 0, and the last at the index equal to the number of elements-1.
+
+```javascript
+> var a = [];
+> typeof a;
+"object"
+> var a = [1,2,3];
+> a
+[1, 2, 3]
+> a[0]
+1
+> a[1]
+2
+```
+#### JavaScript arrays are objects and have some useful properties and methods
+
+Note that in JavaScript, arrays are "objects" (lines 2-3 in the above example), which means that they have properties and methods. 
+You can access/call them using the `.` operator. Here are the most common properties and methods.
+
+```javascript
+> var a = [1, 3, 2, 5, 7];
+undefined
+ 
+> a.length; // number of elements
+5
+ 
+> a.sort(); // sorts element in a
+[1, 2, 3, 5, 7]
+ 
+> a.splice(2, 1); // remove 1 element starting from index=2 (3rd element)
+[3]
+ 
+> a; // the '3' has been removed from the array
+[1, 2, 5, 7]
+```
+By default, the sort() method sorts elements alphabetically if they are strings, or from lowest to highest if they are numeric. If you want to sort objects like {firstName:'michel', lastName:'Buffa', age:51}, you will need to use another method passed as an argument to the sort method, for example to indicate the property you want to use for sorting (i.e., sort by age);
+
+Example with an array of persons (each person is an object):
+
+```javascript
+var persons = [
+    {givenName: 'Michel', familyName: 'Buffa', age:51},
+    {givenName: 'Pig', familyName: 'Bodine', age:20},
+    {givenName: 'Pirate', familyName: 'Prentice', age:32}
+];
+ 
+function compareByAge(a,b) { // comparison function
+  if (a.age < b.age)         // compare by age
+    return -1;
+  if (a.age > b.age)
+    return 1;
+  return 0;
+}
+ 
+persons.sort(compareByAge);
+```
+Explanations:
+
+Line 17 calls persons.sort(function_that_compares_two_elements), passing as an unique parameter a function that compares two people's ages. This function must return -1 if the first person is younger than the second person. It must return +1 if the second person is older than the first, and 0 if they are the same age.
+We will see more methods in the other subsections of this page.
+
+Elements can be of different types in a same array:
+
+```javascript
+> var a = [1,2,3];
+ 
+> a[2] = 'three';
+"three"
+ 
+> a
+[1, 2, "three"]
+```
+Adding elements to an array
+
+We can add new elements using a new index, if you want to add a new element at the end, use the `push` method!
+
+```javascript
+> var a = [1,2,"three"];
+undefined
+ 
+> a[3] = 'four';
+"four"
+ 
+> a;
+[1, 2, "three", "four"]
+ 
+> a[a.length] = "five"; // adding at the end
+[1, 2, "three", "four", "five"]
+ 
+> a.push("six"); // but usually we prefer using the push method for adding
+[1, 2, 3, "four", "five", "six"]  // a new element at the end
+```
+When using indexes, be careful not to leave "holes" in the array:
+
+```javascript
+> a[7] = 'height';
+"height"
+ 
+> a;
+[1, 2, 3, "four", "five", "six", undefined × 1, "height"]
+```
+This array is valid, but having a [6] equal to "undefined" is often prone to errors. Be careful when using absolute indexes for adding elements. We recommend using the push method instead.
+
+Removing elements from an array
+
+The recommended method is to use the splice method:
+
+```javascript
+array.splice(start)
+array.splice(start, deleteCount)
+```
+* `start`: index at which to start changing the array (with origin 0). 
+* `deleteCount` (Optional): an integer indicating the number of old array elements to remove.  If deleteCount is greater than the number of elements left in the array starting at start, then all of the elements through the end of the array will be deleted. If deleteCount is omitted, deleteCount will be equal to (array.length - start), i.e., all of the elements beginning with start index on through the end of the array will be deleted.
+* **Return value**: an array containing the deleted elements. If only one element is removed, an array of one element is returned. If no elements are removed, an empty array is returned.
+
+```javascript
+> a;
+[1, 2, 3, "four", "five", "six", undefined × 1, "height"]
+ 
+> a.splice(6, 1); // remove element at the sixth index, the undefined one!
+[undefined × 1]
+ 
+> a;
+[1, 2, 3, "four", "five", "six", "height"] // it's no more here :-)
+ 
+> a.splice(0, 3); // remove the three first elements
+[1, 2, 3]
+ 
+> a;
+["four", "five", "six", "height"]
+ 
+> a.splice(a.length-1); // remove the last element
+"height"
+ 
+> a;
+["four", "five", "six"]
+```
+
+#### Recommended method for removing the last element: the pop method!
+```javascript
+> a
+["four", "five", "six"]
+ 
+> a.pop(); // remember push/pop = add / remove element at last position!
+"six"
+ 
+> a
+["four", "five"]
+```
+Trap: the delete method is not good for removing an element from an array!
+```javascript
+> delete a[1];
+true
+ 
+> a;
+["four", undefined × 1] // the element became undefined,
+                        // but it's still in the array!
+```
+### Arrays of arrays
+
+It is possible for an array to be an element within an array! This example shows an array made of two arrays of three elements each. It's a 2x3 matrix with two rows and three columns!
+
+```javascript
+> var a = [[1,2,3], [4,5,6]]; // a is a matrix: 2 rows, 3 columns.
+undefined
+ 
+> a[0]; // first row
+[1, 2, 3]
+ 
+> a[1]; // second row
+[4, 5, 6]
+ 
+> a[0][0]; // top left element
+1
+ 
+> a[0][1]; // second element, first line
+2
+ 
+> a[0][2]; // third element, first line
+3
+ 
+> a[1][0]; // first element, second line
+4
+ 
+> a[1][1]; // second element, second line
+5
+ 
+> a[1][2]; // third element, second line
+6
+```
+It is possible to have different arrays with different lengths and different types of element in an array:
+
+```javascript
+> var a = [];
+undefined
+ 
+> a[0] = [1, 2, 3, 4, 5];
+[1, 2, 3, 4, 5]
+ 
+> a[1] = ['michel', 'henri', 'francois']
+["michel", "henri", "francois"]
+ 
+> a
+[Array(5), Array(3)]
+```
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.2 Arrays (part 2): iterators   Strings are arrays of characters
+
+# Strings are arrays of characters
