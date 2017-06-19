@@ -253,3 +253,194 @@ undefined
 #### Module 3: Playing with some HTML5 APIs   3.2 Arrays (part 2): iterators   Strings are arrays of characters
 
 # Strings are arrays of characters
+### Strings are arrays of characters
+
+Yes, they do look like arrays!
+
+JavaScript strings are "like" arrays of characters, but they have some limitations, and some dedicated properties and methods:
+
+```javascript
+> var s = 'Michel';
+undefined
+ 
+> s[0];
+"M"
+ 
+> s[1];
+"i"
+ 
+> s.length;
+6
+```
+
+Indeed, the string s behaves like an array, it has the length property like an array, and we can access individual characters using 
+indexes that go from 0 to length-1, like arrays...
+
+#### But they are not quite the same as arrays!
+
+You cannot add elements to strings using a non-existent index, you cannot use the push/pop methods for adding/removing  characters at 
+the end of the string:
+
+```javascript
+s.push(' Buffa');
+ 
+ERROR: VM5748:1 Uncaught TypeError: s.push is not a function
+at <anonymous>:1:3
+(anonymous) @ VM5748:1
+ 
+s[s.length] = 'B'; // add 'B' at the end?
+"B"
+ 
+s[s.length] = 'u'; // add 'u' at the end?
+"u"
+ 
+s[s.length] = 'f'; // add 'f' at the end?
+"f"
+ 
+s; // s remained UNCHANGED!
+"Michel"
+```
+* You cannot use `push/pop` as this raises an error "is not a function" (lines 1-5)
+* You can try to put elements out of the range of the string: nothing will happen and the string will remain unchanged (lines 7-17)
+
+You can't even modify a character using an index. Strings are "read only" when using brackets to access individual characters!
+
+```javascript
+> var s = 'Michel';
+undefined
+ 
+> s[0] = "R"; // trying to change the 'M' into an 'R'
+"R"
+ 
+s; // no luck!
+"Michel"
+```
+You also can't remove characters using the array's splice method:
+```javascript
+> s.splice(0, 3);
+ 
+ERROR: VM716:1 Uncaught TypeError: s.splice is not a function
+at <anonymous>:1:3
+```
+#### So: how do we add characters to a string, how can we modify a string? How can we delete elements in a string ?
+
+Strings come with a whole set of methods, which we'll come to in module 4 when we talk about JavaScript objects (in the section titled 
+"JavaScript predefined objects"). Without going into detail just yet, here are some examples:
+
+#### Adding a string to the beginning of a string using the + operator:
+
+```javascript
+> var s = 'Michel';
+undefined
+ 
+> s = "Hello " + s;
+"Hello Michel"
+ 
+> s = 'O' + s; // equivalent to push('0') with arrays
+"OHello Michel"
+```
+
+#### Adding a string to the end of another one with the + operator:
+
+```javascript
+>s = 'Michel';
+"Michel"
+ 
+> s += ' Buffa';
+"Michel Buffa"
+ 
+> s;
+"Michel Buffa"
+```
+#### Adding a string at the end of another one using the concat method:
+
+```javascript
+> var s1 = 'Michel';
+undefined
+ 
+> var s2 = 'Buffa';
+undefined
+ 
+> var s3 = s1 + " " + s2; // + can be used to concat more than 2 strings
+undefined
+ 
+> s3;
+"Michel Buffa"
+ 
+> var s4 = s1.concat(s2);
+undefined
+ 
+> s4;
+"MichelBuffa"
+ 
+> var s5 = s2.concat(s1);
+undefined
+ 
+s5;
+"BuffaMichel"
+```
+#### Removing chars from a string using the substring method:
+
+Removing the last char (equivalent to the pop method from arrays):
+
+```javascript
+> var s = 'Michel';
+undefined
+ 
+> s = s.substring(0, s.length-1);
+"Miche"
+```
+#### Removing a certain number of chars starting from a string, starting at a given index  :
+
+
+```javascript
+var s = 'Michel';
+ 
+function removeChars(s, startIndex, numberOfCharsToRemove) {
+   return s.substring(0, startIndex) +   
+          s.substring(startIndex + numberOfCharsToRemove);
+}
+ 
+// remove 3 consecutive chars from s, starting at index = 1
+s = removeChars(s, 1, 3);
+ 
+console.log(s); // will display "Mel" in the console
+```
+
+#### Replacing a char at a given index:
+
+```javascript
+function replaceAt(s, index, character) {
+    return s.substr(0, index) + character + s.substr(index+character.length);
+}
+ 
+var s2 = "JavaScript";
+s2 = replaceAt(s2, 1, "o");
+ 
+console.log(s2); // will display "JovaScript"
+ 
+// it also works with a string instead of a simple char
+s2 = replaceAt(s2, 0, "Coca");
+console.log(s2); // Will display "CocaScript"
+```
+
+#### Knowledge check 3.2.2 (not graded)
+
+What is the name of the function/method for removing a given number of chars from a string, starting at a given index?
+There is no built-in method/function for that, we need to build one. correcto
+#### Explanation
+Indeed, there is no built-in function for that. We presented in the course a removeChars(s, startIndex, numberOfCharsToRemove) function that uses the substring method.
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.2 Arrays (part 2): iterators   Iterating on array elements
+
+# Iterating on array elements
+
+### Live coding video: iterating on arrays
+
+>! Missing video/trasncript
+
+
+
+
