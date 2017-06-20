@@ -716,3 +716,387 @@ You will learn more about the different attributes of the <video> element later 
 RESTRICTION: You cannot embed a YouTube or a Daily Motion video using the <video> element
 
 Help! <video src="my youtube video URL"></video> does not work! 
+
+> BEWARE: you cannot directly embed videos from most of the popular social Web sites such as YouTube, Dailymotion, Vimeo, etc. For commercial reasons, and because advertising is automatically  added to the videos, these Web sites do not allow "regular" embedding of their videos.
+
+While they use HTML5 to render their videos, these hosting sites (YouTube, etc.) use rather complex techniques in order to prevent you from using them with the <video> element. Instead, you often need to embed an <iframe> that will render the HTML5 videos in your Web site, and of course, the advertising that comes along with them.
+
+Usually you have an "embed" button close to the videos that prompts you with some HTML code that you can copy and paste for embedding.
+
+#### An example using YouTube:
+
+Here is the HTML code you need to copy and paste in order to embed a video (in this case, a tutorial that tells you how to embed a YouTube video):
+
+
+```javascript
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZH1XOsv8Oyo" frameborder="0" allowfullscreen></iframe>
+```
+
+Below is the YouTube video embedded in this page using the above code: it's HTML5 but it's not a <video> element directly inserted in the HTML of this page - it's an <iframe>.
+
+https://www.youtube.com/watch?v=ZH1XOsv8Oyo
+
+
+### The <audio> element
+
+#### INTRODUCTION
+
+#### HTML5 audio is composed of several layers:
+
+* [The `<audio>` element](https://www.w3.org/wiki/HTML/Elements/audio)  is useful for embedding an audio player into a Web page. It is dedicated for streamed audio. It is very similar to the `<video>` element, both in its use and in its API.
+* [The "Web Audio API"](https://www.w3.org/TR/webaudio/) is designed for musical applications and for adding sound effects to games. This pure JavaScript API supports manipulation of sound samples (loops, etc.), music synthesis and sound generation (oscillators, etc.). It also comes with a set of predefined sound processing modules (reverb, delay, etc.).
+
+> This course will focus on the <audio> element. Check for the advanced HTML5  course (HTML5 Apps and Games), available on W3Cx, which covers the Web Audio API and other advanced parts of HTML5.
+
+
+The attributes, event set and JavaScript API of the <audio> element are just a "reduced" version of the ones from the <video> element, and here we will only address their differences and peculiarities.
+
+### The <audio> element - basic usage
+
+The most simple basic example
+
+Online example from JS Bin
+http://jsbin.com/xorilil/2/edit?html,output
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>Draw a monster in a canvas</title>
+   </head>
+   <body>
+      <audio controls="controls">
+         <source src="http://mainline.i3s.unice.fr/mooc/week2p1/horse.ogg"
+         type="audio/ogg" />
+         <source src="http://mainline.i3s.unice.fr/mooc/week2p1/horse.mp3"
+         type="audio/mp3" />
+         Your browser does not support the audio element.
+         Download the audio/video in
+         <a href=”http://mainline.i3s.unice.fr/mooc/week2p1/horse.ogg”>OGG</a>
+         or<a href=”http://mainline.i3s.unice.fr/mooc/week2p1/horse.mp3”>MP3</a>
+         format.
+      </audio>
+   </body>
+</html>
+```
+In this example, just as for the <video> element, we used the controls attribute in order to render the play/stop, time, volume and progress widgets.
+
+Notice the other similarities: between the `<audio>...</audio>` tags, we added a text message that is displayed if the Web browser doesn't support the `<audio>` element, and we used several `<source>...</source>` elements that link to different audio formats for the same file. The browser will use the first format it recognizes.
+
+Lines 8-12:  we suggest downloading the audio files if the browser does not support the <audio> element. This is also a best practice!
+
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.3 HTML5 multimedia and JavaScript API   Audio and video player JavaScript API
+
+# Audio and video player JavaScript API
+
+### Live coding video: the video element JavaScript API
+
+https://youtu.be/9dBmc6R3X9g
+
+> Today, let's have a look at some APIs. An API is a set of functions
+> you can use from your JavaScript code. One of them is the audio and
+> video player JavaScript API that will give you the possibility to
+> control a video player from JavaScript, making your own custom video
+> player. Let's look at one small example. So I prepared, here, an HTML
+> document with a video player. In order to include a video player in
+> your document, just use the video HTML5 tag: video... slash video. You
+> indicate with the source tag the URL of the video file that will be
+> streamed into your document. And in order to maximize the
+> compatibility with old browsers, it's recommended to propose the video
+> in different formats. So here, I've got a video file named video.webm,
+> video.ogg, and video.mp4, that is available in different formats. And
+> when you include a video element with some sources in your HTML
+> document, the browser will ask the remote server and get the video
+> format it prefers. So you don't have to wonder which one is the best,
+> your browser will choose. So if I click on the video player, you see
+> that... Ok! By adding a controls attribute it will display a control
+> bar with buttons for play, pause… for adjusting the volume… for going
+> forward and backward video and so on. And if I remove this, you don't
+> have anymore the control, bar so you can make you own control bar for
+> the video player. Let's try it! I'm going just to add a "play" button.
+> So good... a good way to do this is do use the “onclick” event
+> listener and I will call a function named “playVideo()” that will be
+> located in the JavaScript part of my application. So the button will
+> call “playVideo()” and I prepared this function in the JavaScript
+> part: playVideo(). In order to control the video player you must get a
+> reference on it. So, we used the “querySelector()” method we saw
+> earlier in module 2. So... we're going to do the same thing. And do
+> you remember that we can access elements from the DOM... you can get
+> references on the HTML elements only when the DOM is ready and when
+> the page have be loaded. So we use “window.onload = init” with an init
+> callback that will executed only when the DOM is ready, and inside
+> this function, we will get a reference to the video player. So, let's
+> write it. And I will declare this reference as a global variable. Like
+> this. So when I click on the button, I will use the JavaScript API of
+> this object -this video player- and I can call “vid.play()”. I click
+> on the button and it plays the video. How can you guess the names of
+> the all the methods you can use? Go to the course, and in the section
+> about the audio and video player JavaScript APIs you got this picture
+> here, that is a link to the W3C specifications. And here you can
+> interactively try the different methods. And the names on the buttons
+> are the names of the different methods you can call when you see
+> parenthesis: play(), pause()... And also you've got properties, these
+> properties you can… you can use them for getting information
+> -what is the current time?- for example. Or you can use them also for setting, changing their values. And for example, going back... if I
+> say current time equals 0, or “currentTime +=10”, I'm advancing 10
+> seconds in the video. So some properties are read only or read and
+> write. You got also events... so you can listen to events while the
+> video is being played. And for example, for synchronizing some
+> contents on the page, for detecting when the video is ended. The
+> "ended" event here, you can see it and so that you can play another
+> video and do some play lists with the videos that are changed: when
+> one is finished, the other starts and so on. So let's go back our
+> example, and we will just implement the "pause" functionality. And we
+> will add a "pause" button. So now I can play the video and I can pause
+> it. If I want to rewind to the beginning... let's try again! And in
+> order to do this, instead of calling a method...we will just use the
+> “currentTime” property and set it to 0. Remember from this document,
+> you see the “currentTime” here, it's a property of the video player
+> object. So let's try it, play! Rewind! We start again from zero, and
+> so on. If you want to display the “currentTime” while this video is
+> still played. You can add an event listener on the video element
+> “ontimeupdate = displayTimeWhileVideoIsPlaying()”. Ok, so like this:
+> while the video is been played, this method will be called and we can
+> here, for example, display the currentTime… console.log(). So let's me
+> open the console, play the video and you see the current time. You can
+> make a test: if “vid. currentTime greater than 5 seconds", then we
+> pause the video. Let's try it. Then for example, you can ask a
+> question, making a quizz related to the video, and so on. Ok, this was
+> just to show you some basics of using the JavaScript API of media
+> elements such as the video audio player.
+
+
+Source code of the example from the video:
+https://codepen.io/w3devcampus/pen/WOvVPQ?editors=0011
+
+### Audio and video player JavaScript API
+
+#### Control <audio> and <video> elements from JavaScript
+
+The `<video>` element has methods, properties/attributes and events that can be manipulated with JavaScript. Using the DOM API it's possible to manipulate 
+an audio or video element as a JavaScript object that has:
+
+* **Methods** for controlling its behavior, such as `play()`, `pause()`, etc.;
+* **Properties** (duration, current position, etc.), either in read/write mode (such as volume), or in read-only mode (such as `encoding`, `duration`, etc.);
+* **Events** generated during the life cycle of the element that can be processed using JavaScript callbacks. It is also possible to send events to control the video player.
+
+Like any HTML element, the `<video>` element can be manipulated/created using the DOM JavaScript API. Here is an example of programmatically creating a <video> element:
+```javascript
+var video = document.createElement('video');
+video.src = 'video.mp4';
+video.controls = true;
+document.body.appendChild(video);
+```
+This will create a complete video player for the file "video.mp4", with control buttons, and will add it to the <body> element of the page.
+
+### JavaScript API of the <audio> and <video> elements
+
+#### Methods, properties and events
+
+The JavaScript API gives you powerful tools to manipulate the <video> element, as the video object provides many properties, methods and events.
+
+The complete list of events can be found at the [W3C specification page](https://www.w3.org/TR/html5/embedded-content-0.html#event-definitions), and numerous 
+examples of each event can be found on many Web sites such as this [one](http://www.htmlgoodies.com/html5/tutorials/HTML5-Development-Class-Media-Events-3883356.htm#fbid=rRDjiexm8vR).
+
+The complete list of properties can be found at [the W3C HTML5 Video Events and API page](https://www.w3.org/2010/05/video/mediaevents.html). This page 
+is interesting for Web developers because it shows an interactive view of the different values and events changing over time while the video is playing within the page.
+
+Click the picture to see it running online (or try the direct link), then play with the different buttons and look at the table of events and properties that will change in real time. The displayed names show the properties, events, and methods from the API.
+
+Here is a table that shows the most interesting methods, properties and events provided by the <video> element API
+
+We provide this as a quick reminder - keep in mind that the complete list is much longer!
+
+|Methods	|Properties	|Events|
+|-----------|-----------|------|
+|play()	|currentSrc	|play|
+|pause()	|currentTime	|pause|
+|load()	|startTime (readonly)	|progress|
+|canPlayType()	|videoWidth	|error|
+||videoHeight	|timeupdate|
+||duration (readonly)	|ended|
+||ended (readonly)	|abort|
+||error	|empty|
+||paused (readonly)	|emptied|
+||muted	|waiting|
+||seeking	|loadedmetadata|
+||volume||	
+||height||	
+||width||
+||seekable (readonly)||
+||played (readonly)||
+
+Now let's take a look at a set of examples demonstrating how to use the most important of these properties, methods, and events...
+
+
+Knowledge check 3.3.2 (not graded)
+
+The W3C specification about the JavaScript API associated to `<audio>` and `<video>` elements, proposes an interactive demonstration of the 
+different properties/methods/events; it's a must see for all Web developers interested in multimedia. Try it and guess what properties indicate 
+the length of the video in seconds and the name of a valid event that is sent while the video is being played...
+
+duration and timeupdate correcto
+
+Explanation
+If you try the intereactive demonstration, and play the example video, you will see that the duration property indicates the total length of the video. You will also see that the timeupdate event is emitted regularly while the video is being played?
+
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.3 HTML5 multimedia and JavaScript API   Examples using the JavaScript API
+
+# Examples using the JavaScript API
+
+The JavaScript API is useful for implementing playlists, making custom user interfaces and many other interesting things. The "enhanced HTML5 multimedia players" presented later on in the course rely heavily on this API.
+
+#### EXAMPLE 1 - HOW TO USE EXTERNAL BUTTONS TO CONTROL A PLAYER'S BEHAVIOR
+
+This example shows the first steps towards writing a custom video player. It shows basic usage of the JavaScript API for adding custom buttons to play/pause the video or to go back to the beginning by setting the currentTime property to zero.
+
+Try it online, and look at the source code.
+https://jsbin.com/dayuko/1/edit?html,css,output
+
+Source code extract:
+```html
+<video id="vid" controls>
+<source src=http://html5doctor.com/demos/video-canvas-magic/video.webm
+         type=video/webm>
+...
+</video>
+<p>Example of custom controls:</p>
+<button onclick="playVideo();" style="cursor: pointer;">Play</button>
+ 
+<button onclick="pauseVideo();" style="cursor: pointer;">Pause</button>
+ 
+<button onclick="rewindVideo();" style="cursor: pointer;">
+       Back to beginning</button>
+<script>
+    var vid = document.querySelector("#vid");
+    function playVideo() {
+       vid.play();
+    }
+    function pauseVideo() {
+       vid.pause();
+    }
+    function rewindVideo() {
+       vid.currentTime = 0;
+    }
+</script>
+```
+
+* Lines 7, 9 and 11: we add a click listener to each button, in order to call a JavaScript function when the button is clicked.
+* Line 14: using the DOM API we get the JavaScript object that corresponds to the video element we inserted in the HTML document. This line is outside a function, it will be executed when the page loads.
+* Lines 17 and 20: we call methods from the API for playing/pausing the video.
+* Line 24: we modify the `currentTime` property in order to rewind the video. Note that `vid.load()` also rewinds the video, shows the poster image again, but also pauses the video. By using `currentTime=0` the playback does not stop. 
+
+
+#### EXAMPLE 2 - HOW TO DETECT THE END OF A VIDEO AND START ANOTHER ONE
+
+This example listens for the ended event, and calls a callback function when the video has finished.
+
+```html
+<video src="video.ogv" id="myVideo">
+    video not supported
+</video>
+<script type='text/javascript'>
+  var vid = document.querySelector('#myVideo');
+  vid.addEventListener('ended', playNextVideo, false);
+  function playNextVideo(e) {
+     // Whatever you want to do after the event (play another video,
+     // for example), change the src attribute, of the video element, etc.
+  }
+</script>
+```
+
+#### EXAMPLE 3, APPLICATION OF THE ABOVE TECHNIQUE - HOW TO MANAGE PLAYLISTS
+
+This example detects the end of a video then loads the next video, changes the src attribute of the video element and plays the video (see the online example).
+
+To try this example: use the progress cursor to go near the end of the first video that is being played and see how it continues with the next video. 
+https://jsbin.com/ridujix/1/edit?html,output
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+<title>Sequential Movies</title>
+<script>
+   var myVideo;
+   var currentVideo = 0;
+   var sources = [
+         "http://html5doctor.com/demos/video-canvas-magic/video.mp4",
+ "http://www.archive.org/download/AnimatedMechanicalArtPiecesAtMit/P1120973_512kb.mp4"
+   ];
+   // Set the src of the video to the next URL in the playlist
+   // If at the end, we start again from beginning (the modulo
+   // source.length does this)
+   function loadNextVideo() {
+      myVideo.src = sources[currentVideo % sources.length]
+      myVideo.load();
+      currentVideo++;
+   }
+   // callback that loads and plays the next video
+  function loadAndplayNextVideo() {
+      console.log("playing " + sources[currentVideo % sources.length])
+      loadNextVideo();
+      myVideo.play();
+  }
+  // Called when the page is loaded
+  function init(){
+      // get the video element using the DOM api
+      myVideo = document.querySelector("#myVideo");
+      // Define a callback function called each time a video ends
+      myVideo.addEventListener('ended', loadAndplayNextVideo, false);
+      // Load the first video when the page is loaded.
+      loadNextVideo();
+  }
+</script>
+</head>
+<body onload="init()">
+     <video id="myVideo" controls></video>
+</body>
+</html>
+```
+
+* Line 8: the JavaScript array that contains the URLs of the videos in the playlist. In this example, we've only got two of them, but if the array is larger the example will still work.
+* Line 42: When the page is loaded, an init() function is called.
+* Lines 32 - 38: we used the DOM to get the JavaScript object corresponding to the video element, then defined a listener for the ended event. Each time a video ends, the loadAndPlayNextVideo() callback will be called. As the video element has no src attribute by default, we also preload the first video (call to loadNextVideo() at line 38).
+* Lines 16 - 20: the loadNextVideo() function uses a variable called currentVideo that corresponds to the index of the current video. By setting myVideo.src = sources [currentVideo % sources.length], we set the src of the video element to sources[0], then to sources[1], and as we increment the currentVideo index each time (line 19). If it becomes greater than 1, the modulo (the "%" symbol is the modulo in JavaScript) will make it "loop" between 0 and the number of videos in the playlist. In other words, when the last video ends, it starts back at the first one.
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.3 HTML5 multimedia and JavaScript API   Using the Webcam
+
+# Using the Webcam
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
