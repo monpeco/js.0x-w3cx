@@ -1831,6 +1831,878 @@ Here are a few project ideas. Your classmates and the team who prepared the cour
 
 # Background music (streamed)
 
+In a previous section we saw how we can add music to our Web page, using the `<audio></audio>` element. We can even hide its GUI and control the 
+play/pause of the music from JavaScript. Streaming music is perfect for providing a background atmosphere in a video game.
+
+Here is one simple example of background music control from JavaScript:
+
+See the Pen Using the audio element from JS by W3Cx (@w3devcampus) on CodePen.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Using the audio element from JS</title>
+  <meta charset="utf-8"/>
+  </head>
+  <body>
+    <p>  This example shows how we can play/pause a background music from javaScript.</p>
+    <p>This example uses a <code>&lt;audio&gt;</code> element with a <code>control</code> attribute. If you omit it, you will not see the audio player anymore! This is perfect for a game! Look at the functions play() and pause() called by the buttons below.</p>
+ <audio src = "http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/humbug.mp3" 
+        id="audioPlayer" 
+        controls>
+</audio>
+<p></p>
+
+<button onclick="play();" id="playButton">Play</button>
+<button onclick="pause();" id="pauseButton">Pause</button>
+  </body>
+</html>
+```
+
+
+```javascript
+function play() {
+   var player = document.querySelector("#audioPlayer");
+   player.play();
+}
+
+function pause() {
+   var player = document.querySelector("#audioPlayer");
+  player.pause();  
+}
+```
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.5 Playing sound samples and music   Sound effects using howler.js
+
+# Sound effects using howler.js
+
+>! Missing video/transcript
+
+### Howler.js for using sound samples in memory
+If you want to play short sounds that can occur very rapidly, streamed sound/music is not a good solution. This is where the WebAudio API, made by W3C and implemented by your browser, comes in handy. This API allows you to download and decode sound samples in memory, and play them on demand, using nearly zero CPU and with no delay when you play the sound (no buffering etc.).
+
+However, this API is a bit complicated to use for beginners. Fortunately there are several JavaScript libraries that simplify the use of the WebAudio API. HowlerJS is one of these.
+
+#### Example that uses Howler.js to load a sound sample from a remote server, then decode it in memory, and play it:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.min.js"></script>
+  <title>Simple example that uses howler.js for playing sound samples</title>
+  <meta charset="utf-8">
+  </head>
+  <body>
+    <p>Turn volume 1. As soon as the button becomes enabled, that means that the sound sample
+      has been downloaded and decoded in memory. It can now be played. Click on the button to play
+      this sound. Click it rapidly: you see, it's ok for a game!</p>
+    <button onclick="playSound();" id="button1" disabled>Play sound sample 1</button>
+  </body>
+</html>
+```
+
+
+```javascript
+window.onload = init;
+
+var sound;
+
+function init() {
+    var button = document.querySelector("#button1");
+  
+    sound = new Howl({
+                urls: ['http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/plop.mp3'],
+                onload: function () {
+                    console.log("Loaded asset ");
+                  button.disabled = false; // enable the play sound button
+                }
+            });
+}
+
+function playSound() {
+  sound.play();
+}
+```
+HTML code: this is how we say that we are using an external library:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.min.js"></script>
+      <title>Simple example that uses howler.js for playing sound samples</title>
+      <meta charset="utf-8">
+   </head>
+   <body>
+      <p>Turn volume 1. As soon as the button becomes enabled, that means that the sound sample
+has been downloaded and decoded in memory. It can now be played. Click on the button to play
+this sound. Click it rapidly: you see, it's ok for a game!</p>
+      <button onclick="playSound();" id="button1" disabled>Play sound sample 1</button>
+   </body>
+</html>
+```
+
+* Lines 3-5 indicate that in our example we are using an external library.
+* Line 12 declares a button, that is greyed by default and cannot be clicked. This is done by the disabled=true attribute.
+
+JavaScript code:
+
+```javascript
+window.onload = init;
+ 
+var sound;
+ 
+function init() {
+    var button = document.querySelector("#button1");
+    sound = new Howl({
+        urls: [   'http://.../assets/sounds/plop.mp3'],
+        onload: function () {
+            console.log("Loaded asset ");
+            button.disabled = false; // enable the play sound button
+        }
+    });
+}
+ 
+function playSound() {
+    sound.play();
+}
+```
+
+The important part is located in lines 8-12: the Howler library is to be used like this: `sound = new Howl({...});` The part between the `{` and `}` 
+is an object. The url's property is an array with at least one element: the URL of the sound we want to use, located on remote servers. The call to new Howl({...}); will start downloading the sound in background, then, once it has loaded, it will "decode it" (i.e., an mp3 file will use some cpu to be decoded on the fly and played, whereas a decoded sound will use nearly zero cpu, which makes it good for games!).
+
+Finally, once the sound is decoded, the `onload` callback is executed. In other words, the function after onload: will be executed (at lines 10-12). In this callback, we enable the button because the sound is ready to be played. 
+
+The `playSound` function can only be called when the button is enabled (when the sound sample has been loaded and decoded). In order to play a sound loaded by Howler.JS, we just call the `play()` method (line18).
+
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.5 Playing sound samples and music   Adding music and sound effects
+
+# Adding music and sound effects
+
+### Adding background music and sound effects to a game
+
+Here is the last version of the game from Module 2 with music and sound effects (when the player eats a ball)
+https://codepen.io/w3devcampus/pen/EWzgpr
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Small game with sound</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.min.js"></script>
+</head>
+<body>
+  <audio src = "http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/humbug.mp3" 
+        id="audioPlayer">
+</audio>
+<div id="controls">
+    <label for="nbBalls">Number of balls: </label>
+    <input type="number" min=1 max=30 
+           value=10 id="nbBalls"
+           oninput="changeNbBalls(this.value);">
+    <p></p>
+   <label for="colorChooser">Player color: </label>
+    <input type="color" value='#FF0000'
+           oninput="changePlayerColor(this.value);" id="colorChooser">
+    <p></p>
+      <label for="selectColorOfBallToEat">Color of ball to eat: </label>
+      <select onchange="changeColorToEat(this.value);" id="selectColorOfBallToEat">
+        <option value='red'>red</option>
+        <option value='blue'>blue</option>
+        <option value='green'>green</option>
+    </select>
+    <p></p>
+
+   <label for="ballSpeed">Change ball speed: </label>
+    - <input type="range" value='1'
+             min=0.1 max=3 step=0.1
+           oninput="changeBallSpeed(this.value);"
+             id="ballSpeed"> + 
+    <p></p>
+    
+  </div>
+  <canvas id="myCanvas"  width="400" height="400"></canvas>
+</body>
+</html>
+```
+
+```css
+#myCanvas {
+  border: 1px solid black;
+  float:left;
+}
+
+#controls {
+  float:left;
+}
+```
+
+
+```javascript
+// useful to have them as global variables
+let canvas, ctx, w, h; 
+let mousePos;
+
+// an empty array!
+let balls = []; 
+let initialNumberOfBalls;
+let globalSpeedMutiplier = 1;
+let colorToEat = 'red';
+let wrongBallsEaten = goodBallsEaten = 0;
+let numberOfGoodBalls;
+
+// SOUNDS
+let ballEatenSound;
+
+// Player as a singleton/simple object
+let player = {
+  x:10,
+  y:10,
+  width:20,
+  height:20,
+  color:'red',
+  
+  move(x, y) {
+    this.x = x;
+    this.y = y;
+  },
+  
+  draw(ctx) {
+    // draw the player at its current position
+    // with current width, height and color
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(this.x, this.y);
+  
+    ctx.fillStyle = this.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.fillRect(0, 0, this.width, this.height);
+  
+    // GOOD practice: restore the context
+    ctx.restore();    
+  }
+}
+
+window.onload = function init() {
+    // called AFTER the page has been loaded
+  
+    // Start playing the background music as soon as the page has loaded
+    playBackgroundMusic();
+  
+    canvas = document.querySelector("#myCanvas");
+  
+    // often useful
+    w = canvas.width; 
+    h = canvas.height;  
+  
+    // important, we will draw with this object
+    ctx = canvas.getContext('2d');
+  
+    // start game with 10 balls, balls to eat = red balls
+    startGame(10);
+  
+    // add a mousemove event listener to the canvas
+    canvas.addEventListener('mousemove', mouseMoved);
+
+    // Load the sound and start the game only when the sound has been loaded
+    ballEatenSound = new Howl({
+                urls: ['http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/plop.mp3'],
+                onload: function () {
+                  // start the animation
+                    mainLoop();
+                }
+            });
+  
+};
+
+function playBackgroundMusic() {
+   let audioPlayer = document.querySelector("#audioPlayer");
+   audioPlayer.play();
+}
+
+function pausebackgroundMusic() {
+   let audioPlayer = document.querySelector("#audioPlayer");
+   audioPlayer.pause();  
+}
+
+function startGame(nb) {
+  do {
+    balls = createBalls(nb);
+    initialNumberOfBalls = nb;
+    numberOfGoodBalls = countNumberOfGoodBalls(balls, colorToEat);
+  } while(numberOfGoodBalls === 0);
+  
+  wrongBallsEaten = goodBallsEaten = 0;
+}
+
+function countNumberOfGoodBalls(balls, colorToEat) {
+  let nb = 0;
+  
+  balls.forEach(function(b) {
+    if(b.color === colorToEat)
+      nb++;
+  });
+  
+  return nb;
+}
+
+//===== CALLED BY GUI WHEN THE USER USES INPUT FIELDS
+function changeNbBalls(nb) {
+  startGame(nb);
+}
+
+function changeColorToEat(color) {
+  colorToEat = color;
+}
+
+function changePlayerColor(color) {
+  player.color = color;
+}
+
+function changeBallSpeed(coef) {
+    globalSpeedMutiplier = coef;
+}
+
+//==== CALLED WHEN A USER USES ITS MOUSE
+function mouseMoved(evt) {
+    mousePos = getMousePos(canvas, evt);
+}
+
+function getMousePos(canvas, evt) {
+    // necessary work in the canvas coordinate system
+    let rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+//==== MAIN ANIMATION GAME LOOP
+function mainLoop() {
+  // 1 - clear the canvas
+  ctx.clearRect(0, 0, w, h);
+  
+  // draw the player
+  player.draw(ctx);
+  // draw all balls
+  drawAllBalls(balls);
+  
+  // animate the ball that is bouncing all over the walls
+  moveAllBalls(balls);
+  
+ // make the player follow the mouse
+  // the animations starts as the page is loaded
+  // maybe the mouse is not yet over the canvas
+  // this is why we test if the mousePos is defined
+  if(mousePos !== undefined)
+      player.move(mousePos.x, mousePos.y);
+  
+  // draw the game score
+  drawScore(balls);
+
+  // ask for a new animation frame
+  requestAnimationFrame(mainLoop);
+}
+
+//==== UTILITY FUNCTION
+// Collisions between rectangle and circle
+function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
+   let testX=cx;
+   let testY=cy;
+   if (testX < x0) testX=x0;
+   if (testX > (x0+w0)) testX=(x0+w0);
+   if (testY < y0) testY=y0;
+   if (testY > (y0+h0)) testY=(y0+h0);
+   return (((cx-testX)*(cx-testX)+(cy-testY)*(cy-testY))< r*r);
+}
+
+//=== FUNCTIONS RELATED TO BALLS
+
+class Ball {
+  constructor(x, y, radius, color, speedX, speedY) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.speedX = speedX;
+    this.speedY = speedY;
+  }
+  
+  draw(ctx) {
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(this.x, this.y);
+  
+    ctx.fillStyle = this.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.beginPath();
+    ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+    ctx.fill();
+ 
+    // GOOD practice: restore the context
+    ctx.restore();    
+  }
+  
+  move() {
+      this.x += this.speedX;
+      this.y += this.speedY;    
+  }
+}
+
+function createBalls(n) {
+  // empty array
+  let ballArray = [];
+  
+  // create n balls
+  for(let i=0; i < n; i++) {
+     
+    // Create some random values...
+    let x = w/2;
+    let y = h/2;
+    let radius =  5 + 30 * Math.random(); // between 5 and 35
+    let speedX =  -5 + 10 * Math.random(); // between -5 and + 5
+    let speedY =  -5 + 10 * Math.random(); // between -5 and + 5
+    let color = getARandomColor();
+
+    // Create the new ball b
+    let b = new Ball(x, y, radius, color, speedX, speedY);
+    
+    // add ball b to the array
+    ballArray.push(b);
+  }
+  // returns the array full of randomly created balls
+  return ballArray;
+}
+
+function getARandomColor() {
+  let colors = ['red', 'blue', 'cyan', 'purple', 'pink', 'green', 'yellow'];
+  // a value between 0 and color.length-1
+  // Math.round = rounded value
+  // Math.random() a value between 0 and 1
+  let colorIndex = Math.round((colors.length-1)*Math.random()); 
+  let c = colors[colorIndex];
+  
+  // return the random color
+  return c;
+}
+
+function drawScore(balls) {
+  ctx.save();
+  ctx.font="20px Arial";
+  
+  if(balls.length === 0) {
+    ctx.fillText("Game Over!", 20, 30);
+  } else if(goodBallsEaten === numberOfGoodBalls) {
+    ctx.fillText("You Win! Final score : " + (initialNumberOfBalls - wrongBallsEaten), 
+                 20, 30);
+  } else {
+    ctx.fillText("Balls still alive: " + balls.length, 210, 30);
+    ctx.fillText("Good Balls eaten: " + goodBallsEaten, 210, 50);
+     ctx.fillText("Wrong Balls eaten: " + wrongBallsEaten, 210, 70);
+  }
+  ctx.restore();
+}
+
+
+function drawAllBalls(ballArray) {
+    ballArray.forEach(function(b) {
+      b.draw(ctx);
+    });
+}
+
+
+function moveAllBalls(ballArray) {
+  // iterate on all balls in array
+  balls.forEach(function(b, index) {
+      // b is the current ball in the array
+      b.move();
+  
+      testCollisionBallWithWalls(b); 
+    
+      testCollisionWithPlayer(b, index);
+  });
+}
+
+function testCollisionWithPlayer(b, index) {
+  if(circRectsOverlap(player.x, player.y,
+                     player.width, player.height,
+                     b.x, b.y, b.radius)) {
+    // PLAY A PLOP SOUND!
+    ballEatenSound.play();
+    
+    // we remove the element located at index
+    // from the balls array
+    // splice: first parameter = starting index
+    //         second parameter = number of elements to remove
+    if(b.color === colorToEat) {
+      // Yes, we remove it and increment the score
+      goodBallsEaten += 1;
+    } else {
+      wrongBallsEaten += 1;
+    }
+    
+    balls.splice(index, 1);
+
+  }
+}
+
+function testCollisionBallWithWalls(b) {
+    // COLLISION WITH VERTICAL WALLS ?
+    if((b.x + b.radius) > w) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = w - b.radius;
+  } else if((b.x -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = b.radius;
+  }
+  
+  // COLLISIONS WTH HORIZONTAL WALLS ?
+  // Not in the else as the ball can touch both
+  // vertical and horizontal walls in corners
+  if((b.y + b.radius) > h) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.y = h - b.radius;
+  } else if((b.y -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.Y = b.radius;
+  }  
+}
+```
+
+Look at the HTML part: we included the Howler.js library and we also added an <audio> player (invisible; we removed the controls attribute) for background music.
+
+In the JavaScript code, we start the background music as soon as the page is loaded.
+
+We then used HowlerJS to load a sound sample in background. Only once this sample has been loaded and decoded do we start the animation.
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.5 Playing sound samples and music   [Advanced] a multiple image, sound and music loader
+
+# [Advanced] a multiple image, sound and music loader
+
+### Live coding video: a multiple image, sound and music loader
+
+>! Missing video/transcript
+
+A utility background loader for images, music and sound samples
+
+This comes from the module 2 of the HTML5 Apps and Games course.
+
+In video games, you very often need to load assets before starting the game: 
+
+* Images must be loaded (background image, game logo, sprite sheets, etc.)
+* Sound samples must be loaded and decoded (the previous example used only one single sound sample, but with multiple samples it becomes more difficult to know when they are all ready to be used, as they come asynchronously over the network),
+* For streamed music, you need an `<audio>` player element. If you use different pieces of music, you may use multiple audio elements, and you pause one and start another when you change the music. Alternatively you may use a single audio element, and change its src attribute.
+
+So, we wrote a multiple "asset loader" to make all these tasks easy.
+
+Here is a small example that you may use if you like, which takes an array of "assets to be loaded", that can be either an image, a sound sample or streamed background music. You call the `loadAssets(callback)` function, passing as a parameter a single callback function of yours. When all assets are loaded, your callback will be executed, and will get a single parameter: the assets ready to be used!
+
+Example (to hear the music and sound sample, there are two lines to uncomment in the `startGame(...)` function):
+https://codepen.io/w3devcampus/pen/QpRGrz
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.min.js"></script>
+  <title>Multiple sound and image loader</title>
+  <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id="myCanvas" width=400 height=400></canvas>
+  </body>
+</html>
+```
+
+```css
+#myCanvas {
+  border:1px solid black;
+  
+}
+```
+
+
+```javascript
+window.onload = init;
+
+
+var assetsToLoadURLs = {
+    backgroundImage: { url: 'http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/images/background.png' }, // http://www.clipartlord.com/category/weather-clip-art/winter-clip-art/
+    logo1: { url: "http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/images/SkywardWithoutBalls.png" },
+    logo2: { url: "http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/images/BoundsWithoutBalls.png" },
+    bell: { url: "http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/images/bells.png" },
+    spriteSheetBunny: { url: 'http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/images/bunnySpriteSheet.png' },
+    plop: { url: 'http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/plop.mp3', buffer: false, loop: false, volume: 1.0 },
+    humbug: { url: 'http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/humbug.mp3', buffer: true, loop: true, volume: 1.0 },
+    concertino: { url: 'http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/christmas_concertino.mp3', buffer: true, loop: true, volume: 1.0 },
+    xmas: { url: 'http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/xmas.mp3', buffer: true, loop: true, volume: 0.6 }
+};
+
+var loadedAssets;
+
+function init() {
+    // this call will load all assets
+  document.body.innerHTML += "<p>Loading assets...</p>";
+    loadAssets(startGame);
+}
+
+function startGame(assetsReadyToBeUsed) {
+  document.body.innerHTML += "<p>IMAGES, SOUNDS, MUSICS READY TO BE USED!</p>";
+  // We're ready to use all sounds, images, musics etc
+  loadedAssets = assetsReadyToBeUsed;
+  
+  // ex: draw the images in a canvas
+  drawImages();
+  
+  // play one of the background music
+  // UNCOMMENT THIS LINE!
+  //playHumbug();
+  
+  // play plop every second
+  // UNCOMMENT THIS LINE!
+  //setInterval(playPlop, 1000);
+}
+
+function playHumbug() {
+  loadedAssets.humbug.play();
+}
+
+function playPlop() {
+    loadedAssets.plop.play();
+}
+
+function drawImages() {
+  var canvas = document.querySelector('#myCanvas');
+  var ctx = canvas.getContext('2d');
+  
+  // background image drawImage can have different syntaxes : drawImage(img, x, y); or
+  // drawImage(x, y, width, height), for other syntaxes see HTML5 fundamentals course
+  ctx.drawImage(loadedAssets.backgroundImage, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(loadedAssets.bell, 20, 20);
+  
+  ctx.drawImage(loadedAssets.spriteSheetBunny, 190, 0);
+  
+}
+//==========================
+
+function loadAssets(callback) {
+    // here we should load the sounds, the sprite sheets etc.
+    // then at the end call the callback function           
+    loadAssetsUsingHowlerAndNoXhr(assetsToLoadURLs, callback);
+}
+
+// You do not have to understand in details the next parts of the code...
+// just use the above function
+
+/* ############################
+    BUFFER LOADER for loading multiple files asyncrhonously. The callback functions is called when all
+    files have been loaded and decoded 
+ ############################## */
+function isImage(url) {
+    return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
+
+function isAudio(url) {
+    return (url.match(/\.(mp3|ogg|wav)$/) != null);
+}
+
+function loadAssetsUsingHowlerAndNoXhr(assetsToBeLoaded, callback) {
+    var assetsLoaded = {};
+    var loadedAssets = 0;
+    var numberOfAssetsToLoad = 0;
+
+    // define ifLoad function
+    var ifLoad = function () {
+        if (++loadedAssets >= numberOfAssetsToLoad) {
+            callback(assetsLoaded);
+        }
+        console.log("Loaded asset " + loadedAssets);
+    };
+
+    // get num of assets to load
+    for (var name in assetsToBeLoaded) {
+        numberOfAssetsToLoad++;
+    }
+
+    console.log("Nb assets to load: " + numberOfAssetsToLoad);
+
+    for (name in assetsToBeLoaded) {
+        var url = assetsToBeLoaded[name].url;
+        console.log("Loading " + url);
+        if (isImage(url)) {
+            assetsLoaded[name] = new Image();
+
+            assetsLoaded[name].onload = ifLoad;
+            // will start async loading. 
+            assetsLoaded[name].src = url;
+        } else {
+            // We assume the asset is an audio file
+            console.log("loading " + name + " buffer : " + assetsToBeLoaded[name].loop);
+            assetsLoaded[name] = new Howl({
+                urls: [url],
+                buffer: assetsToBeLoaded[name].buffer,
+                loop: assetsToBeLoaded[name].loop,
+                autoplay: false,
+                volume: assetsToBeLoaded[name].volume,
+                onload: function () {
+                    if (++loadedAssets >= numberOfAssetsToLoad) {
+                        callback(assetsLoaded);
+                    }
+                    console.log("Loaded asset " + loadedAssets);
+                }
+            }); // End of howler.js callback
+        } // if
+
+    } // for
+} // function
+```
+
+Extract from the JavaScript source code:
+
+```javascript
+window.onload = init;
+ 
+ 
+var assetsToLoadURLs = {
+    backgroundImage: { url: 'http://.../assets/images/background.png' }, 
+    logo1: { url: "http://.../assets/images/SkywardWithoutBalls.png" },
+    logo2: { url: "http://.../assets/images/BoundsWithoutBalls.png" },
+    bell:  { url: "http://.../assets/images/bells.png" },
+    spriteSheetBunny: { url: 'http://.../assets/images/bunnySpriteSheet.png' },
+    plop: { url: 'http://.../assets/sounds/plop.mp3',
+            buffer: false, loop: false, volume: 1.0 },
+    humbug: { url: 'http://.../assets/sounds/humbug.mp3',
+            buffer: true, loop: true, volume: 1.0 },
+    concertino: { url: 'http://.../assets/sounds/christmas_concertino.mp3',
+                  buffer: true, loop: true, volume: 1.0 },
+    xmas: { url: 'http://.../assets/sounds/xmas.mp3',
+            buffer: true, loop: true, volume: 0.6 }
+};
+var loadedAssets; // above assets, ready to be used
+ 
+function init() {
+    // Once the page is loaded, we load all assets. We pass the function
+    // that will be called when assets are ready. In our case "startGame"
+    // this call will load all assets
+    loadAssets(startGame);
+}
+ 
+function startGame(assetsReadyToBeUsed) {
+    // This function is executed once all assets are ready.
+    // It is called by the asset loader, and receives as a unique
+    // parameter, the assets (sounds, images etc.) ready to be used
+    // we store them in the loadedAssets variable
+    loadedAssets = assetsReadyToBeUsed;
+    // Now we can use them! e.g., draw the images in a canvas
+    drawImages();
+   // or play one of the pieces of background music
+   playHumbug();
+   // Or use sound samples, for example let's play a plop every second
+   setInterval(playPlop, 1000);
+}
+ 
+function playHumbug() {
+    loadedAssets.humbug.play();
+}
+ 
+function playPlop() {
+    loadedAssets.plop.play();
+}
+ 
+function drawImages() {
+    var canvas = document.querySelector('#myCanvas');
+    var ctx = canvas.getContext('2d');
+    // background image drawImage can have different syntaxes :
+    // drawImage(img, x, y); or
+    // drawImage(x, y, width, height),
+    // for other syntaxes see HTML5 fundamentals course
+    ctx.drawImage(loadedAssets.backgroundImage,
+                  0, 0,
+                  canvas.width, canvas.height);
+    ctx.drawImage(loadedAssets.bell, 20, 20);
+    ctx.drawImage(loadedAssets.spriteSheetBunny, 190, 0);
+}
+```
+
+### Two games that have been written by students from the HTML5 advanced MOOC (which has a module dedicated to game programming):
+
+These games are not for JavaScript beginners, but it's time to spend some time having fun :-) You can look at the source code: it's been written by students like you who followed the HTML5 advanced course.
+
+#### 1 - Star Warriors, written by two Ukrainian ladies who won the first prize in a [W3C contest we organized in March 2017](https://www.w3.org/2017/WWW26/contests.html):
+
+[Play it online](http://mainline.i3s.unice.fr/mooc/StarWarriors/), wait until all assets have been loaded (you can follow the loading of assets by 
+opening the devtools console). Use arrows + space bar to fire.
+
+[See the source code on CodePen](https://codepen.io/w3devcampus/pen/pemjRj) (also, you can play from there).
+
+
+#### 2 - Skyward Bounds: written in less than a week by a group of students from the W3Cx HTML5 Apps and Games course W3Cx, during the Christmas 2016 session.
+
+Michel Buffa helped them actively in the forum, and one student rapidly took the lead in developing the game, while another composed the music, another helped with the graphics, etc.
+
+The game runs on phones, tablets (using touch events), can be resized, rotated, etc. It also uses the multiple asset loader presented.
+
+* [Play it online](http://mainline.i3s.unice.fr/mooc/SkywardBound/) (mouse or fingers)
+* Or download the source code (multiple files). (once unzipped, just double click index.html)
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.5 Playing sound samples and music   Discussion topics and projects
+
+# Discussion topics and projects
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and optional projects.
+
+Suggested topics
+
+* Who amongst you is a composer? Would you propose free music or free sound samples that other students can use?
+* HowlerJS is an easy way to manipulate "the real API" that is named WebAudio. If you are curious, look at the [webaudiodemos.appspot.com](https://webaudiodemos.appspot.com/) Web site, look on twitter with the hashtag #webaudio, or on YouTube. This API is really powerful! 
+* Do you know other libraries similar to HowlerJS, useful for manipulating audio (streamed or as sound samples)?
+* Your instructor wrote some open source WebAudio applications.... find which ones! :-)
+* And, what about synthesizing music instead of using files? [I recommend this MOOC](https://www.futurelearn.com/courses/electronic-music-tools) for the curious ones (after this MOOC, then you'll know JavaScript and it will be easier!). 
+* You can also use another funny library for synthesizing 8 bits sound effects, [try this demo](http://jeromeetienne.github.io/webaudiox/examples/jsfx.html)!
+
+#### Optional projects
+
+* Try to make nice audio player that will chain background musics, when one is finished the next one starts (use an "ended" event listener on the audio element, for example, add `onended="...."`)
+* Add some buttons/menu to the game so that we can choose between 2 or 3 different background musics, or turn the music off.
+* Add a slider for adjusting the volume of the background music
+* [advanced] Use the multiple image/music/sound loader for adding multiple sound effects to your game, make different sounds depending on the color of balls that collide with the player
+* [advanced, harder] try to think about a way to display a progress bar while the multiple image/sound/music loader is loading the files...
+
+---
+
 
 
 
