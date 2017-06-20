@@ -6294,13 +6294,473 @@ function mainLoop() {
 }
 ```
 
+---
+
+#### Module 2: Adding interactivity to HTML documents   2.6 Let's write a small game   Adding input fields to parameterize the game
+
+# Adding input fields to parameterize the game
+
+#### We want some game setup options
+
+Let's use some other techniques that we've learnt in this module: some input fields: sliders, color chooser, number chooser, and use the DOM API to handle them.
+
+We will use these input fields to indicate the number of balls we want, the max speed we would like, the color and size of the player, etc.
+
+New version:
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Draw a monster in a canvas</title>
+</head>
+<body>
+  <div id="controls">
+    <label for="nbBalls">Number of balls: </label>
+    <input type="number" min=1 max=30 
+           value=10 id="nbBalls"
+           oninput="changeNbBalls(this.value);">
+    <p></p>
+   <label for="colorChooser">Player color: </label>
+    <input type="color" value='#FF0000'
+           oninput="changePlayerColor(this.value);" id="colorChooser">
+    <p></p>
+      <label for="selectColorOfBallToEat">Color of ball to eat: </label>
+      <select onchange="changeColorToEat(this.value);" id="selectColorOfBallToEat">
+        <option value='red'>red</option>
+        <option value='blue'>blue</option>
+        <option value='green'>green</option>
+    </select>
+    <p></p>
+
+   <label for="ballSpeed">Change ball speed: </label>
+    - <input type="range" value='1'
+             min=0.1 max=3 step=0.1
+           oninput="changeBallSpeed(this.value);"
+             id="ballSpeed"> + 
+    <p></p>
+    
+  </div>
+  <canvas id="myCanvas"  width="400" height="400"></canvas>
+</body>
+</html>
+```
+
+
+```css
+#myCanvas {
+  border: 1px solid black;
+  float:left;
+}
+
+#controls {
+  float:left;
+}
+```
 
 
 
+```javascript
+// useful to have them as global variables
+var canvas, ctx, w, h; 
+var mousePos;
+
+// an empty array!
+var balls = []; 
+var initialNumberOfBalls;
+var globalSpeedMutiplier = 1;
+var colorToEat = 'red';
+var wrongBallsEaten = goodBallsEaten = 0;
+var numberOfGoodBalls;
+
+var player = {
+  x:10,
+  y:10,
+  width:20,
+  height:20,
+  color:'red'
+}
+
+window.onload = function init() {
+    // called AFTER the page has been loaded
+    canvas = document.querySelector("#myCanvas");
+  
+    // often useful
+    w = canvas.width; 
+    h = canvas.height;  
+  
+    // important, we will draw with this object
+    ctx = canvas.getContext('2d');
+  
+    // start game with 10 balls, balls to eat = red balls
+    startGame(10);
+  
+    // add a mousemove event listener to the canvas
+    canvas.addEventListener('mousemove', mouseMoved);
+
+    // ready to go !
+    mainLoop();
+};
+
+function startGame(nb) {
+  do {
+    balls = createBalls(nb);
+    initialNumberOfBalls = nb;
+    numberOfGoodBalls = countNumberOfGoodBalls(balls, colorToEat);
+  } while(numberOfGoodBalls === 0);
+  
+  wrongBallsEaten = goodBallsEaten = 0;
+}
+
+function countNumberOfGoodBalls(balls, colorToEat) {
+  var nb = 0;
+  
+  balls.forEach(function(b) {
+    if(b.color === colorToEat)
+      nb++;
+  });
+  
+  return nb;
+}
+
+function changeNbBalls(nb) {
+  startGame(nb);
+}
+
+function changeColorToEat(color) {
+  colorToEat = color;
+}
+
+function changePlayerColor(color) {
+  player.color = color;
+}
+
+function changeBallSpeed(coef) {
+    globalSpeedMutiplier = coef;
+}
+
+function mouseMoved(evt) {
+    mousePos = getMousePos(canvas, evt);
+}
+
+function getMousePos(canvas, evt) {
+    // necessary work in the canvas coordinate system
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function movePlayerWithMouse() {
+  if(mousePos !== undefined) {
+    player.x = mousePos.x;
+    player.y = mousePos.y;
+  }
+}
+
+function mainLoop() {
+  // 1 - clear the canvas
+  ctx.clearRect(0, 0, w, h);
+  
+  // draw the ball and the player
+  drawFilledRectangle(player);
+  drawAllBalls(balls);
+  drawBallNumbers(balls);
+
+  // animate the ball that is bouncing all over the walls
+  moveAllBalls(balls);
+  
+  movePlayerWithMouse();
+  
+  // ask for a new animation frame
+  requestAnimationFrame(mainLoop);
+}
+
+// Collisions between rectangle and circle
+function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
+   var testX=cx;
+   var testY=cy;
+   if (testX < x0) testX=x0;
+   if (testX > (x0+w0)) testX=(x0+w0);
+   if (testY < y0) testY=y0;
+   if (testY > (y0+h0)) testY=(y0+h0);
+   return (((cx-testX)*(cx-testX)+(cy-testY)*(cy-testY))< r*r);
+}
+
+function createBalls(n) {
+  // empty array
+  var ballArray = [];
+  
+  // create n balls
+  for(var i=0; i < n; i++) {
+     var b = {
+        x:w/2,
+        y:h/2,
+        radius: 5 + 30 * Math.random(), // between 5 and 35
+        speedX: -5 + 10 * Math.random(), // between -5 and + 5
+        speedY: -5 + 10 * Math.random(), // between -5 and + 5
+        color:getARandomColor(),
+      }
+     // add ball b to the array
+     ballArray.push(b);
+    }
+  // returns the array full of randomly created balls
+  return ballArray;
+}
+
+function getARandomColor() {
+  var colors = ['red', 'blue', 'cyan', 'purple', 'pink', 'green', 'yellow'];
+  // a value between 0 and color.length-1
+  // Math.round = rounded value
+  // Math.random() a value between 0 and 1
+  var colorIndex = Math.round((colors.length-1)*Math.random()); 
+  var c = colors[colorIndex];
+  
+  // return the random color
+  return c;
+}
+
+function drawBallNumbers(balls) {
+  ctx.save();
+  ctx.font="20px Arial";
+  
+  if(balls.length === 0) {
+    ctx.fillText("Game Over!", 20, 30);
+  } else if(goodBallsEaten === numberOfGoodBalls) {
+    ctx.fillText("You Win! Final score : " + (initialNumberOfBalls - wrongBallsEaten), 
+                 20, 30);
+  } else {
+    ctx.fillText("Balls still alive: " + balls.length, 210, 30);
+    ctx.fillText("Good Balls eaten: " + goodBallsEaten, 210, 50);
+     ctx.fillText("Wrong Balls eaten: " + wrongBallsEaten, 210, 70);
+  }
+  ctx.restore();
+}
+
+function drawAllBalls(ballArray) {
+    ballArray.forEach(function(b) {
+      drawFilledCircle(b);
+    });
+}
+
+function moveAllBalls(ballArray) {
+  // iterate on all balls in array
+  balls.forEach(function(b, index) {
+      // b is the current ball in the array
+      b.x += (b.speedX * globalSpeedMutiplier);
+      b.y += (b.speedY * globalSpeedMutiplier);
+  
+      testCollisionBallWithWalls(b); 
+    
+      testCollisionWithPlayer(b, index);
+  });
+}
+
+function testCollisionWithPlayer(b, index) {
+  if(circRectsOverlap(player.x, player.y,
+                     player.width, player.height,
+                     b.x, b.y, b.radius)) {
+    // we remove the element located at index
+    // from the balls array
+    // splice: first parameter = starting index
+    //         second parameter = number of elements to remove
+    if(b.color === colorToEat) {
+      // Yes, we remove it and increment the score
+      goodBallsEaten += 1;
+    } else {
+      wrongBallsEaten += 1;
+    }
+    
+    balls.splice(index, 1);
+
+  }
+}
+
+function testCollisionBallWithWalls(b) {
+    // COLLISION WITH VERTICAL WALLS ?
+    if((b.x + b.radius) > w) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = w - b.radius;
+  } else if((b.x -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = b.radius;
+  }
+  
+  // COLLISIONS WTH HORIZONTAL WALLS ?
+  // Not in the else as the ball can touch both
+  // vertical and horizontal walls in corners
+  if((b.y + b.radius) > h) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.y = h - b.radius;
+  } else if((b.y -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.Y = b.radius;
+  }  
+}
+
+function drawFilledRectangle(r) {
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(r.x, r.y);
+  
+    ctx.fillStyle = r.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.fillRect(0, 0, r.width, r.height);
+  
+    // GOOD practice: restore the context
+    ctx.restore();
+}
+
+function drawFilledCircle(c) {
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(c.x, c.y);
+  
+    ctx.fillStyle = c.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.beginPath();
+    ctx.arc(0, 0, c.radius, 0, 2*Math.PI);
+    ctx.fill();
+ 
+    // GOOD practice: restore the context
+    ctx.restore();
+}
+```
+
+#### Explanations
+
+HTML code: this time we've used an oninput in each input field, and an onchange attribute on the <select> HTML drop down menu:
 
 
+```javascript
+<div id="controls">
+   <label for="nbBalls">Number of balls: </label>
+   <input type="number" min=1 max=30
+         value=10 id="nbBalls"
+         oninput="changeNbBalls(this.value);">
+   <p></p>
+   <label for="nbBalls">Player color: </label>
+   <input type="color" value='#FF0000'
+          oninput="changePlayerColor(this.value);">
+   <p></p>
+   <label for="nbBalls">Color of ball to eat: </label>
+   <select onchange="changeColorToEat(this.value);">
+      <option value='red'>red</option>
+      <option value='blue'>blue</option>
+      <option value='green'>green</option>
+   </select>
+   <p></p>
+ 
+   <label for="nbBalls">Change ball speed: </label>
+   - <input type="range" value='1'
+            min=0.1 max=3 step=0.1
+            oninput="changeBallSpeed(this.value);"> +
+   <p></p>
+</div>
+```
+JavaScript code: we've added some new variables in order to get closer to a real game with a goal, levels, game over menu and so on.
 
 
+```javascript
+var initialNumberOfBalls;       // number of balls at the beginning
+var globalSpeedMutiplier = 1;   // will change when we move the speed 
+                                // slider
+var colorToEat = 'red';         // color of the "good" balls to eat
+var wrongBallsEaten = goodBallsEaten = 0;   //number of good/bad balls
+                                            // eaten
+var numberOfGoodBalls;          // number of good balls in the set
+```
+
+And here are the callback functions called when you use the input fields:
+
+
+```javascript
+function changeNbBalls(nb) {
+  startGame(nb);
+}
+ 
+function changeColorToEat(color) {
+  colorToEat = color;
+  startGame(initialNumberOfBalls);
+}
+ 
+function changePlayerColor(color) {
+  player.color = color;
+}
+ 
+function changeBallSpeed(coef) {
+  globalSpeedMutiplier = coef;
+}
+```
+Each time we change the number of balls in the game, or the color of the balls you need to eat, we need to restart the game. 
+
+Here is the `startGame(nb_balls)` function:
+
+
+```javascript
+function startGame(nb) {
+  do {
+     balls = createBalls(nb);
+     initialNumberOfBalls = nb;
+     numberOfGoodBalls = countNumberOfGoodBalls(balls, colorToEat);
+  } while(numberOfGoodBalls === 0); // in case no good ball in the set
+  wrongBallsEaten = goodBallsEaten = 0;
+}
+```
+
+... and here is the function that counts the number of good balls in the newly created set of balls:
+
+
+```javascript
+function countNumberOfGoodBalls(balls, colorToEat) {
+  var nb = 0;
+  balls.forEach(function(b) {
+    if(b.color === colorToEat) // we count the number of balls
+    nb++;                      // of this color in the balls array
+  });
+  return nb;                   // return this number to the caller
+}
+```
+#### Module 2: Adding interactivity to HTML documents   2.6 Let's write a small game   Discussion topics and project
+
+# Discussion topics and project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and an optional project.
+
+Suggested topics
+
+* First, do not forget to share your creations in the forum!
+* Do you know about jQuery or equivalent libraries that were developed to try to make the DOM easier to manipulate? Some people do not recommend using them now - why is this?
+* Some of things seen during this week, such as the document.querySelector method, do not work on old versions of Internet Explorer, for example. How can we make them work on these old browsers?
+
+Optional project
+
+The game is not completely finished, as you may have noticed :-) So, try to make "levels": when all good balls have been eaten, let's restart automatically, but this time with one more ball in the initial set!
 
 
 
