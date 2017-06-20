@@ -82,3 +82,100 @@ data, enclosing it in a tidy package. This minimizes the use of global variables
 #### Module 4: Structuring data   4.2 Objects (part 2): properties and methods   From objects to arrays
 
 # From objects to arrays
+
+Source code of the example in the above video
+https://codepen.io/w3devcampus/pen/XgNdLK?editors=0012
+
+
+
+### From objects to arrays
+
+In Javascript, an object = a table whose keys/indexes are defined!
+
+Important note: Darth Vader is called "Dark Vador" in the French versions of SW, and, as a French tutor, I think it's cool to give to one of the heroes an international name. :-)
+
+Look at this array:
+
+```javascript
+> var darkVador = ['villain', 'half human half machine'];
+undefined
+ 
+> darkVador[0]
+"villain"
+ 
+> darkVador[1]
+"half human half machine"
+```
+
+And now, look at this object:
+
+```javascript
+var darkVador = {
+    job: 'villain',
+    race: 'half human half machine'
+};
+```
+They look a bit similar, don't they?
+
+* Same name of the variable that contains the object `= darkVador`
+* Instead of `[` and `]` that we used for defining an array, we use `{` and `}` for defining an object
+* The elements of the object (its properties) are separated by a comma `,`
+* The pairs of keys/values are separated by `:` as in `race: 'half human, half machine'`
+* The last pair of keys/values has no `,` at the end.
+* It is possible to access the object's properties with `.` or with brackets
+
+We saw that we can use the `.` operator, followed by the property name. It's also possible to use the bracket notation, and manipulate 
+the object as an array whose indexes, instead of being 0, 1, 2 etc., are the property names!
+
+```javascript
+> var book = {
+title: 'Le Petit Prince',
+author: 'Saint-Exupery'
+};
+undefined
+ 
+> var title = book.title;
+undefined
+ 
+> title;
+"Le Petit Prince"
+ 
+> var title = book['title'];
+undefined
+ 
+> title
+"Le Petit Prince";
+ 
+> var author = book['author'];
+undefined
+ 
+> author;
+"Saint-Exupery"
+```
+As you can see, if you look at lines 7-10 and 13-16, writing book.title or book['title'] is equivalent!
+
+### In JavaScript, objects are arrays whose indexes are property names: please remember this!
+
+Knowledge check 4.2.2 (not graded)
+```javascript
+let michel = {
+    job:'Your Teacher'
+}
+```
+Check the correct proposal:
+
+michel.job and michel['job'] are equivalent correcto
+Explication
+We saw that we can use the `.` operator, followed by the property name, like michel.job. It's also possible to use the bracket 
+notation, and manipulate the object as an array whose indexes, instead of being 0, 1, 2, etc., are the property names! So `michel.job` 
+and michel followed by brackets with `'job'` or `"job"` as an index are equivalent.
+
+---
+
+#### Module 4: Structuring data   4.2 Objects (part 2): properties and methods   Property declaration syntax
+
+# Property declaration syntax
+
+
+
+
