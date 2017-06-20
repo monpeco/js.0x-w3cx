@@ -1388,6 +1388,448 @@ Examples that can help you, created by students of earlier versions of this MOOC
 * [AWESOME custom player created by GeorgianaB, with playlist, progress bar, CSS3 animations, etc. Check this out!](https://codepen.io/w3devcampus/pen/reQbow)
 
 
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.4 Displaying a map with the geolocation API   Introduction to the geolocation API
+
+# Introduction to the geolocation API
+Let's start with an example!
+
+Click the button to get your position and display a map as a picture. This may take some time, or fail, if a geolocation is not available with the device and connection you are using (e.g. at work, beyond a proxy). Try it anyway!
+
+This example will be explained later on in the course...
+
+The **Geolocation HTML5 JavaScript API** is implemented by most modern Web browsers, and uses different means to get the current location: GPS, GSM/3G triangulation, Wifi, IP address, etc.
+
+It is possible to prompt the user to activate the GPS (this is what most GPS navigation software does on mobile phones), or ask for a particular means among those available. It is also possible to track the current position when it changes. This is useful for writing a navigation application or for tracking in real time the position of different participants in the case of an application that involves several people at the same time (using WebSockets, for example).
+
+#### Current support is excellent!
+
+As at 2017, support for this API is excellent, both on mobile and desktop devices.
+
+Typical use:
+```javascript
+navigator.geolocation.getCurrentPosition(showPosition, onError);
+ 
+function showPosition(position) {
+    console.log("latitude is: " + position.coords.latitude);
+    console.log("longitude is: " + position.coords.longitude);
+}
+ 
+function onError(err) {
+    console.log("Could not get the position");
+}
+```
+
+This online example at JsBin shows how to get the current longitude and latitude and display them in an HTML page. Try it below in your browser:
+http://jsbin.com/konadog/edit?html,output
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basic example of use of the geolocation API</title>
+    <meta charset="utf-8">
+  </head>
+<body>
+<p id="msg">Click the button to get your coordinates:</p>
+<button onclick="getLocation()">Where am I ?</button>
+  
+<script>
+var displayCoords=document.getElementById("msg");
+  
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    displayCoords.innerHTML="Geolocation API not supported by your browser.";
+  }
+}
+  
+  
+function showPosition(position) {
+ displayCoords.innerHTML="Latitude: " + position.coords.latitude + 
+  "<br />Longitude: " + position.coords.longitude;	
+}
+</script>
+</body>
+</html>
+```
+Note that the first time you execute this example, the browser will ask, for privacy reasons, if you agree to share your position with the application.
+
+* Line 14 checks if the Web browser supports the geolocation API by testing the variable `navigator.geolocation`. If not null, then the geolocation API is supported.
+* Line 15 calls `navigator.geolocation.getCurrentPosition(showPosition)` passing a callback function as a parameter (in this example we did not specify a callback in case of error). When a current position is available, the callback function will be called asynchronously, and the input parameter of this callback function will be the current position, like in the function `showPosition(position)` of the example.
+* Line 22: the `position` objects has a `coords` property that is the object that holds the `longitude` and the `latitude`.
+
+External resources:
+
+* [The W3C specification about the geolocation API (in Recommendation status, aka, Web standard)](https://www.w3.org/TR/geolocation-API/)
+* [Good article from the Opera dev Web site](https://dev.opera.com/articles/w3c-geolocation-api/)
+* [Excellent tutorial on the Google Maps API. Some examples in this part of the course are illustrated using Google Maps.](http://econym.org.uk/gmap/)
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.4 Displaying a map with the geolocation API   Practical examples using the Google Map API
+
+# Practical examples using the Google Map API
+
+### Practical examples: use the geolocation API together with Google Maps
+
+This section presents some examples of how to get a static map (a picture), using the [Google Static Map API](https://developers.google.com/maps/documentation/static-maps/), how 
+to display an interactive map using the [Google Map JavaScript API](https://developers.google.com/maps/documentation/javascript/adding-a-google-map) and 
+even how to get an estimation of a physical address from the longitude and latitude, using the [Google Reverse Geocoding JavaScript API](https://developers.google.com/maps/documentation/javascript/examples/geocoding-reverse).
+
+
+The following three examples increase in complexity, but most of the code is reused and adapted without even reading the Google documentation about the different APIs.
+
+Example 1 (easy):  how to get a static image map centered on your longitude and latitude
+
+Online example available on JS Bin, or try it here in your browser: 
+https://jsbin.com/yituzu/edit?html,css,output
+
+```html
+<!DOCTYPE html>
+<html>
+<body>
+<p id="demo">Click the button to get your position:</p>
+<button onclick="getLocation()">Try It</button>
+<div id="mapholder"></div>
+  
+<script>
+var x=document.getElementById("demo");
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+
+function showPosition(position)
+  {
+  var latlon=position.coords.latitude+","+position.coords.longitude;
+
+  var img_url="https://maps.googleapis.com/maps/api/staticmap?center="
+  +latlon+"&zoom=14&size=400x300&sensor=false";
+  document.getElementById("mapholder").innerHTML="<img src='"+img_url+"' />";
+  }
+
+function showError(error)
+  {
+  switch(error.code) 
+    {
+    case error.PERMISSION_DENIED:
+      x.innerHTML="User denied the request for Geolocation."
+      break;
+    case error.POSITION_UNAVAILABLE:
+      x.innerHTML="Location information is unavailable."
+      break;
+    case error.TIMEOUT:
+      x.innerHTML="The request to get user location timed out."
+      break;
+    case error.UNKNOWN_ERROR:
+      x.innerHTML="An unknown error occurred."
+      break;
+    }
+  }
+</script>
+  
+</body>
+</html>
+```
+It also illustrates the use of the error callback from the previous section. The Google Map API is used to get an image centered at the longitude and latitude collected with the HTML5 Geolocation API.
+
+Source code extract:
+```html
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Map</title>
+    </head>
+    <body>
+        <!-- for position display -->
+        <div id="myposition"></div>
+        <!-- for gmap display -->
+        <div id="map" style="width:640px;height:480px"></div>
+        <!-- get gmap API -->
+        <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+        <script>
+            // Default position
+            var centerpos = new google.maps.LatLng(48.579400,7.7519);
+            // default options for the google map
+            var optionsGmaps = {
+                center:centerpos,
+                navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                zoom: 15
+            };
+            // Init map object
+            var map = new google.maps.Map(document.getElementById("map"), optionsGmaps);
+            if(navigator.geolocation) {
+                // callback function, called by getCurrentPosition() in case of success
+                function drawPosition(position) {
+                    var infopos = "Got position : <br>";
+                    infopos += "Latitude : "+position.coords.latitude +"<br>";
+                    infopos += "Longitude: "+position.coords.longitude+"<br>";
+                    infopos += "Altitude : "+position.coords.altitude +"<br>";
+                    document.getElementById("myposition").innerHTML = infopos;
+                // Make new object LatLng for Google Maps
+                var latlng = new google.maps.LatLng(position.coords.latitude
+                position.coords.longitude);
+                // Add a marker at position
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title:"You are here"
+                });
+                // center map on longitude and latitude
+                map.panTo(latlng);
+            }
+            // callback function, called by getCurrentPosition() in case of error
+            function errorPosition(error) {
+                ...
+            }
+            navigator.geolocation.getCurrentPosition(drawPosition,errorPosition);
+            } else {
+                alert("Geolocation API not supported by your browser");
+            }
+        </script>
+    </body>
+</html>
+```
+The magic occurs at line 23, where we use the Google Static Map API.
+
+#### Example 2 (a bit more complicated...) that shows how to display an interactive Google map centered on the current position
+
+This example is just given "as is", as there are so many possibilities for rendering a map with the Google Map API. However, we think having such a basic example might be useful.
+
+Online example at JS Bin
+https://jsbin.com/gonipa/edit?html,output
+
+```html
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+<!-- for position display -->
+<div id="myposition"></div>
+
+<!-- for gmap display -->
+<div id="map" style="width:640px;height:480px"></div>
+
+<!-- get gmap API -->
+<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script>
+// Default position
+var centerpos = new google.maps.LatLng(48.579400,7.7519);
+
+// default options for the google map
+var optionsGmaps = {
+	center:centerpos,
+	navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+	mapTypeId: google.maps.MapTypeId.ROADMAP,
+	zoom: 15
+};
+
+// Init map object
+var map = new google.maps.Map(document.getElementById("map"), optionsGmaps);
+
+if(navigator.geolocation) {
+
+	// callback function, called by getCurrentPosition() in case of success
+	function drawPosition(position) {
+	
+		var infopos = "Got position : <br>";
+		infopos += "Latitude : "+position.coords.latitude +"<br>";
+		infopos += "Longitude: "+position.coords.longitude+"<br>";
+		infopos += "Altitude : "+position.coords.altitude +"<br>";
+		document.getElementById("myposition").innerHTML = infopos;
+
+		// Make new object LatLng for Google Maps
+		var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+		// Add a marker at position
+		var marker = new google.maps.Marker({
+			position: latlng,
+			map: map,
+			title:"You are here"
+		});
+		
+      // center map on longitude and latitude
+		map.panTo(latlng);
+	}
+
+	// callback function, called by getCurrentPosition() in case of error
+	function errorPosition(error) {
+		var info = "Error during geolocation : ";
+		switch(error.code) {
+		case error.TIMEOUT:
+			info += "Timeout !";
+		break;
+		case error.PERMISSION_DENIED:
+			info += "You did not access to the geolocation API";
+		break;
+		case error.POSITION_UNAVAILABLE:
+			info += "Position could not be determined";
+		break;
+		case error.UNKNOWN_ERROR:
+			info += "Unknown error";
+		break;
+		}
+		document.getElementById("myposition").innerHTML = info;
+	}
+	   navigator.geolocation.getCurrentPosition(drawPosition,errorPosition);
+} else {
+	alert("Geolocation API not supported by your browser");
+}
+
+</script>
+</body>
+</html>
+
+```
+#### Example 3 (advanced) shows how to get a physical address from the longitude and latitude
+
+This is another example that obtains an address from longitude and latitude. It uses the Google Reverse Geocoding JavaScript API. For those of you who are really interested to know how this API works, please read the Google documentation and tutorials.
+
+Without going into detail, the below example might be useful to copy/paste/adapt for trying to pre-fill a form that requires an address to be entered. Geolocation is useful for guessing the country, city, zip code, street, etc. You'll see some examples of this feature in use in the next section of the course.
+
+Online example at JS Bin.
+https://jsbin.com/wijatu/edit?html,output
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>    
+      <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>    
+    <script>
+       // p elements for displaying lat / long and address
+       var displayCoords, myAddress; 
+      
+      // used with the google apis
+      var geocoder;
+      var map;
+      var infowindow = new google.maps.InfoWindow();
+      var marker;
+      
+      // Called when the page is loaded
+      function init() {
+        displayCoords=document.getElementById("msg");
+        myAddress = document.getElementById("address");
+        
+        geocoder = new google.maps.Geocoder();
+        
+        // In order to show something even before a user clicked on the button
+        var latlng = new google.maps.LatLng(34.0144, -6.83);
+        
+        var mapOptions = {
+          zoom: 8,
+          center: latlng,
+          mapTypeId: 'roadmap'
+        }
+        map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions); 
+      }
+      
+       // Called when the button is clicked
+       function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          } else {
+          displayCoords.innerHTML="Geolocation API not supported by your browser.";
+       }
+     }
+  
+    // Called when a position is available
+    function showPosition(position) {
+        displayCoords.innerHTML="Latitude: " + position.coords.latitude + 
+            "<br />Longitude: " + position.coords.longitude;   
+      
+        // Display the map
+        showOnGoogleMap(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+ 
+    }
+ 
+ 
+    function showOnGoogleMap(latlng) {
+        // Ask google geocoder for a surface address once we get a longitude and 
+        // a latitude. In fact the reverse geocoder sends back an array of "guesses"
+        // i.e. not only one address object, but several. Each entry in this array
+        // has several properties like street, city, etc. We use the "formatted_address"
+        // one here, but it might be interesting to get the detailed properties in other
+        // applications like a form with street, city, zip code etc.
+        geocoder.geocode({'latLng': latlng},reverseGeocoderSuccess);
+      
+        function reverseGeocoderSuccess(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            // For debugging
+            console.dir(results);
+            
+            if (results[1]) {
+              map.setZoom(11);
+              marker = new google.maps.Marker({
+                  position: latlng,
+                  map: map
+              });
+              infowindow.setContent(results[1].formatted_address);
+              infowindow.open(map, marker);
+              
+              // Display address as text in the page
+              myAddress.innerHTML="Adress: " + results[0].formatted_address;
+
+            } else {
+              alert('No results found');
+            }
+          } else {
+            alert('Geocoder failed due to: ' + status);
+          }
+        } // end of reverseGeocoderSuccess
+      }  // end of showOnGoogleMap
+    </script>
+  </head>
+  <body onload="init()">
+     <title>HTML5 + Geolocalisation + Google Maps API Reverse Geocoding</title>
+    
+    <p id="msg">Click the button to get your coordinates:</p>
+    <p id="address"></p>
+ 
+    <button onclick="getLocation()">Where am I ?</button>
+      <div id="map_canvas" style="width: 500px; height: 300px"></div>
+  </body>
+</html>
+```
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.4 Displaying a map with the geolocation API   Discussion topics and projects
+
+# Discussion topics and projects
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and optional projects.
+
+#### Suggested topics
+
+What features of a Web application do you think could benefit from geolocation?
+* Do you know that you can simulate a position using the dev. tools of some browsers? Try exploring the dev. tools of Google Chrome. Also, there are browser extensions and applications that can help develop interactive maps. Please look for some of them and share your findings in the forum.
+* Can you recommend good tutorials about Google Map and about OpenStreetMap, the two main free services that propose maps on the fly?
+
+#### Optional projects
+
+Here are a few project ideas. Your classmates and the team who prepared the course will be glad to try them and offer feedback. Please post URLs in this discussion forum. These projects are optional, meaning that they won't be graded.
+
+* Project 1 (easy): Add a map showing your location to one of your Web pages. Start with a simple, static map, then try with an interactive map. Reuse the examples from the course.
+* Project 2 (a bit harder): The examples provided in the course used Google maps, but why don't you try to do the same with Open Street Map?
+
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.5 Playing sound samples and music   Background music (streamed)
+
+# Background music (streamed)
 
 
 
