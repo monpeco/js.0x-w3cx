@@ -1074,6 +1074,350 @@ https://jsbin.com/ridujix/1/edit?html,output
 
 # Using the Webcam
 
+It's very easy to use the `getUserMedia` API for accessing the WebCam. 
+
+Here is a version that should work on any recent browser except Apple Safari (which still does not support this API). Note that for security reasons you must 
+host your HTML/CSS/JS page on an HTTPS server for `getUserMedia` to work.
+
+#### First version that uses callbacks (success/error, see the JS code):
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Using the WebCam, version with callbacks</title>
+</head>
+<body >
+  <video width=200 height=200 id="video" controls autoplay></video>
+</body>
+</html>
+```
+
+```javascript
+window.onload = init;
+function init() {
+   navigator.getUserMedia ({video: true, audio: false}, success, error);
+}
+
+// successCallback
+function success(localMediaStream) {
+  var video = document.querySelector('video');
+  video.src = window.URL.createObjectURL(localMediaStream);
+  // Do something with the video here, e.g. video.play()
+}
+
+// errorCallback
+function error(err) {
+  console.log("The following error occured: " + err);
+}
+```
+#### Second version that uses a new JavaScript syntax called "promises":
+
+This is another way of saying, "Please, browser, try to give me access to the WebCam, THEN when the Webcam is ready, please tell me so that I can 
+display its stream in a `<video>` element". 
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Using the WebCam, version with promises</title>
+</head>
+<body >
+  <video width=200 height=200 id="video" controls autoplay></video>
+</body>
+</html>
+```
+
+```javascript
+window.onload = init;
+
+function init() {
+   navigator.mediaDevices.getUserMedia({audio: true,video: true})
+     .then(function (stream) {
+           var video = document.querySelector('#video');
+           video.src = URL.createObjectURL(stream);
+           video.play();
+      })
+     .catch(function(err) {
+        alert("something went wrong: " + err)
+   });
+}
+```
+
+#### Knowledge check 3.3.3 (not graded)
+
+What is getUserMedia?
+A JavaScript API that can be used to redirect the webcam video stream to a video element correcto
+
+#### Explanation
+`getUserMedia` is part of the WebRTC specification, but it's related to the `<video>` element too. Indeed, it can be used to redirect the 
+webcam video stream to a `<video>` element. If this element has the autoplay attribute, it will display the video stream as 
+soon as it is available.
+
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.3 HTML5 multimedia and JavaScript API   Extended examples
+
+# Extended examples
+
+In this section, we provide some extended examples that use more JavaScript and more complex CSS manipulation. 
+
+Example 1: applying CSS3 filters to a video in real time
+
+Please see this example online. Play the video and then click on the video while it's playing. This will change in real-time the CSS class of the video element. Each class uses the filter property with different values.
+
+Note that CSS filters are not yet 100% supported by the major browsers. You still need to use prefixed versions of the CSS properties, as shown below (this table is taken from caniuse.com).
+
+CSS filter support (green squares with a small yellow part in the top right corner) means that a prefix is needed, like -webkit-filter, or -moz-filter or -o-filter):
+
+
+Use `<video class="blur">` for example, to obtain a blurry video. This complete example changes the CSS class associated to the video element, on the fly in a mouseclick listener callback. 
+
+Here, we define the CSS classes used in the example:
+
+```css
+.blur {
+    filter: blur(3px);
+}
+.brightness {
+    filter: brightness(5);
+}
+.contrast {
+    filter: contrast(8);
+}
+.hue-rotate {
+    filter: hue-rotate(90deg);
+}
+.hue-rotate2 {
+    filter: hue-rotate(180deg);
+}
+.hue-rotate3 {
+    filter: hue-rotate(270deg);
+}
+.saturate {
+    filter: saturate(10);
+}
+.grayscale {
+    filter: grayscale(1);
+}
+.sepia {
+    filter: sepia(1);
+}
+.invert {
+    filter: invert(1)
+}
+```
+
+This extract from the source code explains how to set a mouseclick listener and how to change the value of a CSS class attribute on the fly:
+
+```html
+<video id="output" controls autoplay>
+   <source src=http://html5doctor.com/demos/video-canvas-magic/video.webm       
+           type=video/webm>
+   <source src=http://html5doctor.com/demos/video-canvas-magic/video.ogg
+           type=video/ogg>
+   <source src=http://html5doctor.com/demos/video-canvas-magic/video.mp4
+           type=video/mp4>
+</video>
+<script>
+   var output = document.getElementById('output');
+   var idx = 0;
+   var filters = [
+     'grayscale',
+     'sepia',
+     'blur',
+     'brightness',
+     'contrast',
+     'hue-rotate', 'hue-rotate2', 'hue-rotate3',
+     'saturate',
+     'invert'];
+function changeFilter(e) {
+     var el = e.target;
+     var effect = filters[idx++ % filters.length];
+     el.classname = effect;
+     // Do not propagate the event, prevent default behavior.
+     // By default, a click on a video element pauses/unpauses the video
+     // By stopping the propagation and canceling the default behavior,
+     // we stop the pause/unpause behavior when the video is clicked.
+     // Now a click just changes the CSS filter we apply on the video.
+     e.stopPropagation();
+     e.preventDefault();
+}
+output.addEventListener('click', changeFilter, false);
+</script>
+<style>
+#output {
+    width: 307px;
+    height: 250px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid #ccc;
+}
+.blur {
+    filter: blur(3px);
+}
+.brightness {
+    filter: brightness(5);
+}
+...
+</style>
+```
+
+#### Example 2: how to track all possible events and manipulate many properties
+
+This example also shows how to handle failures. See the code and play with this example [online](http://jsbin.com/kizuxuv/1/edit?html,output).
+
+Here is an example of a piece of code for handling errors during video playback:
+
+```javascript
+...
+vid.addEventListener('error', function(evt) {
+    logEvent(evt,'red');
+}, false);
+...
+function logEvent(evt, color) {
+    switch (evt.type) {
+       ...
+       case 'error':
+           var error = document.querySelector('video').error;
+           switch (error.code) {
+             case error.MEDIA_ERR_ABORTED:
+                note.innerHTML = "fetching aborted at the user's request";
+                break;
+             case error.MEDIA_ERR_NETWORK:
+                note.innerHTML = "a network error caused the browser to stop fetching the media";
+                break;
+             case error.MEDIA_ERR_DECODE:
+                note.innerHTML = "an error occurred while decoding the media";
+                break;
+             case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                note.innerHTML = "the media indicated by the src
+                                  attribute was not suitable";
+                break;
+             default:
+                note.innerHTML = "an error occurred";
+                break;
+           }
+           break;
+       }
+ ...
+}
+```
+#### Example 3: how to display a percentage of buffering when using a slow connection
+
+See the example [online](http://jsbin.com/xazivi/1/edit?html,output) here too.
+
+Note that on mobile phones, the video does not start until the user presses the play control or clicks on the video picture. Using the `canplaythrough` event is a trick to call a function that starts the video player as soon as the page is loaded on desktop. This event is not supported by mobile devices, so if you try this example on a mobile, the video will not start automatically.
+
+As the Apple Developer Web site explains:  "The `buffered` property is a `TimeRanges` object: an array of start and stop times, not a single value. Consider what happens if the person watching the media uses the time scrubber to jump forward to a point in the movie that hasn’t loaded yet—the movie stops loading and jumps forward to the new point in time, then starts buffering again from there. So the `buffered` property can contain an array of discontinuous ranges. The example simply seeks the end of the array and reads the last value, so it actually shows the percentage into the movie duration for which there is data. "
+
+
+```html
+<!DOCRYPE html>
+<html lang="en">
+  <head>
+    <title>JavaScript Progress Monitor</title>
+    <script>
+      function getPercentProg() {
+          var myVideo = document.getElementsByTagName('video')[0];
+          var endBuf = myVideo.buffered.end(0);
+          var soFar = parseInt(((endBuf / myVideo.duration) * 100));
+          document.getElementById("loadStatus").innerHTML = soFar + '%';
+      }
+      // Will be called as soon as the page is ready on desktop computer,
+      // Only when a user clicks on play control or image on mobile
+      function myAutoPlay() {
+          var myVideo = document.getElementsByTagName('video')[0];
+          myVideo.play();
+      }
+      function addMyListeners(){
+          var myVideo = document.getElementsByTagName('video')[0];
+          myVideo.addEventListener('progress', getPercentProg, false);
+          // Calls autoplay only if the device is adapted
+          myVideo.addEventListener('canplaythrough', myAutoPlay, false);
+      }
+  </script>
+</head>
+<body onload="addMyListeners()">
+    <h1>Check progression of buffering before playing a movie. Useful withy
+        slow connexion (3G, etc.)</h1>
+    <div>
+      <video controls>
+          <source src=http://html5doctor.com/demos/video-canvas-magic/video.webm
+                  type=video/webm>
+          <source src=http://html5doctor.com/demos/video-canvas-magic/video.ogg  
+                  type=video/ogg>
+          <source src=http://html5doctor.com/demos/video-canvas-magic/video.mp4 
+                  type=video/mp4>
+      </video>
+      <p id="loadStatus">Buffering...</p>
+    </div>
+</body>
+</html>
+```
+
+---
+
+#### Module 3: Playing with some HTML5 APIs   3.3 HTML5 multimedia and JavaScript API   Discussion topics and projects
+
+# Discussion topics and projects
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and optional projects.
+
+Suggested topics
+
+This might be useful: free videos at https://download.blender.org/peach/bigbuckbunny_movies/
+Hosting videos is complicated when you want to use them with CodePen or JsBin, do you have some tips to share with others? Here at W3C we run our own private HTTP server...We are speaking about files that can be used with the <video> element directly, not on YouTube, DailyMotion, etc.
+What tool do you use for encoding your audio and video files?
+Optional project: a custom video player
+
+Here are a few ideas to play with the material learned in this section. Your classmates and the team who prepared the course will be happy to look at them and give feedback. Please post URLs of your work in this discussion forum. These projects are optional, meaning that they won't be graded.
+
+Try to write a video  player with a few custom buttons for play/stop/etc. When your custom player is done, please add a way to play several videos one after another (what we call a playlist), etc.
+
+Examples that can help you, created by students of earlier versions of this MOOC:
+
+* [A custom player with nice CSS and buttons](http://jsbin.com/dacevo/edit?html,css,output)
+* [Another simple one with custom buttons for play/stop/volume up/volume down...](http://jsbin.com/neluwes/edit?html,css,output)
+* [Custom players with a small playlist composed of three songs by Queen](https://jsbin.com/vefiniq/2/edit?html,output)
+* [AWESOME custom player created by GeorgianaB, with playlist, progress bar, CSS3 animations, etc. Check this out!](https://codepen.io/w3devcampus/pen/reQbow)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
