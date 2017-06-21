@@ -717,4 +717,172 @@ We also call the `breathe` method from the two methods `describeYourself` and `t
 
 # Adding/deleting properties and methods
 
+### Properties and methods can be added/deleted after an object has been defined
 
+> Unlike other object-oriented languages, it is possible in JavaScript to add or to remove properties after an object has been created
+
+Examples:
+https://codepen.io/w3devcampus/pen/WpqeyK
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript OOP: methods</title>
+  </head>
+  <body>
+    <p>Look at the JS code. This time we created an empty object and added properties and methods afterwards.</p>
+    <button onclick='dvSpeak();'>Make Dark Vador speak!</button>
+    </body>
+</html>
+```
+
+```javascript
+// empty object with no properties/methods
+var darkVador = {};
+
+// add properties after darkVador has been created
+ darkVador.race = 'human';
+  darkVador.job = 'villain';
+  darkVador.talk = function() {
+    return 'come to the dark side, Luke!' + this.breathe();
+  };
+
+  darkVador.describeYourself = function() {
+    return "I'm a " + this.race + " and I'm a " + this.job + " in a series of movies!" + this.breathe();
+  };
+
+  darkVador.breathe = function() {
+    return ".....shhhhhhhhh.....";
+  };
+
+
+function dvSpeak() {
+ document.body.innerHTML += '<p>Dark Vador describes himself: ' + darkVador.describeYourself(); + '</p>';  document.body.innerHTML += '<p>Dark Vador says: ' + darkVador.talk(); + '</p>';
+}
+```
+
+```javascript
+// empty object with properties/methods
+var darkVador = {};
+ 
+// add properties after darkVador has been created
+darkVador.race = 'human';
+darkVador.job = 'villain';
+ 
+// add some methods
+darkVador.talk = function() {
+    return 'come to the dark side, Luke!' + this.breathe();
+};
+```
+* Lines 5, 6 and 9: we can add properties and methods after the object has been created empty at line 2.
+
+### Deleting a property or a method
+
+You can use the JavaScript keyword `delete` to delete an object's property (it will become undefined).
+
+Example:
+https://codepen.io/w3devcampus/pen/RpzNEP
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>JavaScript OOP: methods</title>
+  </head>
+  <body>
+    <p>Look at the JS code. This time we created an empty object and added properties and methods afterwards.</p>
+    <button onclick='dvSpeak();'>Make Dark Vador speak!</button>
+    <p>Click the button below (it will delete the "race" property of the darkVador object). Then click again the button above and see the "undefined" value of the darkVador.race property now.</p>
+    <button onclick="deleteSomeProperties()">Delete some of Dark Vador's properties</button>
+    </body>
+</html>
+```
+
+```javascript
+// empty object with properties/methods
+var darkVador = {};
+
+// add properties after darkVador has been created
+ darkVador.race = 'human';
+ darkVador.job = 'villain';
+
+// add some methods
+  darkVador.talk = function() {
+    return 'come to the dark side, Luke!' + this.breathe();
+  };
+
+  darkVador.describeYourself = function() {
+    return "I'm a " + this.race 
+      + " and I'm a " + this.job 
+      + " in a series of movies!" + this.breathe();
+  };
+
+  darkVador.breathe = function() {
+    return ".....shhhhhhhhh.....";
+  };
+
+
+function dvSpeak() {
+ document.body.innerHTML += '<p>Dark Vador describes himself: ' + darkVador.describeYourself(); + '</p>';  document.body.innerHTML += '<p>Dark Vador says: ' + darkVador.talk(); + '</p>';
+}
+
+function deleteSomeProperties() {
+  delete darkVador.race;
+  delete darkVador.job;
+}
+```
+
+JavaScript code extract:
+
+```javascript
+function deleteSomeProperties() {
+  delete darkVador.race;
+  delete darkVador.job;
+}
+```
+
+#### Knowledge check 4.2.4 (not graded)
+
+```javascript
+let pacman = {};
+pacman.color:'yellow';
+pacman.shape: 'pizza';
+```
+Explanation
+No, it's not correct! While adding and removing properties after the object has been declared/created (line 1 of the source code), the syntax for declaring 
+properties INSIDE an object (with `:`) is no more valid. You must use the `=` operator for the assignment. The correct code is:
+
+```javascript
+let pacman = {};
+pacman.color = 'yellow';
+pacman.shape = 'pizza';
+```
+---
+
+#### Module 4: Structuring data   4.2 Objects (part 2): properties and methods   Discussion topic
+
+# Discussion topic
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+Suggested topic of discussion:
+
+We simplified the explanations for `this` in this introductory course. Normally, `this` is the current object when you use it inside an "object literal" 
+(like in this [CodePen example from the course](https://codepen.io/w3devcampus/pen/JWqgGZ)). 
+
+But... we also met `this` in event listeners (see in this [example from the course](https://codepen.io/w3devcampus/pen/gmygzV?editors=1000). Look at the 
+`onchange = "changePageBackgroundColor(this.value);")` ... 
+
+In fact, the `this` keyword can be confusing in JavaScript. The key thing to remember is that it is bound to the calling object when the function is called, not when the function is created.
+
+And in the case of event listeners, the callbacks are called by the browser... You can conclude that it's a good habit not to have event listeners in your 
+objects: just use methods in which there is no confusion about `this`.
+
+Let's discuss that (or `this`?) in the forum :-)
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Classes: definition
+
+# Classes: definition
