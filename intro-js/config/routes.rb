@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   get 'static/remote_http'
 
   get 'static/exercises1'
+  
+  get 'static/draw_rectangle'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
