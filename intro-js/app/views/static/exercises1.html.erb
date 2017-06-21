@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>JavaScript and HTML</title>
+  <meta charset="utf-8"/>
+  <script>
+    function changeTheTitle() {
+        navigator.geolocation.getCurrentPosition(showPosition, onError);
+         
+        function showPosition(position) {
+            console.log("latitude is: " + position.coords.latitude);
+            console.log("longitude is: " + position.coords.longitude);
+        }
+         
+        function onError(err) {
+            console.log("Could not get the position");
+        }
+    }
+  </script>
+</head>
+  <body>
+    <h1 id="mainTitle">My home page</h1> 
+ 
+    <p>This is an example of interactivity between JavaScript and the HTML content of a document.</p>
+    <button onclick="changeTheTitle();">Click me</button>
+  </body>
+</html>
