@@ -14,3 +14,16 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+var persons = [
+  {name:'Michel', age:51},
+  {name:'Henri', age:20},
+  {name:'Francois', age:29}
+];
+
+for(var i = 0; i  < persons.properties; i++) {
+  var p = persons[i]; // current element
+  
+  document.body.innerHTML += p.name + "b<r>"; 
+}
+
