@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get 'static/exercises1'
   
   get 'static/draw_rectangle'
+    
+  get 'static/draw_rectangle_2'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
