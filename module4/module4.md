@@ -176,6 +176,54 @@ and michel followed by brackets with `'job'` or `"job"` as an index are equivale
 
 # Property declaration syntax
 
+Property names: different possibilities
+
+We can put single or double quotes around the name of the property, or nothing at all:
+
+```javascript
+var louis = {age: 40}; // WE DO THIS MOST OF THE TIME!
+var louis = {"age": 40};
+var louis = {'age': 40};
+```
+
+In some cases we have to put quotes around the property name:
+
+* When it is a reserved word from JavaScript,
+* Or it contains spaces or special characters,
+* Or it begins with a number.
+
+Examples:
+
+```javascript
+book.1stPublication = '6 avril 1943'; // begins with a number
+                                      // Throws a SyntaxError
+book['1stPublication'] = '6 avril 1943'; // OK
+book.date of publication = '6 avril 1943'; // spaces not allowed!
+book['date of publication'] = '6 avril 1943'; // allowed, but avoid!
+```
+
+Another classic case where the name of a property is in a variable
+
+In this case it is necessary  to use the syntax with '[' and ']' ...
+
+Example:
+
+```javascript
+> var key = 'title';
+undefined
+ 
+> book[key];
+"Le Petit Prince"
+```
+
+---
+
+#### Module 4: Structuring data   4.2 Objects (part 2): properties and methods   An object can contain another object
+
+# An object can contain another object
+
+
+
 
 
 
