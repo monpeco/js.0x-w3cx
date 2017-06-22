@@ -1049,3 +1049,176 @@ function makeHeroesSpeak() {
 #### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Creating objects using the new ES6 classes
 
 # Creating objects using the new ES6 classes
+Source code from above video examples
+
+https://codepen.io/w3devcampus/pen/mwOYWm
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript OOP: create objects</title>
+  </head>
+  <body>
+    <p>Look at the JS code. This time we created multiple objects using a "constructor function.</p>
+ <p>   
+   <button onclick='makeHeroesSpeak();'>Make Star Wars heroes speak!</button>
+    </p>
+  
+    </body>
+</html>
+```
+
+
+```javascript
+/* ES5's constructor function syntax is not easy to read. If someone does not respect the "conventions" that we've just discussed (start the class with an uppercase, etc.), then the code may work, but it will be difficult to guess that we are not in front of a regular function.
+
+ES5 construction function
+*/
+function HeroES5(name, side) {
+  this.name = name;
+  this.side = side;
+  
+  this.describeYourself = function() {
+    console.log("I'm " + this.name + " and I'm from the " + this.side);
+  }
+}
+
+let ianSoloES5 = new HeroES5('Ian Solo', 'Rebels');
+
+
+
+
+
+
+
+
+/* ES6 created a class keyword and a constructor keyword, along with advanced concepts that will be the subject of an "advanced JavaScript" course. 
+
+Using ES6 classes
+*/
+class Hero {
+  // must be UNIQUE!, called when "new" is used
+  constructor(name, side) { 
+    this.name = name;
+    this.side = side;   
+  }
+  
+  // no "function" keyword here!
+  speak() {
+    return "<p>My name is " + this.name +
+      ", I'm with the " + this.side + ".</p>";
+  }
+}
+
+var darkVador = new Hero("Dark Vador", "empire");
+var luke = new Hero("Luke Skywalker", "rebels");
+var ianSolo = new Hero("Ian Solo", "rebels");
+
+function makeHeroesSpeak() {
+  document.body.innerHTML += darkVador.speak();
+   document.body.innerHTML += luke.speak();
+   document.body.innerHTML += ianSolo.speak();
+}
+
+```
+
+### Creating objects using the new ES6 classes
+
+ES5's constructor function syntax is not easy to read. If someone does not respect the **"conventions"** that we've 
+just discussed (start the class with an uppercase, etc.), then the code may work, but it will be difficult to guess 
+that we are not in front of a regular function. 
+
+ES6 created a `class` keyword and a `constructor` keyword, along with advanced concepts that will be the subject of 
+an "advanced JavaScript" course. 
+
+Main changes:
+
+* A class is simply defined using the keyword `class` followed by the name of the class
+* The unique constructor is defined using the `constructor` keyword followed by the parameters
+* The constructor is executed when an object is created using the keyword `new`
+  * Example: `let h1 = new Hero('Ian Solo', 'rebels');`
+  * This will call `constructor(name, side)` in the example below.
+
+* A method is simply defined by its name followed by its parameters (we no more use the keyword "function"). Example: `speak() {...}` in the source code below.
+Here is the new version of the Hero "template", this time with the ES6 class syntax:
+
+
+Here is the new version of the Hero "template", this time with the ES6 class syntax:
+
+```javascript
+class Hero {
+    constructor(name, side) {
+        this.name = name; // property
+        this.side = side; // property
+    }
+    speak() { // method, no more "function"
+        return "<p>My name is " + this.name +
+               ", I'm with the " + this.side + ".</p>";
+    }
+}
+ 
+var darkVador = new Hero("Dark Vador", "empire");
+```
+
+* Line 1: a class is simply defined using the keyword `class` followed by the name of the class. Like for constructor functions, the convention is to use a noun, capitalized.
+* Line 2: the constructor is defined using the `constructor` keyword. THERE CAN BE ONLY ONE CONSTRUCTOR in the class.  A `SyntaxError` will be thrown if the class contains more than one occurrence of a constructor method. No more use of the `function` keyword. Simply use the `constructor` keyword followed by the parameters.
+
+> The instructions in the body of the constructor are executed when an object is created using the keyword `new` followed by the name of the class, with arguments between parentheses. These arguments will be passed to the constructor.
+
+Line 7: a method is simply defined by its name followed by its parameters. Again, no more use of the function keyword.
+
+#### Interactive example that uses an ES6 class to create Star Wars heroes
+
+Example on CodePen:
+https://codepen.io/w3devcampus/pen/PpMpBo
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript OOP: create objects with an ES6 class</title>
+  </head>
+  <body>
+    <p>Look at the JS code. This time we created multiple objects using an ES6 class named Hero.</p>
+ <p>   
+   <button onclick='makeHeroesSpeak();'>Make Star Wars heroes speak!</button>
+    </p>
+  
+    </body>
+</html>
+```
+
+
+```javascript
+class Hero {
+  constructor(name, side) {
+    this.name = name;
+    this.side = side;   
+  }
+  
+  speak() {
+    return "<p>My name is " + this.name +
+      ", I'm with the " + this.side + ".</p>";
+  }
+}
+
+var darkVador = new Hero("Dark Vador", "empire");
+var luke = new Hero("Luke Skywalker", "rebels");
+var ianSolo = new Hero("Ian Solo", "rebels");
+
+function makeHeroesSpeak() {
+  document.body.innerHTML += darkVador.speak();
+   document.body.innerHTML += luke.speak();
+   document.body.innerHTML += ianSolo.speak();
+}
+
+```
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   You must declare a class before using it!
+
+# You must declare a class before using it!
