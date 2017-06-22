@@ -886,3 +886,166 @@ Let's discuss that (or `this`?) in the forum :-)
 #### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Classes: definition
 
 # Classes: definition
+#### Introduction: the concept of "class" in object oriented programming languages
+
+So far in this course, we've only used **singleton objects**: objects that only occur once: `player`, `darkVador`, etc.
+
+Ok, this is not quite true, I'd forgotten that we created many balls in the module 2 game. We'll come back to this example 
+further down the page!
+
+But even with the balls from module 2, we did not use a template to tell us how to easily create multiple objects that share 
+the same properties and the same methods, but whose properties' values may differ.
+
+For example, imagine `Luke Skywalker`, `Ian Solo` and `Dark Vador`. What do they have in common? They all are Star Wars heroes, 
+they all have a name, they all belong to one side (the good/bad people, or rebels vs empire), etc. Imagine that we have a way 
+of programming that describes not the objects themselves, but a **model**, a **template** for these objects. We could call it 
+`StarWarsHero` and use it for creating our heroes' objects.
+
+Imagine the balls from module 2: they all had the same shape (`circle`), the same `x`, `y`, `radius` and `color` properties, 
+but they were all different. They all belonged to the same class of object (`ball`), but they were all different in terms 
+of their properties' values.
+
+In many programming languages, these templates are called `classes`.
+
+* **In JavaScript 5** (also called **ES5**), we did not have such a concept, instead we had `constructor functions`.
+* **In JavaScript 6 (ES6)**, we have the concept of `classes`, and the syntax is rather similar to what we find in other 
+object oriented programming languages.
+
+Let's introduce these two ways of defining **pseudo classes** with ES5's function constructors, and with ES6 classes!
+
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   ES5's constructor functions, the "new" keyword
+
+# ES5's constructor functions, the "new" keyword
+
+### Live coding video: ES5 constructor functions, the "new" keyword
+
+>! Missing video/transcript
+
+Source code shown in the video
+https://codepen.io/w3devcampus/pen/eRBoyr?editors=0011
+
+### ES5's constructor functions, the new keyword
+
+With JavaScript version 5 (and previous versions), you can define a pseudo-class template called **"a constructor function"**. 
+The syntax is the same as for creating a function, except that:
+
+* **By convention, its name is Capitalized**. The first letter of the function name is in uppercase, this is a good way to know, when you read someone else's code, that this is not a regular function, but a constructor function. **Its name is a noun, the name of the class of objects you are going to build**. Example: `Person`, `Vehicle`, `Enemy`, `Product`, `Circle`, `Ball`, `Player`, `Hero`, etc.
+* **You build new objects using the `new` keyword**: 
+
+    * Examples (`Car`, `Hero`, `Ball`, `Product` are constructor function names):
+
+```javascript	
+var car = new Car('Ferrari', 'red');
+var luke = new Hero('Luke Skywalker', 'rebels");
+var ball1 = new Ball(10, 10, 20, 'blue'); // x=10, y=10, radius = 20, color = 'blue'
+var p1 = new Product('Epson printer P1232', '183', 'Mr Buffa'); // ref, price, customer
+//etc.
+```
+
+* **The parameters of the function are the "constructor parameters": the new object that you are building will take these as its initial properties' values**. You can build a Hero, but you must give him/her a name, a side, etc.
+* **You define the property names and method names using the `this` keyword**. But beware: the syntax is not the same as the syntax we used for singleton/simple objects. No more `:` and `,` between properties. Here we use `=` and `;` like in regular functions.
+
+Example
+
+```javascript
+function Hero(name, side) {
+    this.name = name;
+    this.side = side;
+    this.speak = function() {
+        console.log("My name is " + this.name + " and I'm with the " + this.side);
+    }
+}
+```
+
+In a constructor function named `Hero`, you will find properties declared like this: `this.name` `this.side;` and methods declared like this: `this.speak = function() {...}`
+
+* Very often some properties are initialized using the constructor function parameters, so that the newly constructed objects will get an initial value for their properties. In this case, we use the this keyword to distinguish the property from the constructor function parameter:
+
+Example: 
+
+```javascript
+function Hero(name) {
+    this.name = name;
+    ...
+}
+```
+
+#### Full interactive example that uses a constructor function
+https://codepen.io/w3devcampus/pen/KWjMRw
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript OOP: create objects</title>
+  </head>
+  <body>
+    <p>Look at the JS code. This time we created multiple objects using a "constructor function.</p>
+ <p>   
+   <button onclick='makeHeroesSpeak();'>Make Star Wars heroes speak!</button>
+    </p>
+  
+    </body>
+</html>
+```
+
+
+```javascript
+function Hero(name, side) {
+  this.name = name;
+  this.side = side;
+  
+  this.speak = function() {
+    return "<p>My name is " + this.name +
+      ", I'm with the " + this.side + ".</p>";
+  }
+}
+
+var darkVador = new Hero("Dark Vador", "empire");
+var luke = new Hero("Luke Skywalker", "rebels");
+var ianSolo = new Hero("Ian Solo", "rebels");
+
+function makeHeroesSpeak() {
+  document.body.innerHTML += darkVador.speak();
+   document.body.innerHTML += luke.speak();
+   document.body.innerHTML += ianSolo.speak();
+}
+```
+
+JavaScript source code:
+
+```javascript
+function Hero(name, side) {
+    this.name = name; // code outside of methods is usually for initializing
+    this.side = side; // the properties. Very often, they match the parameters
+    this.speak = function() {
+        return "<p>My name is " + this.name +
+               ", I'm with the " + this.side + ".</p>";
+    }
+}
+ 
+var darkVador = new Hero("Dark Vador", "empire");
+var luke = new Hero("Luke Skywalker", "rebels");
+var ianSolo = new Hero("Ian Solo", "rebels");
+ 
+function makeHeroesSpeak() {
+    document.body.innerHTML += darkVador.speak();
+    document.body.innerHTML += luke.speak();
+    document.body.innerHTML += ianSolo.speak();
+}
+```
+
+* Lines 1-9: see how the constructor function is declared: the function name starts with an uppercase letter `Hero`. The parameters have the same name as the properties they correspond to (`name`, `side`). And in the first source code lines after the function declaration, we initialize some properties using these parameters (lines 2 and 3). We use the `this` keyword to distinguish the property and the parameter. You will often see things like: `this.name = name;` `this.age = age;` etc.
+
+* Lines 11-13: creation of three heroes. We use the same constructor function (`Hero`) along with the `new` keyword. `Luke`, `darkVador` and `ianSolo` ARE each a `Hero`, and share the same properties (`name`, `side`, lines 2 and 3) and the same behavior (they can speak, they all have a `speak` method, declared at line 5).
+
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Creating objects using the new ES6 classes
+
+# Creating objects using the new ES6 classes
