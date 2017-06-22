@@ -1222,3 +1222,28 @@ function makeHeroesSpeak() {
 #### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   You must declare a class before using it!
 
 # You must declare a class before using it!
+
+Unlike functions, classes must be declared BEFORE using them.
+
+An important difference between function declarations and class declarations is that function declarations are "hoisted" and class declarations are not. This means that you can call a function BEFORE it has been declared in your source code. This is not the case with ES6 classes!
+
+You first need to declare your class and then access it, otherwise code like the following will throw a ReferenceError:
+
+#### Incorrect version => you try to create an instance of a class before it has been declared:
+```javascript
+var p = new Rectangle(); // ReferenceError
+ 
+class Rectangle {...}
+```
+#### Correct version =>
+```javascript
+class Rectangle {...}
+ 
+var p = new Rectangle(); // WORKS !
+```
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Creating objects with functions (factories)
+
+# Creating objects with functions (factories)
