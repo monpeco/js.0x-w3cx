@@ -1241,6 +1241,9 @@ class Rectangle {...}
  
 var p = new Rectangle(); // WORKS !
 ```
+Note: 
+* A great article on [hoisting](http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html)
+* A question on StackOverflow on [hoisting](https://stackoverflow.com/questions/7506844/javascript-function-scoping-and-hoisting)
 
 ---
 
