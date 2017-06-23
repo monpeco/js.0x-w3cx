@@ -1250,3 +1250,45 @@ Note:
 #### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Creating objects with functions (factories)
 
 # Creating objects with functions (factories)
+
+We have already seen three different ways to create objects (literals, constructor functions and ES6 classes)
+
+Objects can be created as **literals** : 
+
+```javascript
+var darkVador = { firstName:’Dark’, lastName:’Vador’};
+```
+Objects can be created with the keyword `new` and a **constructor function** or an ES6 class:
+
+```javascript
+var darkVador = new Hero(’Dark Vador’, ’empire’);
+````
+
+Here is a new one: objects can also be created by functions that return objects (**factories**)
+
+``javascript
+function getMousePos(event, canvas) {
+    var rect = canvas.getBoundingClientRect();
+    var mxx = event.clientX - rect.left;
+    var my = event.clientY - rect.top;
+ 
+    return { // the getMousePos function returns an object. It’s a factory
+        x: mx,
+        y: my
+    }
+}
+
+//And here is how you can use this:
+
+var mousePos = getMousePos(evt, canvas);
+ 
+console.log("Mouse position x = " + mousePos.x + " y = " + mousePos.y);
+```
+
+The call to `getMousePos` returns an object that has an `x` and a `y` property.
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Static properties and methods
+
+# Static properties and methods
