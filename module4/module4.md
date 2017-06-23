@@ -1384,3 +1384,123 @@ document.body.innerHTML += "Number of Points created is " + Point.nbPointsCreate
 #### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   [Advanced] ES6 getters and setters
 
 # [Advanced] ES6 getters and setters
+
+#### Definition
+
+It is possible to use special methods that are called **getters** and **setters**. They allow to make some checks when one is trying to set a value to a property, or to 
+do some processing when accessing it (for example for displaying it in uppercase, even if its value is in lowercase).
+
+These special functions are called **getters** and **setters**, and are declared using the keywords `get` and `set` followed by the name of the property they define.
+
+Typical use (lines 7 and 11):
+
+
+```javascript
+class Person {
+    constructor(givenName, familyName) {
+        this.givenName = givenName; // "normal name"
+        this._familyName = familyName; // starts with "_"
+    }
+    get familyName() {
+        return this._familyName.toUpperCase();
+    }
+    set familyName(newName) {
+        // validation could be checked here such as
+        // only allowing non numerical values
+        this._familyName = newName;
+    }
+    walk() {
+        return (this.givenName + ' ' + this._familyName + ' is walking.');
+    }
+}
+let p1 = new Person('Michel', 'Buffa');
+console.log(p1.familyName); // will display BUFFA in the devtool console
+                            // this will call implicitly get familyName();
+p1.familyName = 'Smith';    // this will call implicitly set familyName('Smith');
+```
+
+Notice that when you declare `get familyName() {...}` for example, you define implicitly a property whose name is "familyName" and that will be accessible using 
+`object.familyName`, where object is an instance of the class. See lines 22-25 in the example above. Displaying the value of `p1.familyName` will call implicitly 
+`get familyName()`, while `p1.familyName = 'Smith';` will call `set Name('Smith');`
+
+As `get familyName()` defines an implicit property named `familyName`, the convention is to use `this._familyName` for storing its value (the same name preceded 
+by an underscore).
+
+Example at CodePen:
+https://codepen.io/w3devcampus/pen/WOoQgw
+
+
+
+```javascript
+// ES6 get and set
+class Person {
+    constructor(givenName, familyName) {
+        this.givenName = givenName;    // "normal name"
+			  this._familyName = familyName; // starts with "_"
+    }
+  
+		// getters and setters are useful for processing
+	  // properties, doing checks, changing them before
+	  // returning their value, etc.
+	  // having "get familyName" is equivalent to declaring a property
+	  // named "familyName", but in this case we have to use ANOTHER
+	  // name for the variable that will be used to store the property
+	  // value. A convention is to keep the same name but add an 
+	  // underscore at the beginning. 
+    // Ex: get name(n) { this._name = n;}
+	  
+    get familyName() {
+        return this._familyName.toUpperCase();
+    }
+  
+    set familyName(newName) {
+			  // validation could be checked here such as 
+			  // only allowing non numerical values
+        this._familyName = newName;   
+    }
+  
+    walk() {
+        return (this.givenName + ' ' + this._familyName + ' is walking.');
+    }
+}
+         
+let michel = new Person('Michel', 'Buffa');
+
+document.body.innerHTML += "<p>" 
+												+ michel.walk() 
+												+ "</p>";
+
+// Notice that we use here the "normal" names givenName and familyName
+document.body.innerHTML += "<p>Our teacher is " 
+												+ michel.givenName 
+												+ ' ' + michel.familyName 
+												+ "</p>";
+```
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Discussion topics and project
+
+# Discussion topics and a project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and an optional project.
+
+#### Suggested topics
+
+* Did you now that ES6 classes are just "a syntactic sugar"? In fact they are equivalent to constructor functions from ES5...
+* There are two sorts of object-oriented languages: class-based languages and prototype-based languages. 
+* JavaScript is a prototype-based language. In this introductory course, we managed to avoid this term! Without getting into too much details, you might be curious about prototypes and maybe read some Web pages related to those.
+* And yes, ES6 classes are not "real classes"... They are meant to make developers' lives easier, i.e., for the developers who already know a class-based language such as Java, C#, etc.
+* [Advanced] There is a powerful way to define "pseudo classes" using constructor functions: it's called [The Black Box Model](https://hacks.mozilla.org/2014/08/black-box-driven-development-in-javascript/). I recommend it to those of you who are rather comfortable with Object Oriented Programming concepts. Give it a try!
+
+#### Optional project
+
+Try to write one of the example from the previous modules without using any single time the keyword "function", use only ES6 classes and instances. In case of problems -> go the the forum and share your experience, this will be very useful for all students to see what sort of problems can occur when moving from a functional approach to an object-oriented approach
+
+---
+
+#### Module 4: Structuring data   4.4 Improving the game with classes   ES6 class and constructor
+
+# ES6 class and constructor
