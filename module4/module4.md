@@ -1292,3 +1292,95 @@ The call to `getMousePos` returns an object that has an `x` and a `y` property.
 #### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   Static properties and methods
 
 # Static properties and methods
+
+### Live coding video: static properties and methods
+
+>! Missing video/transcript
+
+Source code from the examples in the above video
+
+* The first example is available at [CodePen](https://codepen.io/w3devcampus/pen/NgbVQo?editors=0012)
+* The second example is further in this page, or at [CodePen](https://codepen.io/w3devcampus/pen/rmOjrv?editors=0011)
+
+
+### Static properties and methods
+
+#### Class properties and methods vs. instances' properties and methods
+
+Sometimes, there are methods **attached* to a class, not to an instance of a class.
+
+For example, imagine the Hero class we've already seen, and we would like to know how many Star Wars's heroes have been created. If zero hero has been created, it's 
+obvious that we could not use this property with an instance of the class such as Dark Vador: `darkVador.getNbHeroes();` this would make no sense.
+
+Instead, object oriented programming languages have the concept of **class properties** and **class methods** that complete the **instance properties** and **instance 
+methods** that we've seen up to this point. `Hero.getNbHeroes()` means "Hey, class Hero, can you tell me how many heroes have been created using your class?". 
+Class methods define the "class behavior", and instance methods define the instances' behavior. `darVador.speak();` means "Hey, Dark Vador, please, tell us 
+something!". I speak to Dark Vador and I'm expecting something creative from him, such as "I'm your father, Luke!".
+
+It's the same for properties. If there is a property named `nbHerosCreated` in the class Hero, it represents the DNA of the class, not of the instances. You can 
+say "the Hero class has the number of heroes it created", and you can say "Dark Vador has a name and belongs to the empire side", but not "Dark Vador has a number 
+of heroes he created". We have class properties and instance properties.
+
+#### The static keyword is used for defining class methods
+
+#### Class methods
+
+> How do we distinguish them? By using the `static` keyword. When you see a method preceded by the `static` keyword, it means that you see a class property or a 
+> class method.
+
+> The **static** keyword defines a static method for a class. 
+
+> Static methods are called without instantiating their class 
+> and can not be called through a class instance. 
+
+> Consequence: do not use instance properties in their body!
+
+> Static methods are often used to create utility functions for an application (source: MDN).
+
+#### Class properties
+
+Class properties should be defined ***after*** the class definition, and declared using the name of the class followed by the `.` operator and the name of the property. 
+Example: `Point.nbPointsCreated` in the example below. A best practice is to ALWAYS use them this way.
+
+There is another way to declare Class properties (using static getters and setters -- see next section, for advanced users), but we recommend using this one for beginners.
+
+#### Example of creation and use of class methods and properties using an ES6 class
+
+Source code:
+https://codepen.io/w3devcampus/pen/rmOjrv
+
+```javascript
+class Point {
+   constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      // static property
+      Point.nbPointsCreated++;
+   }
+ 
+   // static method
+   static distance(a, b) {
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+ 
+      return Math.sqrt(dx*dx + dy*dy);
+   }
+}
+// static property definition is necessarily outside of the class with ES6
+Point.nbPointsCreated=0;
+ 
+// We create 3 points
+const p1 = new Point(5, 5);
+const p2 = new Point(10, 10);
+const p3 = new Point(12, 27);
+ 
+document.body.innerHTML += "<p>Distance between points (5, 5) and (10, 10) is " +
+                           Point.distance(p1, p2) + "</p>";
+document.body.innerHTML += "Number of Points created is " + Point.nbPointsCreated;
+```
+
+---
+
+#### Module 4: Structuring data   4.3 Objects (part 3): creating multiple objects   [Advanced] ES6 getters and setters
+
+# [Advanced] ES6 getters and setters
