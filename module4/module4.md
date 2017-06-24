@@ -1586,3 +1586,538 @@ class Ball {
 #### Module 4: Structuring data   4.4 Improving the game with classes   Adding methods to the ES6 class
 
 # Adding methods to the ES6 class
+
+Adding methods to the ES6 class for balls
+
+Ok, we've seen how to define the Ball class: properties and constructor. Properties are the DNA for balls: they all have an x and y position, a radius, a color, a horizontal and a vertical speed.
+
+It is time to add some behaviors: a draw and a move method. Indeed, all balls will be able to draw and move themselves.
+
+Here's how we were drawing a ball in the previous version of the game:
+
+
+```javascript
+function drawFilledCircle(c) {
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+    // translate the coordinate system, draw relative to it
+    ctx.translate(c.x, c.y);
+    ctx.fillStyle = c.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.beginPath();
+    ctx.arc(0, 0, c.radius, 0, 2*Math.PI);
+    ctx.fill();
+	// GOOD practice: restore the context
+	ctx.restore();
+}
+```
+And this how we were drawing and moving all the balls:
+
+
+```javascript
+function drawAllBalls(ballArray) {
+    ballArray.forEach(function(b) {
+        drawFilledCircle(b);
+    });
+}
+ 
+function moveAllBalls(ballArray) {
+    // iterate on all balls in array
+    balls.forEach(function(b, index) {
+        // b is the current ball in the array
+        b.x += (b.speedX * globalSpeedMutiplier);
+        b.y += (b.speedY * globalSpeedMutiplier);
+        testCollisionBallWithWalls(b);
+        testCollisionWithPlayer(b, index);
+});
+}
+```
+### Adding a draw and a move method to the ES6 ball class
+
+Instead of having these behaviors as separate functions that take a ball reference as a parameter, it is always better to put this as a method inside the class. Indeed, each ball can move, can draw itself, and the content of these methods does not bring any external dependencies.
+
+For example, if we decide to put a method named `testCollisionWithWalls` inside the `Ball` class, it would be bad, in terms of reusability, for its content to rely on external, global variables, such as the canvas size. You could have passed the canvas as a parameter, but then you create more specialization: you have a Ball class for balls that can move inside a rectangular area that is a canvas. It's better to just pass the width and the height of the zone.
+
+Anyway, if you plan to use your balls in another game, it is recommended that you keep the class as simple as possible. It will be more reusable in other projects.
+
+New version of the ES6 Ball class with draw and move methods:
+
+```javascript
+class Ball {
+    constructor(x, y, radius, color, speedX, speedY) {
+        // see previous section for the code
+    }
+    draw(ctx) { // Nearly the same as the old drawFilledCircle function
+        // BEST practice: save the context, use 2D transformations
+        ctx.save();
+        // translate the coordinate system, draw relative to it
+        ctx.translate(this.x, this.y);
+        ctx.fillStyle = this.color;
+        // (0, 0) is the top left corner of the monster.
+        ctx.beginPath();
+        ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+        ctx.fill();
+        // BEST practice: restore the context
+        ctx.restore();
+    }
+    move() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
+}
+```
+Explanations:
+
+* Line 6: the `draw` function's content is nearly the same as the `drawFilledCircle` function we previously used. We replaced all `c.x`, `c.y` etc. by `this.x`, `this.y`, to use the properties of the current object. This means that when we create a ball with `var b = new Ball(...);` and when we draw it using `b.draw(ctx)`, then `this.x` will be the value of the `x` property of the ball `b`, etc.
+* Line 23: the `move` function takes no parameter as it will add the value of the `speedX/speedY `properties to the current `x` and `y` value of the current ball.
+
+> Notice that we did not take into account the `globalSpeedMultiplier` we had in the old `moveAllBalls` function, as this is not something that is individually relevant to each ball: it is more something that affect ALL balls. This should raise an alert into your mind: use an ES6 class property for that, try to do it!
+
+In other words, even if zero ball has been created, this globalSpeedMultiplier is set and can be modified using a slider in the graphic user interface. Consequently, it is not a ball property, more **a property of the Ball class itself**.
+
+This setting could be created using a class property, as seen in a previous section of this course.
+
+And here is how we can now move and draw ALL balls
+
+```javascript
+function drawAllBalls2(ballArray) {
+    ballArray.forEach(function(b) {
+        b.draw(ctx);
+    });
+}
+ 
+function moveAllBalls2(ballArray) {
+    // iterate on all balls in array
+    balls.forEach(function(b, index) {
+        // b is the current ball in the array
+        b.move();
+        testCollisionBallWithWalls(b);
+        testCollisionWithPlayer(b, index);
+});
+}
+```
+
+And here is the CodePen version of the game that includes these improvements:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Small game with sound</title>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.min.js"></script>
+</head>
+<body>
+  <audio src = "http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/humbug.mp3" 
+        id="audioPlayer">
+</audio>
+<div id="controls">
+    <label for="nbBalls">Number of balls: </label>
+    <input type="number" min=1 max=30 
+           value=10 id="nbBalls"
+           oninput="changeNbBalls(this.value);">
+    <p></p>
+   <label for="colorChooser">Player color: </label>
+    <input type="color" value='#FF0000'
+           oninput="changePlayerColor(this.value);" id="colorChooser">
+    <p></p>
+      <label for="selectColorOfBallToEat">Color of ball to eat: </label>
+      <select onchange="changeColorToEat(this.value);" id="selectColorOfBallToEat">
+        <option value='red'>red</option>
+        <option value='blue'>blue</option>
+        <option value='green'>green</option>
+    </select>
+    <p></p>
+
+   <label for="ballSpeed">Change ball speed: </label>
+    - <input type="range" value='1'
+             min=0.1 max=3 step=0.1
+           oninput="changeBallSpeed(this.value);"
+             id="ballSpeed"> + 
+    <p></p>
+    
+  </div>
+  <canvas id="myCanvas"  width="400" height="400"></canvas>
+</body>
+</html>
+```
+
+```css
+#myCanvas {
+  border: 1px solid black;
+  float:left;
+}
+
+#controls {
+  float:left;
+}
+```
+
+```javascript
+// useful to have them as global variables
+let canvas, ctx, w, h; 
+let mousePos;
+
+// an empty array!
+let balls = []; 
+let initialNumberOfBalls;
+let globalSpeedMutiplier = 1;
+let colorToEat = 'red';
+let wrongBallsEaten = goodBallsEaten = 0;
+let numberOfGoodBalls;
+
+// SOUNDS
+let ballEatenSound;
+
+// Player as a singleton/simple object
+let player = {
+  x:10,
+  y:10,
+  width:20,
+  height:20,
+  color:'red',
+  
+  move(x, y) {
+    this.x = x;
+    this.y = y;
+  },
+  
+  draw(ctx) {
+    // draw the player at its current position
+    // with current width, height and color
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(this.x, this.y);
+  
+    ctx.fillStyle = this.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.fillRect(0, 0, this.width, this.height);
+  
+    // GOOD practice: restore the context
+    ctx.restore();    
+  }
+}
+
+window.onload = function init() {
+    // called AFTER the page has been loaded
+  
+    // Start playing the background music as soon as the page has loaded
+    playBackgroundMusic();
+  
+    canvas = document.querySelector("#myCanvas");
+  
+    // often useful
+    w = canvas.width; 
+    h = canvas.height;  
+  
+    // important, we will draw with this object
+    ctx = canvas.getContext('2d');
+  
+    // start game with 10 balls, balls to eat = red balls
+    startGame(10);
+  
+    // add a mousemove event listener to the canvas
+    canvas.addEventListener('mousemove', mouseMoved);
+
+    // Load the sound and start the game only when the sound has been loaded
+    ballEatenSound = new Howl({
+                urls: ['http://mainline.i3s.unice.fr/mooc/SkywardBound/assets/sounds/plop.mp3'],
+                onload: function () {
+                  // start the animation
+                    mainLoop();
+                }
+            });
+  
+};
+
+function playBackgroundMusic() {
+   let audioPlayer = document.querySelector("#audioPlayer");
+   audioPlayer.play();
+}
+
+function pausebackgroundMusic() {
+   let audioPlayer = document.querySelector("#audioPlayer");
+   audioPlayer.pause();  
+}
+
+function startGame(nb) {
+  do {
+    balls = createBalls(nb);
+    initialNumberOfBalls = nb;
+    numberOfGoodBalls = countNumberOfGoodBalls(balls, colorToEat);
+  } while(numberOfGoodBalls === 0);
+  
+  wrongBallsEaten = goodBallsEaten = 0;
+}
+
+function countNumberOfGoodBalls(balls, colorToEat) {
+  let nb = 0;
+  
+  balls.forEach(function(b) {
+    if(b.color === colorToEat)
+      nb++;
+  });
+  
+  return nb;
+}
+
+//===== CALLED BY GUI WHEN THE USER USES INPUT FIELDS
+function changeNbBalls(nb) {
+  startGame(nb);
+}
+
+function changeColorToEat(color) {
+  colorToEat = color;
+}
+
+function changePlayerColor(color) {
+  player.color = color;
+}
+
+function changeBallSpeed(coef) {
+    globalSpeedMutiplier = coef;
+}
+
+//==== CALLED WHEN A USER USES ITS MOUSE
+function mouseMoved(evt) {
+    mousePos = getMousePos(canvas, evt);
+}
+
+function getMousePos(canvas, evt) {
+    // necessary work in the canvas coordinate system
+    let rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+//==== MAIN ANIMATION GAME LOOP
+function mainLoop() {
+  // 1 - clear the canvas
+  ctx.clearRect(0, 0, w, h);
+  
+  // draw the player
+  player.draw(ctx);
+  // draw all balls
+  drawAllBalls(balls);
+  
+  // animate the ball that is bouncing all over the walls
+  moveAllBalls(balls);
+  
+ // make the player follow the mouse
+  // the animations starts as the page is loaded
+  // maybe the mouse is not yet over the canvas
+  // this is why we test if the mousePos is defined
+  if(mousePos !== undefined)
+      player.move(mousePos.x, mousePos.y);
+  
+  // draw the game score
+  drawScore(balls);
+
+  // ask for a new animation frame
+  requestAnimationFrame(mainLoop);
+}
+
+//==== UTILITY FUNCTION
+// Collisions between rectangle and circle
+function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
+   let testX=cx;
+   let testY=cy;
+   if (testX < x0) testX=x0;
+   if (testX > (x0+w0)) testX=(x0+w0);
+   if (testY < y0) testY=y0;
+   if (testY > (y0+h0)) testY=(y0+h0);
+   return (((cx-testX)*(cx-testX)+(cy-testY)*(cy-testY))< r*r);
+}
+
+//=== FUNCTIONS RELATED TO BALLS
+
+class Ball {
+  constructor(x, y, radius, color, speedX, speedY) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.speedX = speedX;
+    this.speedY = speedY;
+  }
+  
+  draw(ctx) {
+    // GOOD practice: save the context, use 2D trasnformations
+    ctx.save();
+  
+    // translate the coordinate system, draw relative to it
+    ctx.translate(this.x, this.y);
+  
+    ctx.fillStyle = this.color;
+    // (0, 0) is the top left corner of the monster.
+    ctx.beginPath();
+    ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
+    ctx.fill();
+ 
+    // GOOD practice: restore the context
+    ctx.restore();    
+  }
+  
+  move() {
+      this.x += this.speedX;
+      this.y += this.speedY;    
+  }
+}
+
+function createBalls(n) {
+  // empty array
+  let ballArray = [];
+  
+  // create n balls
+  for(let i=0; i < n; i++) {
+     
+    // Create some random values...
+    let x = w/2;
+    let y = h/2;
+    let radius =  5 + 30 * Math.random(); // between 5 and 35
+    let speedX =  -5 + 10 * Math.random(); // between -5 and + 5
+    let speedY =  -5 + 10 * Math.random(); // between -5 and + 5
+    let color = getARandomColor();
+
+    // Create the new ball b
+    let b = new Ball(x, y, radius, color, speedX, speedY);
+    
+    // add ball b to the array
+    ballArray.push(b);
+  }
+  // returns the array full of randomly created balls
+  return ballArray;
+}
+
+function getARandomColor() {
+  let colors = ['red', 'blue', 'cyan', 'purple', 'pink', 'green', 'yellow'];
+  // a value between 0 and color.length-1
+  // Math.round = rounded value
+  // Math.random() a value between 0 and 1
+  let colorIndex = Math.round((colors.length-1)*Math.random()); 
+  let c = colors[colorIndex];
+  
+  // return the random color
+  return c;
+}
+
+function drawScore(balls) {
+  ctx.save();
+  ctx.font="20px Arial";
+  
+  if(balls.length === 0) {
+    ctx.fillText("Game Over!", 20, 30);
+  } else if(goodBallsEaten === numberOfGoodBalls) {
+    ctx.fillText("You Win! Final score : " + (initialNumberOfBalls - wrongBallsEaten), 
+                 20, 30);
+  } else {
+    ctx.fillText("Balls still alive: " + balls.length, 210, 30);
+    ctx.fillText("Good Balls eaten: " + goodBallsEaten, 210, 50);
+     ctx.fillText("Wrong Balls eaten: " + wrongBallsEaten, 210, 70);
+  }
+  ctx.restore();
+}
+
+
+function drawAllBalls(ballArray) {
+    ballArray.forEach(function(b) {
+      b.draw(ctx);
+    });
+}
+
+
+function moveAllBalls(ballArray) {
+  // iterate on all balls in array
+  balls.forEach(function(b, index) {
+      // b is the current ball in the array
+      b.move();
+  
+      testCollisionBallWithWalls(b); 
+    
+      testCollisionWithPlayer(b, index);
+  });
+}
+
+function testCollisionWithPlayer(b, index) {
+  if(circRectsOverlap(player.x, player.y,
+                     player.width, player.height,
+                     b.x, b.y, b.radius)) {
+    // PLAY A PLOP SOUND!
+    ballEatenSound.play();
+    
+    // we remove the element located at index
+    // from the balls array
+    // splice: first parameter = starting index
+    //         second parameter = number of elements to remove
+    if(b.color === colorToEat) {
+      // Yes, we remove it and increment the score
+      goodBallsEaten += 1;
+    } else {
+      wrongBallsEaten += 1;
+    }
+    
+    balls.splice(index, 1);
+
+  }
+}
+
+function testCollisionBallWithWalls(b) {
+    // COLLISION WITH VERTICAL WALLS ?
+    if((b.x + b.radius) > w) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = w - b.radius;
+  } else if((b.x -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedX = -b.speedX;
+    
+    // put the ball at the collision point
+    b.x = b.radius;
+  }
+  
+  // COLLISIONS WTH HORIZONTAL WALLS ?
+  // Not in the else as the ball can touch both
+  // vertical and horizontal walls in corners
+  if((b.y + b.radius) > h) {
+    // the ball hit the right wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.y = h - b.radius;
+  } else if((b.y -b.radius) < 0) {
+    // the ball hit the left wall
+    // change horizontal direction
+    b.speedY = -b.speedY;
+    
+    // put the ball at the collision point
+    b.Y = b.radius;
+  }  
+}
+```
+
+---
+
+#### Module 4: Structuring data   4.4 Improving the game with classes   Discussion topics and project
+
+# Discussion topics and project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for a suggested topics of discussion and an optional project.
+
+#### Suggested topic
+
+* Did you register to HTML5 Apps and Games MOOC? There is module about video game programming, and with the knowledge acquired from this JS intro MOOC, you should have no problem following it. 
+* It uses JavaScript object oriented programming and shows many examples that share the concepts seen during the first 4 modules of this course.
+
+#### Optional project
+
+* Try to use ES6 classes as much as you can!
