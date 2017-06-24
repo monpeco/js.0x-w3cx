@@ -1504,3 +1504,85 @@ Try to write one of the example from the previous modules without using any sing
 #### Module 4: Structuring data   4.4 Improving the game with classes   ES6 class and constructor
 
 # ES6 class and constructor
+
+#### Building balls in our ES6 game: ES6 class and constructor
+
+First, let's look how we were handling balls previously in our game!
+
+Building balls in order to fill the array of balls
+
+OLD VERSION: here is how we built the array of balls
+
+```javascript
+function createBalls(n) {
+    // empty array
+    let ballArray = [];
+    // create n balls
+    for(let i=0; i < n; i++) { // let's build multiple times a singleton object
+        let b = { 
+            x:w/2,
+            y:h/2,
+            radius: 5 + 30 * Math.random(), // between 5 and 35
+            speedX: -5 + 10 * Math.random(), // between -5 and + 5
+            speedY: -5 + 10 * Math.random(), // between -5 and + 5
+            color:getARandomColor(),
+        }
+        // add ball b to the array
+        ballArray.push(b);
+    } // end of for loop
+    // returns the array full of randomly created balls
+    return ballArray;
+}
+```
+
+In the code above, in order to build n balls, we created **a singleton ball object multiple times**. This worked, but if we have misspelled a property name within the code, or forgot one of the properties that had to be initialized, we would have received no warnings. We will replace these lines with something like let b = new Ball(...);
+
+NEW VERSION: using the new keyword and an ES6 class
+
+```javascript
+function createBalls2(n) {
+    // empty array
+    let ballArray = [];
+    // create n balls
+    for(let i=0; i < n; i++) {
+        // Create some random values...
+        let x = w/2;
+        let y = h/2;
+        let radius = 5 + 30 * Math.random(); // between 5 and 35
+        let speedX = -5 + 10 * Math.random(); // between -5 and + 5
+        let speedY = -5 + 10 * Math.random(); // between -5 and + 5
+        let color = getARandomColor();
+ 
+        // Create the new ball b
+        let b = new Ball(x, y, radius, color, speedX, speedY);
+        // add ball b to the array
+        ballArray.push(b);
+    }
+    // returns the array full of randomly created balls
+    return ballArray;
+}
+```
+
+Ok, not a very big change here, except that we are no longer manipulating the property names one by one, and we use the `new`keyword. 
+
+And here is the (so far, incomplete) ES6 class for Ball (continued in the next page of this course)
+
+```javascript
+class Ball {
+    constructor(x, y, radius, color, speedX, speedY) {
+        this.x = x;            // properties
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.speedX = speedX;
+        this.speedY = speedY;
+    }
+... // code to come for methods
+}
+```
+
+---
+
+#### Module 4: Structuring data   4.4 Improving the game with classes   Adding methods to the ES6 class
+
+# Adding methods to the ES6 class
