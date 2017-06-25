@@ -2121,3 +2121,5 @@ See below for a suggested topics of discussion and an optional project.
 #### Optional project
 
 * Try to use ES6 classes as much as you can!
+
+### Hello CR
