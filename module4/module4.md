@@ -1262,11 +1262,11 @@ Objects can be created with the keyword `new` and a **constructor function** or 
 
 ```javascript
 var darkVador = new Hero(’Dark Vador’, ’empire’);
-````
+```
 
 Here is a new one: objects can also be created by functions that return objects (**factories**)
 
-``javascript
+```javascript
 function getMousePos(event, canvas) {
     var rect = canvas.getBoundingClientRect();
     var mxx = event.clientX - rect.left;
