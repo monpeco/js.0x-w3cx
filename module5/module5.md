@@ -169,3 +169,78 @@ false
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   The "global" window object
 
 # The "global" window object
+
+It is time to tell you the truth: the JavaScript code is executed by an “environment" (usually a Web browser, but there are some HTTP Web servers that use JavaScript for coding the server side of Web sites of applications, such as the NodeJS HTTP server). 
+
+This environment defines a **global object**.
+
+> When this environment is a Web server  (and this is the case for all
+> examples we have seen in this course), this global object is named
+> window.
+> 
+> The “global variables” defined with the keyword var are properties of
+> this window object,  and we can say the same of predefined functions
+> like prompt, alert, etc.
+> 
+> However, at the top level of programs and functions,  `let`, unlike `var`,
+> does not create a property on the global window object.
+> 
+> TIP: if you have global variables/objects declared with let, just
+> declare them with var instead, and you will be able to inspect them 
+> easily from the devtool console.  You can switch back to using let,
+> later.
+
+Let's see some examples:
+
+
+```javascript
+> var a = 1;
+undefined
+ 
+> a;
+1
+ 
+> window.a;
+1
+ 
+> window['a'];
+1
+> let z = 1; // LET DOES NOT DEFINE properties of the window object
+undefined
+> window.z
+undefined
+```
+`a` and `window.a` are the same variable.
+`navigator` and `window.navigator` are the same, `document` and `window.document` are the same thing.
+
+```javascript
+> document === window.document
+true
+ 
+> navigator === window.navigator
+true
+```
+Predefined functions are methods from the global object window:
+
+```javascript
+> parseInt('10 little children');
+10
+ 
+> window.parseInt('10 little children');
+10
+ 
+> alert === window.alert
+true
+ 
+> prompt === window.prompt
+true
+ 
+> window.addEventListeners === addEventListeners
+true
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Object
+
+# Built-in JS class: Object
