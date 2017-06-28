@@ -141,3 +141,31 @@ undefined
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Comparing two objects
 
 # Comparing two objects
+
+Comparing two objects will only return true if they point to the same object (i.e., if they have the same reference).
+
+Two objects of the same type, with the same property value, that look identical, will not be equal one to another if they don’t have the same reference (if they point to different places in memory).
+
+
+```javascript
+> var originalObject = {name:'Michel'};
+undefined
+ 
+> var copy = originalObject;
+undefined
+ 
+> copy === originalObject
+true
+ 
+> var anotherObject = {name:'Michel'};
+undefined
+ 
+> copy === anotherObject
+false
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   The "global" window object
+
+# The "global" window object
