@@ -244,3 +244,78 @@ true
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Object
 
 # Built-in JS class: Object
+
+### Live coding video: predefined class - Object
+
+>! Missing Video/transcrip
+
+Source code shown in the above video
+https://codepen.io/w3devcampus/pen/EXmONY?editors=0012
+
+### Built-in JavaScript classes: Object
+
+The father of all objects: Object
+
+All objects will inherit the properties and methods from the special class named Object.
+
+These two lines are equivalent:
+
+```javascript
+> var o = {}; // creation of an empty object
+undefined
+ 
+> var o = new Object(); // same thing as in line 1
+undefined
+```
+
+#### The toString method inherited from Object by all objects
+
+```javascript
+> o.toString();
+"[object Object]"
+ 
+> o.name = 'Michel';
+"Michel"
+ 
+> o.toString();
+"[object Object]"
+ 
+> var t = [1, 2, 3];
+undefined
+ 
+> t.toString();
+"1,2,3"
+```
+
+`toString()` in JavaScript is rather similar to the `Object.toString()` method we find in the Java programming language: when we try to "display" an object, it is transformed into a string by calling `toString()` implicitly.
+
+```javascript
+> alert(t);
+ 
+> alert(t.toString()); // same as previous line of code
+ 
+> "An object into a string : " + t // same as t.toString()
+"The object as a String : 1, 2, 3"
+```
+* Line 5: using the `+` operator with a string as the left argument will force the other arguments to convert to string by implicitly calling their toString() method.
+
+The valueOf method inherited from Object by all objects
+
+The ValueOf method returns the value of an object:
+
+```javascript
+> var t = [1, 2, 3];
+undefined
+ 
+> t.valueOf()
+[1, 2, 3]
+ 
+> t.toString();
+"1,2,3"
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Array
+
+# Built-in JS class: Array
