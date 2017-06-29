@@ -546,3 +546,87 @@ Examples:
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Number
 
 # Built-in JS class: Number
+
+The Number class can be used to transform strings into numbers, but it is recommended that you use parseInt or parseFloat instead.
+
+
+```javascript
+> var n = Number('3.1416');
+undefined
+ 
+> n;
+3.1416
+ 
+> typeof n;
+"number"
+ 
+> var n = parseInt('3.1416'); // convert a string to an integer number
+undefined
+ 
+> n;
+3
+ 
+> var n = parseFloat('3.1416'); // convert a string to a float number
+undefined
+ 
+> n;
+3.1416
+```
+Number has useful non-modifiable properties (constants): `MAX_VALUE` and `MIN_VALUE`
+
+```javascript
+> Number.MAX_VALUE;
+1.7976931348623157e+308
+ 
+> Number.MIN_VALUE;
+5e-324
+```
+
+#### Methods useful for converting numbers: toFixed(), toExponential(), toString()
+
+* `toFixed`: sets the number of digits for the decimal part of a number. 
+There is also another method, named [`toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision), that has a very close behavior, and can also return numbers in scientific notation. 
+* `toExponential`: force a number to use a scientific notation. For example `var a=1000;` `a.toExponential();` `console.log(a);` will give `1e+3`
+
+
+```javascript
+> var n = 123.456;
+123.456
+ 
+> n.toFixed(1); // sets the number of digits for the decimal part of the number
+"123.5"
+ 
+> n = new Number(123.456); // same as n = 123.456
+Number {[[PrimitiveValue]]: 123.456} // well, not exactly, but when you use n, it is equivalent
+ 
+> n.toFixed(1);
+"123.5"
+ 
+> n.toExponential();
+"1.23456e+2"
+ 
+ 
+> var n = 255;
+undefined
+ 
+> n.toString();
+"255"
+ 
+> n.toString(10);
+"255"
+ 
+> n.toString(16);
+"ff"
+ 
+> (3).toString(2);
+"11"
+ 
+> (3).toString(10);
+"3"
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: String
+
+# Built-in JS class: String
