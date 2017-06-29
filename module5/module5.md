@@ -430,3 +430,119 @@ undefined
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   The most useful methods of the class Array
 
 # The most useful methods of the class Array
+
+Most useful methods you can use on arrays: sort(), join(), slice(), splice(), push()and pop()
+
+* `sort`: sort the elements in the array. Either alphabetically if they are strings, or in ascending order if they are numbers. There is also a way to sort the elements using other criteria, which is explained a bit further on in the course. With a call to `var b = a.sort()`, `a` is also sorted. The `sort` method sorts the array + returns it.
+* `join`: adds a string between each element and returns the result as a string
+* `slice`: returns a sub-array without modifying the original array
+* `splice`: modifies the array, it removes **“a slice”** and it also adds new elements
+* `push`: appends an element at the end of the array and returns the new length
+* `pop`: removes the last element and returns it
+
+#### Typical uses of  push, pop, sort, join:
+
+
+```javascript
+> var a = [3, 5, 1, 7, 'test'];
+undefined
+ 
+> a.push('new') // appends at the end and returns the new length
+6
+ 
+> a;
+[3, 5, 1, 7, "test", "new"]
+ 
+> a.pop(); // removes the last element and returns it
+"new"
+ 
+> a;
+[3, 5, 1, 7, "test"]
+ 
+> var b = a.sort();
+undefined
+ 
+> b;
+[1, 3, 5, 7, "test"]
+ 
+> a;
+[1, 3, 5, 7, "test"]
+ 
+// a is also sorted. The sort method sorts the array + returns it
+undefined
+ 
+> a.join(' and ');
+"1 and 3 and 5 and 7 and test"
+```
+#### The slice() method returns a sub-array without modifying the original array:
+
+The `slice()` method returns a shallow copy of a portion of an array into a new array object selected from begin to end (end not included). The original array will 
+not be modified.
+
+#### Possible syntaxes:
+
+* `arr.slice()`
+* `arr.slice(begin)`
+* `arr.slice(begin, end) // ELEMENT AT INDEX=end will not be included in the slice!`
+
+
+```javascript
+> a;
+[1, 3, 5, 7, "test"]
+ 
+> b = a.slice(1, 3); // elements of indexes = 1 and 2
+[3, 5]
+ 
+> b = a.slice(0, 1); // element of index = 0
+[1]
+ 
+> b = a.slice(0, 2); // elements o indexes = 0 and 1
+[1, 3]
+ 
+> a;
+[1, 3, 5, 7, "test"]
+ 
+// a is unchanged by calls to a.slice(...)
+```
+#### The splice() method modifies the array: it removes “a slice” and also adds new elements
+
+The first two parameters are start and end indexes, the other parameters are the elements to add to the array to replace the slice that will be removed.
+
+#### Possible syntaxes:
+
+* `array.splice(start)`
+* `array.splice(start, deleteCount)`
+* `array.splice(start, deleteCount, item1, item2, ...)`
+
+`start`: index at which to start changing the array (with origin 0)
+
+`deleteCount`: An integer indicating the number of old array elements to remove.
+
+`item1`, `item2`, ...: these are optional. They are the elements to add to the array, beginning at the `start` index. If you don't specify any elements, `splice()`
+will only remove elements from the array.
+
+Examples:
+
+
+```javascript
+> a;
+[1, 3, 5, 7, "test"]
+ 
+> b = a.splice(1, 2, 100, 101, 102);
+[3, 5]
+ 
+> a;
+[1, 100, 101, 102, 7, "test"]
+ 
+> a.splice(1, 3);
+[100, 101, 102]
+ 
+> a;
+[1, 7, "test"]
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Number
+
+# Built-in JS class: Number
