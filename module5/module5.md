@@ -319,3 +319,114 @@ undefined
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Array
 
 # Built-in JS class: Array
+
+>! Missing Video/Transcript
+
+Source code from the above video
+https://codepen.io/w3devcampus/pen/XgRyar?editors=0012
+
+### Built-in JavaScript objects: Array
+
+The `Array` class can be used for creating arrays (however, we recommend that you use the other methods presented instead):
+
+
+```javascript
+> var a = new Array(); // same as a = []; use this instead!
+undefined
+ 
+> var b = new Array(1, 2, 3);
+undefined
+ 
+> b;
+[1, 2, 3]
+```
+
+Attention: if only one element, this corresponds to the initial size of the array.
+
+```javascript
+> var myArray = new Array(3);
+undefined
+ 
+> myArray;
+[undefined × 3]
+```
+#### Arrays are objects, but they are “special” objects
+
+* Their property names are numerical indexes that start from 0
+* They have a special length property that represents their length/number of elements
+* They have other built-in properties in addition to the ones inherited from Object (toString, valueOf)
+
+```javascript
+> var a = [], o = {};
+undefined
+ 
+> a.length; // a is an array
+0
+ 
+> o.length; // o is a simple literal object
+undefined
+```
+Some horrible things we can do with arrays (**TO AVOID!**):
+```javascript
+> var a = [1, 2];
+undefined
+ 
+> typeof a
+"object"
+ 
+> a.push(3);
+3
+ 
+> a
+[1, 2, 3]
+ 
+> a.length
+3
+ 
+// Now let’s add a name property to the array. Yes, we can do that!
+ 
+> a.name = "I'm an array named a!";
+"I'm an array named a!"
+ 
+> a.length;
+3
+ 
+> a;
+[1, 2, 3, name: "I'm an array named a!"]
+```
+
+> With arrays, only properties with a numerical index are taken into account by the length property!
+
+#### The length property can be modified: reducing or increasing the size of an array
+
+If you give to the length property a value bigger than the number of elements in an array, it adds undefined elements to it:
+
+```javascript
+> var a = [1, 2];
+undefined
+ 
+> a.length = 5;
+5
+ 
+> a;
+[1, 2, undefined × 3]
+```
+
+If you give to the length property a value less than the array’s number of elements, it reduces the size of the array:
+
+```javascript
+> var a = [1, 2, 3];
+undefined
+ 
+> a.length = 2;
+2
+ 
+> a;
+[1, 2]
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   The most useful methods of the class Array
+
+# The most useful methods of the class Array
