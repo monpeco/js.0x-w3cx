@@ -752,3 +752,131 @@ undefined
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   The most useful methods of the class String
 
 # The most useful methods of the class String
+
+### The most useful methods of the String class: slice, substring, split, join
+
+### The slice and substring methods
+
+Both these methods can be used to extract a substring from a string.
+
+They take two parameters: the start and end index of the slice (**element at end index will NOT be included in the slice**): "please cut from this index, to this one, not included!"". 
+
+These two methods are very similar. 
+
+Examples:
+
+```javascript
+> var s = "My name is Bond! James Bond!";
+undefined
+ 
+> s;
+"My name is Bond! James Bond!"
+ 
+> s.slice(11, 16);
+"Bond!"
+ 
+> s; // s is unchanged
+"My name is Bond! James Bond!"
+ 
+s.substring(11, 16);
+"Bond!"
+ 
+> s; // s is still unchanged
+"My name is Bond! James Bond!"
+> s = s.substring(11, 16);
+"Bond!"
+ 
+> s; // this time s has changed, because we did s = s.substring(...), the same 
+     // could have been done with s = s .slice(...)
+"Bond!"
+```
+[advanced] There is a difference between slice and substring, when the second parameter is negative:
+
+If you are a beginner, we recommend that you use `substring` for most common cases (as it will behave the same as slice) and that you stay away from negative parameters, where slice and substring show small differences.
+
+Beginners: do not read what follows about `slice` and `substring!` There will be no quiz questions at the end of this chapter about this part!
+
+```javascript
+> var s = "My name is Bond! James Bond!";
+undefined
+ 
+> s.slice(11, -1); // start from index = 11 to length-1, extract the end of the string from 11th element
+"Bond! James Bond"
+ 
+> s.substring(11, -1); // the reverse, extract from 0 until 11-1, get the first 10 chars
+"My name is "
+ 
+> s.substring(1, -1); // extract from 0 to 1-1 = 0, get the first char
+"M"
+```
+Actually, here is a summary of the common behaviors and the differences between slice and substring.
+
+#### [advanced] slice(start, stop) works like substring(start, stop) with a few different behaviors:
+
+#### What they have in common:
+
+* If start equals stop: returns an empty string
+* If stop is omitted: extracts characters to the end of the string
+* If either argument is greater than the string's length, the string's length will be used instead.
+
+#### Distinctions of substring():
+
+* If start > stop, then substring will swap those two arguments.
+* If either argument is negative or is NaN, it is treated as if it were 0.
+
+#### Distinctions of slice():
+
+* If start > stop, slice() will NOT swap the two arguments.
+* If start is negative: sets char from the end of string.
+* If stop is negative: sets stop to: string.length – Math.abs(stop.
+
+###The split(), join() and concat() methods
+
+The split method returns an array of strings, the parameter is a separator. The join method builds a string from an array of strings.
+
+```javascript
+> var s = "My name is Bond! James Bond!";
+undefined
+ 
+> s.split(" ");
+["My", "name", "is", "Bond!", "James", "Bond!"]
+ 
+> s;
+"My name is Bond! James Bond!"
+ 
+> s.split(' ').join('-#-');
+"My-#-name-#-is-#-Bond!-#-James-#-Bond!"
+ 
+> s.split(' ').join('.......');
+"My.......name.......is.......Bond!.......James.......Bond!"
+ 
+> s.split('Bond!').join('.......');
+"My name is ....... James ......."
+ 
+> s.split('Bond!').join(' ');
+"My name is James "
+ 
+> s; // s is unchanged
+"My name is Bond! James Bond!"
+ 
+> s.concat("And I've made a lot of movies!");
+"My name is Bond! James Bond! And I've made a lot of movies!"
+ 
+> s; // s is also unchanged by concat
+"My name is Bond! James Bond!"
+ 
+> s = s + "and I've made a lot of movies!"; // this changes s
+"My name is Bond! James Bond! And I've made a lot of movies!"
+ 
+> s += " Action films!" // this too, most common syntax for concatenating strings
+"My name is Bond! James Bond! And I've made a lot of movies! Action films!"
+ 
+> s; // s changed too
+"My name is Bond! James Bond! And I've made a lot of movies! Action films!"
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JavaScript class: Math
+
+# Built-in JavaScript class: Math
