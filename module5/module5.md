@@ -631,4 +631,124 @@ undefined
 
 # Built-in JS class: String
 
-# mesaje a chuleta
+>! Missing Video/Transcript
+
+Source code from the video example
+https://codepen.io/w3devcampus/pen/pwPGve?editors=0012
+
+#### Built-in JavaScript class: String
+
+The String class can be used to build new strings, but it’s preferable to use the standard syntax
+
+```javascript
+> var name = 'Michel'; // use this rather than using new String(...)
+undefined
+ 
+> typeof name;
+"string"
+ 
+> var name = new String('Michel');
+undefined
+ 
+> typeof name;
+"string"
+```
+Some reminders about strings:
+
+```javascript
+> var name = 'Michel';
+undefined
+ 
+> name.length;
+6
+ 
+> name[0];
+"M"
+ 
+> name[0] = 'Z';
+"Z"
+ 
+> name; // we cannot modify a string using s[index] = value;
+"Michel"
+ 
+> 'Michel'.length;
+6
+ 
+> 'Michel'[0];
+"M"
+```
+Explanations: 
+
+* Line 10: in JavaScript, and in many other programming languages, a string is not modifiable at all. 
+When we do `var s = s + "hello"`, in fact, we are building a new string somewhere in memory, and we assign this new value to the variable `s`. 
+We never "modify" the characters of the string s, we just give to s another address in memory to point to. 
+
+#### Useful methods: toUpperCase, toLowerCase, indexOf, charAt
+
+These methods are all inherited from the String class:
+
+* `toUpperCase`: returns the string in upper case. Do not change the original string.
+* `toLowerCase`: returns the string in lower case. Do not change the original string.
+* `indexOf`: returns the index of the string value passed as parameter, -1 if the string value is not found in the original string.
+* `charAt`: returns the char at the index passed as parameter. Returns an empty string if the index is out of bounds (less than 0 or greater than the length of the string).
+
+```javascript
+> var s = "I'm the Walrus";
+undefined
+ 
+> var s1 = s.toUpperCase();
+undefined
+ 
+> s1;
+"I'M THE WALRUS"
+> var s2 = s1.toLowerCase();
+undefined
+ 
+> s2;
+"i'm the walrus"
+ 
+> s; // s is unchanged
+"I'm the Walrus"
+ 
+> s.indexOf('w'); // no ‘w’ in s
+-1
+ 
+> s2.indexOf('w');
+8
+ 
+> s2[8]; // char at index 8
+"w"
+ 
+s2.charAt(8); // same as s2[8]
+"w"
+```
+#### Other useful methods: lastIndexOf, chaining methods
+
+lastIndexOf: returns the last index of the string value passed as parameter
+indexOf can also be used with two parameters, the second one being the starting index when looking for the string value passed as parameter
+
+```javascript
+> s = 'wow wow wow!';
+"wow wow wow!"
+ 
+> s.lastIndexOf('w');
+10
+ 
+> s.indexOf('w', 1); // start looking at s at index=1, s[0] is ignored
+2
+ 
+> var s1 = s.toUpperCase();
+undefined
+ 
+> s1;
+"WOW WOW WOW!"
+ 
+> s1.toLowerCase().lastIndexOf('w'); // we can chain method calls using ‘.’
+10
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   The most useful methods of the class String
+
+# The most useful methods of the class String
