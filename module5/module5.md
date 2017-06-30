@@ -630,3 +630,5 @@ undefined
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: String
 
 # Built-in JS class: String
+
+# mesaje a chuleta
