@@ -1099,3 +1099,256 @@ function getMousePos(canvas, evt) {
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Date
 
 # Built-in JS class: Date
+
+### Built-in JavaScript class: Date
+
+Getting a date by calling the Date constructor
+
+Without any argument, a call to `new Date()` returns the current date.
+
+Note: The return value is actually a Date object, which is displayed by calling toString() on this object.
+
+
+```javascript
+> var date = new Date();
+undefined
+ 
+> date;
+Wed Apr 12 2017 11:10:28 GMT+0200 (CEST)
+> date.toString(); // same thing!
+Wed Apr 12 2017 11:10:28 GMT+0200 (CEST)
+```
+We can also pass it an argument that can be:
+
+* A string that encodes a date
+* A set of numeric values separated by a comma for month, day, hour, and so on
+* A Unix "timestamp"  (number of milliseconds elapsed since 1970)
+
+... in this case it returns a date object that corresponds to the encoded date passed as argument.
+
+Examples:
+
+```javascript
+> new Date('2017 04 28');
+Fri Apr 28 2017 00:00:00 GMT+0200 (CEST)
+ 
+> new Date('2017 1 2');
+Mon Jan 02 2017 00:00:00 GMT+0100 (CET)
+ 
+> new Date('2017 1 2 8:30');
+Mon Jan 02 2017 08:30:00 GMT+0100 (CET)
+```
+Numerical parameters can also be passed in this order: year, month (0-11), day (1-31), time (0-23), minutes (0-59), seconds , milliseconds (0-999). We do not have to pass everything but it should always be in this order.
+
+Examples:
+
+```javascript
+> new Date(2017, 3, 16, 14, 43, 10, 120);
+Sun Apr 16 2017 14:43:10 GMT+0200 (CEST)
+ 
+> new Date(2017, 0, 10, 14);
+Tue Jan 10 2017 14:00:00 GMT+0100 (CET)
+ 
+> new Date(2017, 1, 28) // 1 is February! Month indexes start at 0!
+Tue Feb 28 2017 00:00:00 GMT+0100 (CET)
+ 
+> new Date(2008, 1, 29);
+Fri Feb 29 2008 00:00:00 GMT+0100 (CET)
+ 
+> new Date(2017, 1, 29); // No February 29th in 2017! Gives 1st of March
+Wed Mar 01 2017 00:00:00 GMT+0100 (CET)
+ 
+> new Date(2017, 11, 31); // Happy new year!
+Sun Dec 31 2017 00:00:00 GMT+0100 (CET)
+ 
+> new Date(2017, 11, 32) // 32 Dec -> 1st of January!
+Mon Jan 01 2018 00:00:00 GMT+0100 (CET)
+```
+One can build the date with a Unix timestamp (number of milliseconds since 1970):
+
+```javascript
+> new Date(1199885822900);
+Wed Jan 09 2008 14:37:02 GMT+0100 (CET)
+```
+Calling `Date()` without "new" returns the current date as a string. It does not matter if we pass parameters:
+
+```javascript
+> Date();
+"Sun Apr 16 2017 14:51:47 GMT+0200 (CEST)"
+```
+#### Useful methods
+
+```javascript
+> var d = new Date();
+undefined
+ 
+> d.toString();
+"Sun Apr 16 2017 14:52:52 GMT+0200 (CEST)"
+ 
+> d.setMonth(2); // Change for month with index=2
+1489672372092
+ 
+> d.toString();
+"Thu Mar 16 2017 14:52:52 GMT+0100 (CET)"
+ 
+> d.getMonth(); // get current month index
+2
+```
+Let's play with my birthday!
+
+```javascript
+> var d = new Date(1965, 3, 16); // Michel Buffa's birthday
+undefined
+ 
+> d.getDay(); // Sunday is 0
+5
+ 
+> d; // let's verify
+Fri Apr 16 1965 00:00:00 GMT+0200 (CEST)
+ 
+> // Great, it was a Friday :-)
+```
+
+Let's write a small piece of code that will guess which days of the week Michel Buffa's birthday will occur, between 2017 and 2047:
+
+```javascript
+> var dayOfTheWeek = [0,0,0,0,0,0,0];
+ 
+for (var year = 2017; year <= 2047; year++) {
+    dayOfTheWeek[new Date(year, 4, 16).getDay()]++;
+}
+ 
+> dayOfTheWeek
+[4, 4, 5, 5, 5, 4, 4] // 4 times on a Sunday, Monday, Friday and Saturday, 
+                      // 5 times on Tuesday, Wednesday and Thursday
+```
+#### Explanations:
+
+* Line 1 we use an array with each element being the number of times the birthday occurs on a Sunday, Monday, etc.
+* Line 3: we iterate using a for loop on every year between 2017 and 2047.
+* Line 4: we build a `Date` object using 16 of April, but change the year, we compute the date of each of Michel Buffa's birthdays between 2017 and 2045, and we get the index of the day (using the `getDay()` method). This index is used to increment corresponding elements of the array defined in line 1.
+* Finally, line 7 displays the content of the array. Remember  that typing a variable name in the devtool console is equivalent to calling the object `toString()` method.
+
+And here is a full version with input fields and results displayed in an HTML table:
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Compute day occurences of your birthday</title>
+</head>
+<body>
+  <label for="birthday">Your birthday: </label><input id="birthday" type="date" value="1965-04-16">
+  <p>Please enter a starting and an ending year, then click the button.</p>
+  <label for="start">Start year:</label>
+  <input type=number id="start" value=2017 min=1965 max=3000>
+  <p></p>
+  <label for="end">End year:</label>
+  <input type=number id="end" value=2047 min=1965 max=3000>
+  <p></p>
+  <button onclick="computeBirthdays();">
+    Compute how many times 
+    your birthday will occur, 
+    for each day of the week
+  </button>
+  <p></p>
+  <output id="results"></output>  
+</body>
+</html>
+```
+
+
+
+```css
+table, th, td {
+   border: 1px solid black;
+  text-align:center;
+}
+```
+
+
+
+```javascript
+
+function computeBirthdays() {
+  // An array. Each element is the number of times my birthday
+  // will occur. For the moment: 0 times on a Monday, 0 times on Friday
+  // etc.
+  var dayOfTheWeek = [0,0,0,0,0,0,0];
+
+  
+  var birthday = document.querySelector("#birthday").value;
+  
+  // birthday is the value of the input field, 
+  // as a string (ex: "1965-4-16")
+  // Let's turn it into a Date object
+  var birthdayAsDate = new Date(birthday);
+  
+  // Get the month and year (ex: 16 April)
+  var birthdayMonth = birthdayAsDate.getMonth(); // ex: April
+  var birthdayDate  = birthdayAsDate.getDate();   // ex: 16
+  
+
+  var startYear = document.querySelector("#start").value;
+  var endYear = document.querySelector("#end").value;
+  
+  for (var year = startYear; year <= endYear; year++) {
+      var dayOfTheWeekMyBirthDayOccurs = 
+          new Date(year, birthdayMonth, birthdayDate).getDay();
+  
+        console.log('Year : ' + year + " Day of your birthday: " + 
+                    getDayName(dayOfTheWeekMyBirthDayOccurs));
+
+      // increment the counter for this day
+      dayOfTheWeek[dayOfTheWeekMyBirthDayOccurs]++;
+   }
+
+   // add a table to the web page, presenting the results
+   displayResults(dayOfTheWeek);
+
+}
+
+function getDayName(dayIndex) {
+  var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return days[dayIndex];
+}
+
+function displayResults(array) {
+  document.querySelector("#results").innerHTML = "<p>Occurences of your Birthday:</p>";
+  
+  var table = document.createElement("table");
+  var firstRow = table.insertRow();
+  var secondRow = table.insertRow();
+  
+  
+  array.forEach(function(dayOccurence, index) {
+    var dayNameCell = firstRow.insertCell(index);
+    dayNameCell.innerHTML = getDayName(index);
+    
+    var nbCell = secondRow.insertCell(index);
+    nbCell.innerHTML = dayOccurence;
+    
+  });
+  
+  document.querySelector("#results").appendChild(table);
+}
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Discussion topics and projects
+
+# Discussion topics and projects
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and optional projects.
+
+#### Suggested topics
+
+* Did you notice that the Math class has only class methods and properties: you always use Math.PI, Math.cos(...), etc. Do class properties and methods make sense to you now? It would be nonsense to create two Math objects such as m1 = new Math(); m2 = new Math(); var result = m1.cos(0.5); ...
+* For a long time, we've talked about "predefined JavaScript objects", not "classes" when we talked about Math, Date, Array, etc. This is because JavaScript is not a class-based programming language. ES6 introduced classes and the class keyword, but in fact there are no "real classes" in JavaScript, like in class-based languages such as Java or C#. ES6 classes are just constructor functions and prototypes (the thing behind Object Oriented JavaScript) disguised. Did you know that?
+
+---
