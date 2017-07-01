@@ -880,3 +880,222 @@ undefined
 #### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JavaScript class: Math
 
 # Built-in JavaScript class: Math
+
+Built-in JavaScript class: Math
+
+It’s not possible to do `var m = new Math();`
+
+```javascript
+> var m = new Math();
+VM5777:1 Uncaught TypeError: Math is not a constructor
+at <anonymous>:1:9
+(anonymous) @ VM5777:1
+```
+
+But the `Math` class has a lot of properties and methods that are useful for arithmetic expressions. **They are all class methods and properties, so you will need to use the name of the class followed by the dot operator to access them.**
+
+Here are some examples:
+
+```javascript
+> Math.PI;
+3.141592653589793
+ 
+> Math.SQRT2;
+1.4142135623730951
+ 
+> Math.E; // Euler constant
+2.718281828459045
+ 
+> Math.LN2; // Neperian log of 2
+0.6931471805599453
+ 
+> Math.LN10; // Neperian log of 10
+2.302585092994046
+```
+#### Random numbers between 0 and 1 with Math.random()
+
+Math.random() returns a float value between 0 and 1.
+
+Examples:
+
+```javascript
+> Math.random();
+0.6033316111663034
+ 
+> 100 * Math.random(); // between 0 and 100
+11.780563288516422
+```
+
+To get a number between a min and a max value, use this formula: val = ((max - min) * Math.random()) + min
+
+And here is an utility function:
+
+```javascript
+function getRandomValue(min, max) {
+    return ((max - min) * Math.random()) + min;
+}
+ 
+> getRandomValue(5, 10);
+5.064160540161435
+```
+
+#### Math and rounding methods round(), ceil(), floor()
+
+`round`: to get the closest integer value.
+
+For example `Math.round(Math.random());` will return 0 or 1.
+
+Indeed, if `Math.random()` returns a value above 0.5, Math.round of this value will return 1, if the value is below 0.5, `Math.round` will return 0:
+
+```javascript
+> Math.round(Math.random());
+1
+ 
+> Math.round(Math.random());
+0
+ 
+> Math.round(Math.random());
+1
+ 
+> Math.round(Math.random());
+1
+```
+#### Get the min and the max of two values with Math.min(a, b) and Math.max(a, b)
+
+```javascript
+> Math.min(12, 4);
+4
+ 
+> Math.max(12, 4);
+12
+```
+#### A useful function that restricts a value between  min and  max bounds:
+
+```javascript
+function restrictValue(value, min, max) {
+    return Math.min(Math.max(1, value), max);
+}
+ 
+> restrictValue(40, 1, 20);
+20
+ 
+> restrictValue(-10, 1, 20);
+1
+ 
+> restrictValue(10, 1, 20);
+10
+```
+#### Math functions for arithmetical computations sin(), cos(), tan(), atan(), atan2(), pow(), sqrt()
+
+```javascript
+> Math.pow(2, 8); // 2^8
+256
+ 
+> Math.sqrt(9);
+3
+ 
+> Math.sin(Math.PI/2);
+1
+ 
+> Math.cos(Math.PI/2);
+6.123233995736766e-17
+```
+
+#### Math.atan2(dy, dx) is useful for getting an angle between a point in a canvas and the mouse cursor
+
+Here is a typical example of the use of Math.atan2 in a video game, in order to make an object follow the mouse cursor by moving towards it. Look at the code in the mainloop function.
+
+https://codepen.io/w3devcampus/pen/aWOJQN
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8 />
+<title>Use Math.atan2 to make an object follow the mouse cursor</title>
+</head>
+<body onload="init();">
+  <p>Move the mouse cursor and see the black rectangle following it.</p>
+  <canvas id="myCanvas" width="400" height="400">
+  </canvas>
+</body>
+</html>
+```
+
+
+```css
+canvas {
+  border: 2px solid black;
+}
+```
+
+
+
+```javascript
+var canvas, ctx, width, height;
+var rect = {x:40, y:40, radius: 30, width:40, height:40, v:3};
+var mousepos = {x:0, y:0};
+
+function init() {
+  canvas = document.querySelector("#myCanvas");
+  ctx = canvas.getContext('2d');
+  width = canvas.width;
+  height = canvas.height; 
+  
+  canvas.addEventListener('mousemove', function (evt) {
+        mousepos = getMousePos(canvas, evt);
+     }, false); 
+ 
+  mainloop();
+}
+
+
+function mainloop() {
+    // 1) clear screen
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+    // 2) move object
+    var dx = rect.x - mousepos.x;
+    var dy = rect.y - mousepos.y;
+    var angle = Math.atan2(dy, dx);
+  
+    rect.x -= rect.v*Math.cos(angle);   
+    rect.y -= rect.v*Math.sin(angle); 
+  
+    // 3) draw object
+    drawRectangle(angle);
+  
+    // 4) request new frame
+     window.requestAnimationFrame(mainloop);
+}
+ 
+function drawRectangle(angle) {
+  ctx.save();
+  
+  // These two lines move the coordinate system
+  ctx.translate(rect.x, rect.y);
+  ctx.rotate(angle);
+  // recenter the coordinate system in the middle
+  // the rectangle. Like that it will rotate around
+  // this point instead of top left corner
+  ctx.translate(-rect.width/2, -rect.height/2);
+  
+  ctx.fillRect(0, 0, rect.width, rect.height);
+  ctx.restore();
+}
+
+function getMousePos(canvas, evt) {
+  // necessary to take into account CSS boudaries
+  var rect = canvas.getBoundingClientRect();
+  return {
+     x: evt.clientX - rect.left,
+     y: evt.clientY - rect.top
+  };
+}
+```
+
+---
+
+#### Module 5: Working with forms   5.2 Objects (part 4): objects and references, built-in JS classes   Built-in JS class: Date
+
+# Built-in JS class: Date
