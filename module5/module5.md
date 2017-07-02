@@ -1352,3 +1352,341 @@ See below for suggested topics of discussion and optional projects.
 * For a long time, we've talked about "predefined JavaScript objects", not "classes" when we talked about Math, Date, Array, etc. This is because JavaScript is not a class-based programming language. ES6 introduced classes and the class keyword, but in fact there are no "real classes" in JavaScript, like in class-based languages such as Java or C#. ES6 classes are just constructor functions and prototypes (the thing behind Object Oriented JavaScript) disguised. Did you know that?
 
 ---
+
+#### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   The HTML table basics
+
+# The HTML table basics
+
+The HTML table basics: tags, attributes and CSS styling
+
+Introduction
+
+The `<table>` element helps with rendering tables in an HTML document.  
+
+Each table row is defined with the `<tr>` tag (Table Row). A table header is defined with the `<th>` tag (Table Header). By default, table headings are bold and centered. A table data/cell is defined with the `<td>` tag (Table Data). In each cell, you can have other HTML elements/tags. You can have only "column table headers" (the first row of the table will be in bold), or you can also have "row headers" (first cell of each row).
+
+Best practice for making the table accessible: always add a <caption> tag inside the <table> tag. Data tables very often have brief descriptive text before or after the table that indicates the content of that table. This text should be associated to its respective table using the `<caption>` element. The `<caption>` element must be the first thing after the opening <table> tag.
+
+Second best practice for accessibility: use a scope attribute with all `<th scope = "row or column">` for identifying whether a table header is a column header or a row header. 
+
+You can read these [recommendations](https://www.w3.org/WAI/tutorials/tables/) for making accessible tables.
+
+Typical example:
+
+```html
+<table>
+    <caption>A typical HTML table</caption>
+    <tr>
+        <th scope="col">Given Name</th>
+        <th scope="col">Family Name</th>
+        <th scope="col">Age</th>
+    </tr>
+    <tr>
+        <td>Michel</td>
+        <td>Buffa</td>
+        <td>52</td>
+    </tr>
+    <tr>
+        <td>Dark</td>
+        <td>Vador</td>
+        <td>Unknown</td>
+    </tr>
+    <tr>
+        <td>Luke</td>
+        <td>Skywalker</td>
+        <td>Unknown</td>
+    </tr>
+</table>
+```
+Most of the time, we add some CSS rules for rendering cell/row/table borders and for adjusting spacing between the text in the cells and the cell borders. Let's look at another example:
+
+#### HTML table with a very light CSS styling
+https://codepen.io/w3devcampus/pen/vmNQNQ
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>A typical HTML table with simple styling</title>
+</head>
+<body>
+<table>
+ <caption>A typical HTML table</caption>  
+  <tr>
+    <th scope="col">Given Name</th>
+    <th scope="col">Family Name</th> 
+    <th scope="col">Age</th>
+  </tr>
+  <tr>
+    <td>Michel</td>
+    <td>Buffa</td> 
+    <td>52</td>
+  </tr>
+  <tr>
+    <td>Dark</td>
+    <td>Vador</td> 
+    <td>Unknown</td>
+  </tr>
+    <tr>
+    <td>Luke</td>
+    <td>Skywalker</td> 
+    <td>Unknown</td>
+  </tr>
+</table>
+  <p>Click the button below to add the CSS style "border-collapse: collapse;"
+    to the table (this will make the double borders disappear):</p>
+  <button onclick="borderCollapse();">Border Collapse</button>
+</body>
+</html>
+```
+
+
+```css
+table {
+  width:100%;
+  border:1px solid;
+}
+
+
+tr, th, td {
+  border:1px solid;
+  font-family:courier;
+}
+
+td {
+  text-align:center;
+  padding:10px;
+  
+}
+```
+
+
+```javascript
+function borderCollapse() {
+  var table = document.querySelector("table");
+  
+  table.style.borderCollapse = "collapse";
+}
+```
+This is a static table. You can look at the CSS code:
+
+```css
+table {
+    width:100%;
+    border:1px solid;
+}
+ 
+ 
+tr, th, td {
+    border:1px solid;
+    font-family:courier;
+}
+ 
+td {
+    text-align:center;
+    padding:10px;
+}
+```
+Explanations:
+
++ Line 1: this rule says that the table will occupy the width of the window and will have a black, continuous border that is one pixel wide.
++ Line 7: this rule says that table rows, table cells and table headers will also have a border and will use the font family Courier.
++ Line 12: this says that all cells will have the text horizontally centered and an internal margin (called padding) of 10px in each direction (top, bottom, left, right).
+
+Here is another example with more CSS styling (flat design)
+
+https://codepen.io/w3devcampus/pen/MmKYNx
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>A typical HTML table with simple flat design styling</title>
+</head>
+<body>
+<table id="myTable" class=".flat-design">
+ <caption>A typical HTML table</caption>  
+  <tr>
+    <th scope="col">Given Name</th>
+    <th scope="col">Family Name</th> 
+    <th scope="col">Age</th>
+  </tr>
+  <tr>
+    <td>Michel</td>
+    <td>Buffa</td> 
+    <td>52</td>
+  </tr>
+  <tr>
+    <td>Dark</td>
+    <td>Vador</td> 
+    <td>Unknown</td>
+  </tr>
+    <tr>
+    <td>Luke</td>
+    <td>Skywalker</td> 
+    <td>Unknown</td>
+  </tr>
+</table>
+
+</body>
+</html>
+```
+
+
+```css
+#myTable {
+  display: block;
+  font-family: sans-serif;
+  font-size: 115%;
+  overflow: auto;
+  width: auto;
+  }
+
+ #myTable  th {
+    background-color: rgb(112, 196, 105);
+    color: white;
+    font-weight: normal;
+    padding: 20px 30px;
+    text-align: center;
+  }
+
+
+ #myTable td {
+    background-color: rgb(238, 238, 238);
+    color: rgb(111, 111, 111);
+    padding: 20px 30px;
+    text-align:center;
+  }
+
+#myTable caption {
+  background-color:lightGreen;
+  padding:20px;
+  font-size: 130%;
+}
+```
+
+And a final example with colored lines, header, footer, legend 
+
+Look at the CSS - it's the only part that changed:
+https://codepen.io/w3devcampus/pen/gWPppo
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>A typical HTML table with colored lines and more CSS styling</title>
+</head>
+ <body> 
+   <p>Move tht mouse over the lines, look at the CSS part.</p>
+  <table>
+<caption>table caption</caption>
+	<thead>
+		<tr>
+			<th scope="col">thead th</th>
+			<th scope="col">thead th</th>
+			<th scope="col">thead th</th>
+			<th scope="col">thead th</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<th scope="row">tbody th</th>
+			<td>tbody td</td>
+			<td>tbody td</td>
+			<td>tbody td</td>
+		</tr>
+		<tr>
+			<th scope="row">tbody th</th>
+			<td>tbody td</td>
+			<td>tbody td</td>
+			<td>tbody td</td>
+		</tr>
+		<tr>
+			<th scope="row">tbody th</th>
+			<td>tbody td</td>
+			<td>tbody td</td>
+			<td>tbody td</td>
+		</tr>
+    <tr>
+			<th scope="row">tbody th</th>
+			<td>tbody td</td>
+			<td>tbody td</td>
+			<td>tbody td</td>
+		</tr>
+    <tr>
+			<th scope="row">tbody th</th>
+			<td>tbody td</td>
+			<td>tbody td</td>
+			<td>tbody td</td>
+		</tr>
+	</tbody>
+    	<tfoot>
+		<tr>
+			<th scope="row">tfoot th</th>
+			<td colspan="2">tfoot td colspan=2</td>
+			<td>tfoot td</td>
+		</tr>
+	</tfoot>
+</table>
+</body>
+</html>
+```
+
+
+```css
+table {
+  width:98%;
+  margin:0 auto;
+  border-bottom:3px #eee solid;
+  border-collapse:collapse;
+  font-size:12px
+}
+th, td {
+  padding:5px 10px
+}
+caption {
+  font-weight:bold;
+  font-size:24px;
+  padding:5px; 
+  color:#1BA6B2; 
+  text-align:left;
+  margin-bottom:5px
+}
+thead th {
+  background:#ABC668;
+  color:#fff;
+  border-right:1px solid #fff
+}
+thead th:last-child {
+  border-right:none
+}
+tbody th {
+  width:10%
+}
+tbody tr:nth-child(even) {
+  background:#eee
+}
+tbody tr:nth-child(even) th {
+  background:#ddd
+}
+tbody tr:hover {
+  background:#F3F5BB
+}
+tbody tr:hover th {
+  background:#F2F684; 
+  color:#1BA6B2
+}
+tfoot tr {
+  border-top:6px solid #E9F7F6; 
+  color:#1BA6B2
+}
+```
+
+---
+
+#### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   The HTML table JavaScript API: dynamic tables!
+
+# The HTML table JavaScript API: dynamic tables!
