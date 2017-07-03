@@ -2694,21 +2694,250 @@ When we parse a JSON string using JSON.parse(), we get a real JavaScript object,
 
 # Example: consuming JSON remote data
 
+>! Missing video/transcript
+
+Source code from the above live coding video
+https://codepen.io/w3devcampus/pen/bRRjvv?editors=0011
+
+### Example: consuming remote data
+
+#### JSON data from a REST WebService
+
+Most "big sites" provide what we call a REST API. This means "they propose to send/receive data to/from programs over HTTP", and most of the time the JSON format is one of the possible transport formats for the data. Google APIs, Facebook and Amazon APIs are like this.
+
+JSONPlaceholder is a free online REST service that you can use whenever you need some fake data in JSON. Faking a server is great for tutorials, and this is exactly what the next example does. It will consume data from this [URL](https://jsonplaceholder.typicode.com/users).
+
+Please click on it - you will see some JSON data coming from the server and being displayed in your browser:
+
+And we would like to use these data in our code, manipulating them as a JavaScript object.
+
+First thing: get the remote data as JSON
+
+This course will not cover Ajax and what we call "asynchronous JavaScript". This will be covered in an advanced course to come on W3Cx.
+
+However, we can show you two simple examples that use the Xhr2 API for Ajax requests and the new fetch API that is simplest to use.
+
+### Downloading JSON data using the Xhr2 API
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Working with remote data suing XhR2</title>
+  <meta charset="utf-8"/>
+</head>
+<body>
+  <p>Working with remote data suing XhR2</p>
+  <button onclick="search();">Get a remote list of users' names and emails</button>
+  <div id="users"></div>
+</body>
+</html>
+```
+
+
+```css
+table {
+  margin-top: 20px;
+}
+table, tr, td {
+  border: 1px solid;
+} 
+```
 
 
 
+```javascript
+  function search() {    
+    var queryURL = "https://jsonplaceholder.typicode.com/users";
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', queryURL, true);
+
+    // called when the response is arrived
+    xhr.onload = function(e) {
+      var jsonResponse = xhr.response;
+
+      // turn the response into a JavaScript object
+      var users = JSON.parse(jsonResponse);
+      displayUsersAsATable(users);
+    }
+    
+    // in case of error
+    xhr.onerror = function(err) {
+      console.log("Error: " + err);
+    }
+    
+    // sends the request
+    xhr.send();
+} 
+  
+function displayUsersAsATable(users) {
+    // users is a JavaScript object
+  
+    // empty the div that contains the results
+    var usersDiv = document.querySelector("#users");
+    usersDiv.innerHTML = "";
+  
+    // creates and populate the table with users
+    var table = document.createElement("table");
+          
+    // iterate on the array of users
+    users.forEach(function(currentUser) {
+        // creates a row
+        var row = table.insertRow();
+        // insert cells in the row
+        var nameCell = row.insertCell();
+        nameCell.innerHTML = currentUser.name;
+        var cityCell = row.insertCell();
+        cityCell.innerHTML = currentUser.address.city;
+     });
+  
+     // adds the table to the div
+     usersDiv.appendChild(table);
+}
+```
+
+#### JavaScript source code extract:
+
+```javascript
+function search() {
+    var queryURL = "https://jsonplaceholder.typicode.com/users";
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', queryURL, true);
+ 
+    // called when the response has arrived
+    xhr.onload = function(e) {
+        var jsonResponse = this.response;
+ 
+        // turn the response into a JavaScript object
+        var users = JSON.parse(jsonResponse);
+        displayUsersAsATable(users);
+    }
+    // in case of error
+    xhr.onerror = function(err) {
+        console.log("Error: " + err);
+    }
+    // sends the request
+    xhr.send();
+}
+```
+
+#### Explanations:
+
+* Lines 4 and 5 build an Ajax request using XhR2.
+* Line 22 is executed after: the request is sent in the background (we say "asynchronously").
+* Line 8: when the server answers, this callback is executed, and inside it, `this.response` corresponds to the response from the HTTP server. It's in JSON format (line 9)
+* Line 12: we turn the JSON response into a regular JavaScript object we can work with, using `JSON.parse()`.
+* Line 13: we pass this list of users, now a JavaScript object, to the `displayUsersAsATable` method, that will use the HTML table API we saw earlier in the course.
+
+###[advanced] Downloading JSON data using the fetch API
+
+The [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) provides a JavaScript interface for accessing and manipulating parts of the HTTP pipeline, such as requests and responses. It also provides a global [fetch()](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) method that provides an easy, logical way to fetch resources asynchronously across the network. You fetch data from a URL, then, you do something with the response, then you do something else. If there is an error you can catch this error and display, for example, an error message. 
+
+See this [blog post](https://davidwalsh.name/fetch) for a detailed tutorial. Asynchronous JavaScript and JavaScript promises (the fetch...then...then... is based on the concept of "promises"), will be detailed in a next MOOC to appear at W3Cx.
+
+https://codepen.io/w3devcampus/pen/xgoZdg
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Working with remote data</title>
+  <meta charset="utf-8"/>
+  <!-- Polyfill in case your browser does not support the fetch API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/0.10.1/fetch.js"></script>
+
+</head>
+<body>
+  <button onclick="search();">Get remote list of users' names and emails using the fetch API</button>
+  <div id="users"></div>
+</body>
+</html>
+```
 
 
+```css
+table {
+  margin-top: 20px;
+}
+table, tr, td {
+  border: 1px solid;
+} 
+```
 
 
+```javascript
+function search() {
+    var queryURL = "https://jsonplaceholder.typicode.com/users";
 
+    fetch(queryURL)
+            .then(function (response) {
+                // response.json() returns a json string,
+                // returning it will convert it 
+                // to a pure JavaScript 
+                // object for the next then's callback
+                return response.json();
+            })
+            .then(function (users) {
+                // users is a JavaScript object here
+                displayUsersAsATable(users);
+            })
+            .catch(function (error) {
+                console.log('Error during fetch: ' + error.message);
+            });
+}
 
+function displayUsersAsATable(users) {
+    // users is a JavaScript object
 
+    // empty the div that contains the results
+    var usersDiv = document.querySelector("#users");
+    usersDiv.innerHTML = "";
 
+    // creates and populate the table with users
+    var table = document.createElement("table");
 
+    // iterate on the array of users
+    users.forEach(function (currentUser) {
+        // creates a row
+        var row = table.insertRow();
+        // insert cells in the row
+        var nameCell = row.insertCell();
+        nameCell.innerHTML = currentUser.name;
+        var cityCell = row.insertCell();
+        cityCell.innerHTML = currentUser.address.city;
+    });
 
+    // adds the table to the div
+    usersDiv.appendChild(table);
+}
 
+```
+#### JavaScript source code extract:
 
+```javascript
+function search() {
+    var queryURL = "https://jsonplaceholder.typicode.com/users";
+    fetch(queryURL)
+      .then(function(response) {
+          // response is a json string,
+          // convert it to a pure JavaScript object
+          return response.json();
+      })
+      .then(function(users) {
+          // users is a JavaScript object here
+          displayUsersAsATable(users)
+      })
+      .catch(function(error) {
+          console.log('Error during fetch: ' + error.message);
+      });
+}
+```
+The fetch API will also be covered in an advanced JavaScript course to come. In contrast to XhR2, fetch is based on a concept called "JavaScript promises" (also covered in the advanced course!). You recognize promises when you see ".then..." ".then...".
 
+---
 
+#### Module 5: Working with forms   5.4 The JSON notation   Example of use: the LocalStorage API
 
+# Example of use: the LocalStorage API
