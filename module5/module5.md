@@ -1690,3 +1690,300 @@ tfoot tr {
 #### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   The HTML table JavaScript API: dynamic tables!
 
 # The HTML table JavaScript API: dynamic tables!
+
+### Introduction
+
+There is a JavaScript API associated with the HTML table elements that makes dynamic table management possible, enabling you to add or delete a row, add or delete a cell, modify the content of the cells, etc.
+
+We've already seen some examples in the course, but we have not completely covered the table JavaScript API.
+
+#### The Table object (<table>)
+
+When you look for a table using the DOM API or the selector API, or when you create a table using the DOM API, you get a Table object:
+
+
+
+```javascript
+var table = document.getElementById("myTable");
+ 
+var table = document.querySelector("#myTable");
+ 
+var table = document.createElement("table"); // creates a new table
+```
+
+Like all objects, an instance of Table will have properties and methods:
+
+|        |Most useful properties |
+|--------|-----------------------------------------------------|
+|rows	 | Returns a collection of all `<tr>` elements in a table|
+|caption | Returns the `<caption>` element of a table|
+|tFoot	 | Returns a reference to the `<tfoot>` element of a table|
+|tHead	 | Returns a reference to the `<thead>` element of a table|
+
+
+|                  | Most useful methods|
+|------------------|--------------------|
+|insertRow()	   |Creates an empty `<tr>` element and adds it to the table. Example: `var row = table.insertRow();` inserts a new row at the end of the table. `var row = table.insertRow(0);` inserts at index = 0, `var row = table.insertRow(10);` inserts at index = 10, and pushes all the rows after this index.|
+|deleteRow()	   |Removes a row (`<tr>`) from the table. Example `table.deleteRow(0);` deletes the row at index 0.|
+|createCaption()	|Creates an empty `<caption>` element and adds it to the table|
+|deleteCaption()	|Removes the first `<caption>` element from the table|
+|createTHead()	|Creates an empty `<thead>` element and adds it to the table|
+|deleteTHead()	|Removes the `<thead>` element from the table|
+|createTFoot()	|Creates an empty `<tfoot>` element and adds it to the table|
+|deleteTFoot()	|Removes the `<tfoot>` element from the table|
+
+#### Example that adds a new row or removes a row to/from a table using the insertRow()/deleteRow() methods:
+
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>A typical HTML table with simple styling</title>
+</head>
+<body>
+<table id="myTable">
+ <caption>A typical HTML table</caption>  
+  <tr>
+    <th scope="col">Given Name</th>
+    <th scope="col">Family Name</th> 
+    <th scope="col">Age</th>
+  </tr>
+  <tr>
+    <td>Michel</td>
+    <td>Buffa</td> 
+    <td>52</td>
+  </tr>
+  <tr>
+    <td>Dark</td>
+    <td>Vador</td> 
+    <td>Unknown</td>
+  </tr>
+    <tr>
+    <td>Luke</td>
+    <td>Skywalker</td> 
+    <td>Unknown</td>
+  </tr>
+</table>
+  <p>Click to add a new row</p>
+  <button onclick="insertRow();">Add a new row</button>
+  <p>Click to delete the first row of the table</p>
+  <button onclick="deleteFirstRow();">Delete first row</button>
+</body>
+</html>
+```
+
+
+```css
+table {
+  width:100%;
+  border:1px solid;
+  border-collapse: collapse;
+}
+
+
+tr, th, td {
+  border:1px solid;
+  font-family:courier;
+}
+
+td {
+  text-align:center;
+  padding:10px;
+  
+}
+```
+
+```javascript
+
+function insertRow() {
+  var table = document.querySelector("#myTable");
+  
+  // without parameters, insert at the end,
+  // otherwise parameter = index where the row will be inserted
+  var row = table.insertRow();
+  
+  row.innerHTML = "<td>New</td><td>New</td><td>New</td>"
+}
+
+function deleteFirstRow() {
+  var table = document.querySelector("#myTable");
+  table.deleteRow(1); // 0 is the header
+}
+```
+
+>!Notice the use of row.innerHTML= here to add some cells to the row. We will soon see another method for doing this.
+
+### The TableRow object (<tr>)
+
+When you look for a row using the DOM API or the selector API, or when you create a row using the DOM API, you get a Row object:
+
+```javascript
+var row1 = document.getElementById("row1");
+ 
+var row1 = document.querySelector("#row1");
+ 
+var newRow = document.createElement("row"); // creates a new row
+```
+
+
+```javascript
+> var t = document.createElement("table");
+undefined
+ 
+> var r1 = t.insertRow(0);
+undefined
+ 
+> r1.innerHTML="<td>Hello</td>";
+"<td>Hello</td>"
+ 
+> var r2 = t.insertRow();
+undefined
+ 
+> r2.innerHTML="<td>Hello 2</td>";
+"<td>Hello 2</td>"
+ 
+> var row1 = t.rows[0];
+undefined
+ 
+> row1;
+<tr><td>Hello</td></tr>
+```
+
+Like all objects, a TableRow object has properties and methods. Here are the most useful ones:
+
+|                |Most useful properties|
+|----------------|----------------------|
+|cells	         |Returns a collection of all `<td>` or `<th>` elements in a table row|
+|rowIndex	     |Returns the position of a row in the rows collection of a table|
+|sectionRowIndex |	Returns the position of a row in the rows collection of a `<tbody>`, `<thead>`, or `<tfoot>`|
+
+
+|               |Most useful methods|
+|---------------|-------------------|
+|insertCell()	|Inserts a cell into the current table row. Without parameters, appends a cell after the last cell of the row. You can pass the index of the cell as a unique parameter, in which case other cells are "pushed" to the right. The value of 0 results in the new cell being inserted at the first position. The value of -1 can also be used, which results in the new cell being inserted in the last position.|
+|deleteCell()	|Deletes a cell from the current table row. There is one parameter for this method: the index of the cell to remove. The value of 0 results in the deletion of the first cell. The value of -1 can also be used, which results in the deletion of the last cell.|
+
+
+
+#### New versions of the previous examples, but instead of using the innerHTML of the TableRow object, we use the insertCell() method.
+
+https://codepen.io/w3devcampus/pen/OmMmGr
+
+```html
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>A typical HTML table with simple styling</title>
+</head>
+<body>
+<table id="myTable">
+ <caption>A typical HTML table</caption>  
+  <tr>
+    <th scope="col">Given Name</th>
+    <th scope="col">Family Name</th> 
+    <th scope="col">Age</th>
+  </tr>
+  <tr>
+    <td>Michel</td>
+    <td>Buffa</td> 
+    <td>52</td>
+  </tr>
+  <tr>
+    <td>Dark</td>
+    <td>Vador</td> 
+    <td>Unknown</td>
+  </tr>
+    <tr>
+    <td>Luke</td>
+    <td>Skywalker</td> 
+    <td>Unknown</td>
+  </tr>
+</table>
+  <p>Click to add a new row</p>
+  <button onclick="insertRow();">Add a new row</button>
+  <p>Click to delete the first row of the table</p>
+  <button onclick="deleteFirstRow();">Delete first row</button>
+</body>
+</html>
+```
+
+
+```css
+table {
+  width:100%;
+  border:1px solid;
+  border-collapse: collapse;
+}
+
+
+tr, th, td {
+  border:1px solid;
+  font-family:courier;
+}
+
+td {
+  text-align:center;
+  padding:10px;
+  
+}
+```
+
+
+
+```javascript
+function borderCollapse() {
+  var table = document.querySelector("table");
+  
+  table.style.borderCollapse = "collapse";
+}
+
+function insertRow() {
+  var table = document.querySelector("#myTable");
+  
+  // without parameters, insert at the end,
+  // otherwise parameter = index where the row will be inserted
+  var row = table.insertRow();
+  
+  var cell1 = row.insertCell();
+  cell1.innerHTML = "New cell1";
+  var cell2 = row.insertCell();
+  cell2.innerHTML = "New cell2";
+  var cell3 = row.insertCell();
+  cell3.innerHTML = "New cell3";
+}
+
+function deleteFirstRow() {
+  var table = document.querySelector("#myTable");
+  table.deleteRow(1); // 0 is the header
+}
+```
+
+Notice how we've created the new row cells:
+
+
+```javascript
+function insertRow() {
+    var table = document.querySelector("#myTable");
+    // without parameters, insert at the end,
+    // otherwise parameter = index where the row will be inserted
+    var row = table.insertRow();
+    var cell1 = row.insertCell();
+    cell1.innerHTML = "New cell1";
+    var cell2 = row.insertCell();
+    cell2.innerHTML = "New cell2";
+    var cell3 = row.insertCell();
+    cell3.innerHTML = "New cell3"; 
+}
+```
+
+So use |insertCell()| or |just row.innerHTML="<td>...</td>"| ? It's up to you: depending on the HTML that you plan to insert into each cell, one version may be more readable than the other.
+
+---
+
+#### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   HTML forms: best practices
+
+# HTML forms: best practices
