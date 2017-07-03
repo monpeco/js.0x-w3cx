@@ -1987,3 +1987,647 @@ So use |insertCell()| or |just row.innerHTML="<td>...</td>"| ? It's up to you: d
 #### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   HTML forms: best practices
 
 # HTML forms: best practices
+
+#### 1 - Creating accessible forms
+
+Forms are commonly used to enable user interaction within Web sites and Web applications, for example, for login, registering, commenting, and purchasing.
+
+Since HTML5 provides functionalities to assist with accessibility, developers should make a concerted effort to mark up Web based forms. The following two guidelines are to give you a good start to make your forms accessible:
+
+For every form field, ensure that a descriptive label is provided and use the `<label>` element to identify each form control.
+
+1. For larger or complex forms, use the `<fieldset>` and <legend> elements to respectively group and associate related form controls.
+2. We will give usage examples for each of these two basic guidelines in the following pages.
+
+Further reading
+
+The WAI Web site hosts a [Forms tutorial](https://www.w3.org/WAI/tutorials/forms/) where you will find more guidelines to help make your forms truly accessible: Form Instructions, Validating Input, User Notifications, Multi-Page Forms, and Custom Controls.
+
+#### 2 - Why is this important?
+
+Forms can be visually and cognitively complex and difficult to use. Accessible forms are easier to use for everyone, including people with disabilities.
+
+* People with cognitive disabilities can more easily understand the form and how to complete it, as making forms accessible improves the layout structure, instructions, and feedback.
+
+* People using speech input can use the labels via voice commands to activate controls and move the focus to the fields that they need to complete.
+
+* People with limited dexterity benefit from large clickable areas that include the labels, especially for smaller controls, such as radio buttons and checkboxes.
+
+* People using screen readers can identify and understand form controls more easily because they are associated with labels, field sets, and other structural elements.
+
+#### 3 - Labeling controls
+
+Labels need to describe the purpose of the form control
+
+Form fields and other form controls usually have visible labels, such as "E-mail Address:" as the label for a text field (see figure below).
+
+When these labels are marked up correctly, people can interact with them using only the keyboard, using voice input, and using screen readers. Also, the label itself becomes clickable, which enables a person who has difficulty clicking on small radio buttons or checkboxes to click anywhere on the label text.
+
+Associating labels explicitly
+
+Whenever possible, use the label element to explicitly associate text with form elements. The for attribute of the label must exactly match the id of the form control. 
+
+Example 1 (click on the label, not on the input field to see the effect)
+
+Source code:
+
+```html
+<label for="first_name">Your First Name</label>
+<input id="first_name" type="text" name="fname"/>
+```
+
+Alternative example 1
+
+Note that you can also include the <input> element inside the <label>...</label> element, and also add a <span lang="en"> for example, to indicate the language used in the label. Sometimes, nesting labels and inputs can also make CSS styling easier and produce better results with screen readers.
+
+Source code (with `<input>` inside the `<label>`):
+
+
+```html
+<label for="first_name"><span lang=en">Your First Name</span>
+    <input id="first_name" type="text" name="fname"/>
+</label>
+```
+Example 2 (click on the label "Subscribe to newsletter" to see the effect)
+
+Source code:
+
+```html
+<label for="firstname">First name:</label>
+<input type="text" name="firstname" id="firstname"><br>
+<label for="subscribe">Subscribe to newsletter</label>
+<input type="checkbox" name="subscribe" id="subscribe">
+```
+
+#### 4 - Labeling buttons
+
+The label of a `<button>` element is set inside the element and can include markup. This allows advanced accessibility hints to be included, such as marking up language change.
+
+Example: `<button>Mon <span lang="fr">bouton</span></button>`, for a button with a label in French.
+
+When using the `<input>` element to create buttons, the label is set in the value attribute of the element.
+
+Example: `<input type="submit" value="Please submit">`, will be rendered as a button.
+
+Source code for an example of "Submit" and "Cancel" buttons:
+
+
+```html
+<button type="submit">Submit</button>
+<button type="button">Cancel</button>
+ 
+<input type="submit" value="Submit">
+<input type="button" value="Cancel">
+```
+These will produce the same results:
+
+#### 5 - Labeling text areas
+
+```html
+<label for="address">Enter your address:</label>
+<br>
+<textarea id="address" name="addresstext"></textarea>
+```
+#### 6 - Grouping controls
+
+Groupings of form controls, typically groups of related checkboxes and radio buttons, sometimes require a higher level description. Grouping related form controls makes forms more understandable for all users, as related controls are easier to identify.
+
+Associating related controls with fieldset
+
+Grouping needs to be carried out visually and in the code, for example, by using the <fieldset> and <legend> elements to associate related form controls. The <fieldset> identifies the entire grouping and <legend> identifies the grouping's descriptive text.
+
+#### Example 1 - Radio buttons
+
+In the example below, there are three radio buttons that allow the user to choose an output format. Radio button groups should always be grouped using <fieldset>.
+
+Source code:
+
+
+```html
+<fieldset>
+   <legend>Output format</legend>
+      <div>
+         <input type="radio" name="format" id="txt" value="txt" checked>
+         <label for="txt">Text file</label>
+      </div>
+   <div>
+      <input type="radio" name="format" id="csv" value="csv">
+      <label for="csv">CSV file</label>
+   </div>
+[…]
+</fieldset>
+```
+
+#### Example 2 - Checkboxes
+
+In the example below, there are three checkboxes that are all part of an opt-in function for receiving different types of information.
+
+```html
+<fieldset>
+   <legend>I want to receive</legend>
+   <div>
+      <input type="checkbox" name="newsletter" id="check_1">
+      <label for="check_1">The weekly newsletter</label>
+   </div>
+   […]
+</fieldset>
+```
+
+#### [ADVANCED] Associating related controls with WAI-ARIA
+
+WAI-ARIA provides a grouping role that functions in a similar way to fieldset and legend. For example, a div element can have role=group to indicate that the contained elements are members of a group.
+
+WAI-ARIA roles are very important in the accessibility world, and we invite you to see an example provided in the [associated WAI tutorial](http://www.w3.org/WAI/tutorials/forms/grouping/). This article by Oscar Cao gives an [Introduction to understanding WAI-ARIA 1.0 roles](http://oscarcao.com/blog/2015/06/08/introduction-to-understanding-wai-aria-1-0-roles/).
+
+
+---
+
+#### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   HTML forms and JavaScript
+
+# HTML forms and JavaScript
+
+https://youtu.be/iq5gnJJ8svU
+
+Source code from the example shown in the above video
+https://codepen.io/w3devcampus/pen/ZyJXBe
+
+HTML forms and JavaScript
+
+Introduction
+
+We highly recommend that you follow the HTML5 Coding essentials and Best Practices course on W3Cx that has an entire module dedicated to HTML5 forms. 
+
+Forms are a way to get user input which is either sent to a remote server, or processed locally, or both.
+
+This section of the course will only cover local processing and the client-side part, with a focus on JavaScript processing.
+
+Typical example
+https://codepen.io/w3devcampus/pen/ZKQJBR
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Form example</title>
+</head>
+<body>
+<form id="myForm">
+  <fieldset>
+    <legend>Personal informations</legend>
+    
+    <label for="givenName">Given name:</label>
+    <input type="text" id="givenName" required name="givenName">
+    
+    <br>
+    
+    <label for="familyName">Family name:</label>
+    <input type="text" id="familyName" required name="familyName">
+    
+    <br>
+     <label for="email">Email:</label>
+    <input type="email" id="email" required name="email">
+    
+     <br>
+     <label for="age">Age:</label>
+    <input type="number" min=0 max=120  step=5 id="age" required name="age">
+ 
+         <br>
+     <label for="date">Birth date:</label>
+    <input type="date"  id="date" required name="date">
+  </fieldset>
+  
+  <button>Submit form</button>
+  </form>
+</body>
+</html>
+```
+
+
+```css
+fieldset {
+  padding:10px;
+  border-radius:10px;
+}
+
+label {
+  display:inline-block;
+  margin-bottom:10px;
+}
+
+input {
+  float:right;
+  margin-right:70px;
+  width:150px;
+}
+
+input:invalid {
+  background-color:pink;
+}
+
+input:valid {
+  background-color:lightgreen;
+}
+```
+
+#### HTML form input can be sent to a server without JavaScript
+
+If a form's content is sent to a remote server, on the server side, you may have PHP, Java, C#, Ruby, Python, etc. components. There are several ways to collect server-side data from a form in a Web page: REST Web services, servlets, Microsoft ASP pages, etc. 
+
+On the client side, the forms indicate to which server and how the data should be sent,  using the action and method attributes respectively. A <button type="submit">` or an `<input type=submit>` field is used to submit the form content.
+
+For example: `<form action="myServerCode.php" method="POST">...</form>`. Here, we set the URL of the server side code (myServerCode.php), and the HTTP method that will be used by the browser for sending the form content (POST).
+
+Example of HTML5 form that will not be sent if invalid input fields are present. Notice that the JavaScript part is only used for giving feedback while entering the password. No JavaScript is used for sending the form data, or for complex, global validation:
+
+
+https://codepen.io/w3devcampus/pen/pPgWoq
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Example of HTML5 form</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <form action="forum.cfm" method="post">
+            <fieldset>
+                <legend>The bits I need to make you join my forum</legend>
+                <label for="givenName">Given name</label>
+                <input required type="text" name="givenName" id="givenName" autocomplete="off" autofocus />
+                <br/>
+                <label for="familyName">family name</label>
+                <input required type="text" name="familyName" id="familyName" autocomplete="off" />
+                <br/>
+                <label for="passwordA">Password</label>
+                <input required type="password" name="passwordA" id="passwordA" oninput="checkpasswords()" />
+                <meter id="passwordStrength" min="0" max="10" value="0" low="5"></meter>
+                <br/>
+                <label for="passwordB">Make sure it's right</label>
+                <input required type="password" name="passwordB" id="passwordB" oninput="checkpasswords()" />
+                <br/>
+            </fieldset>
+            <fieldset>
+                <legend>Random bits I don't need, I'm just curious</legend>
+                <label for="dob">Birthday</label>
+                <input type="date" name="dob" id="dob">
+                <br/>
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" autocomplete="off"/>
+                <br/>
+                <label for="whereami">Hide and seek location</label>
+                <textarea name="whereami" id="whereami"></textarea>
+                <button id="findme" type="button">Locate me</button>
+                <br/>					
+            </fieldset>
+            <fieldset>
+                <legend>Answer me these questions three</legend>
+                <label for="quest">What is your quest?</label>
+                <input name="quest" id="quest" type="search" placeholder="I seek..." autocomplete="off" />
+                <br/>
+                <label for="colour">What is you favourite colour?</label>
+                <input type="color" id="colour" name="colour" oninput="this.style.backgroundColor = this.value);" />
+                <br/>
+                <label for="swallow">What is the wind speed velocity of an unladen swallow?</label>
+                <input list="swallows" id="swallow" name="swallow" />
+                <datalist id="swallows">
+                    <option value="African or European?"></option>
+                </datalist>
+                <br />
+            </fieldset>
+            <fieldset>
+                <legend>Sanity checks</legend>
+                <label for="chuck">How much wood would a woodchuck chuck if a woodchuck could chuck wood?</label>
+                <input type="number" name="chuck" id="chuck" min="1" max="15" step="1" value="1" />
+                <br/>
+                <label for="santa">How possessed by Santa are you right now?</label>
+                <input name="santa" id="santa" type="range" min="1" max="12" step="1" value="1" />
+                <output name="so" id="santaoutput">1</output>
+                <br/>
+                <label for="call">Who you gonna call?</label>
+                <input list="callingoptions" id="call" name="call" pattern="Ghostbusters|[0-9]*" oninput="validateCallingOptions();" />
+                <datalist id="callingoptions">
+                    <option value="Ghostbusters"></option>
+                </datalist>			
+            </fieldset>
+            <input type="submit" value="Register!" />
+        </form>
+
+    </body>
+</html>
+```
+
+
+```css
+input:invalid:required,
+input:invalid {
+	background-color: #FFB6C1;
+	border: 2px solid #FF0000;
+}
+
+form {
+	margin: 20px;
+}
+fieldset {
+	border: none;
+}
+legend {
+	border-bottom: 2px solid #00008B;
+	color: #00008B;
+	font-family: Verdana;
+	font-size:14px;
+	width: 400px;
+}
+label {
+	display: inline-block;
+	padding: 4px;
+	text-align: right;
+	width: 400px;
+}
+input[type=text],
+input[type=password],
+input[type=date],
+input[type=email],
+input[type=search],
+input[list],
+input[type=color],
+input[type=number],
+input[type=submit],
+input[type=button],
+textarea {
+	border: 2px solid #00008B;
+	border-radius: 5px;
+	padding: 7px;
+	width: 300px;
+}
+textarea {
+	height: 100px;
+	vertical-align: top;
+}
+input[type=search] {
+	width: 320px;
+}
+input[type=color] {
+	cursor: pointer;
+	width: 150px;
+}
+input[type=number] {
+	width: 150px;
+}
+input[type=range] {
+	width: 300px;
+}
+meter {
+	height: 20px;
+	width: 100px;
+}
+input[type=submit] {
+	background-color: #BEBEF7;
+	color: #00008B;
+	cursor:pointer;
+	font-weight: bold;
+	margin-left: 420px;
+	width: 320px;
+}
+input[type=button] {
+	background-color: #EFBDB8;
+	border-color: #8B0000;
+	color: #8b0000;
+	cursor:pointer;
+	font-weight: bold;
+	margin-left: 420px;
+	width: 320px;
+}
+```
+
+
+
+```javascript
+function checkpasswords() {
+	var p1 = document.getElementById("passwordA");
+	var p2 = document.getElementById("passwordB");
+	if (p1.value !== p2.value) {
+		p2.setCustomValidity("Passwords do not match");
+	} else {
+		p2.setCustomValidity("");
+	}
+	var strength = document.getElementById("passwordStrength");
+	var multiplier = 0;
+	if ( /[a-z]/.test(p1.value) ) { multiplier++; }
+	if ( /[A-Z]/.test(p1.value) ) { multiplier++; }
+	if ( /[0-9]/.test(p1.value) ) { multiplier++; }
+	strength.value = p1.value.length * multiplier;
+}
+function validateCallingOptions() {
+	var input = document.getElementById("call");
+	var validity = input.validity;
+	if (validity.patternMismatch) {
+		input.setCustomValidity("Not a phone number");
+	} else {
+		input.setCustomValidity("");
+	}
+}
+```
+
+#### HTML form input can be sent using Ajax / JavaScript
+
+Another approach is to use JavaScript for sending the form content with Ajax. This will be covered in the JavaScript advanced course, to be be available on W3Cx.
+
+#### JavaScript can be used for validating user input "on the fly"
+
+While one is typing or selecting a color, or moving a slider, JavaScript event listeners can be used to track the user's interactions in real time, and perform some validation steps along with giving visual feedback.
+
+We've already seen how we can track the keys typed in an input field in real time:
+https://codepen.io/w3devcampus/pen/XMQpRa
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Simple input field validation using keyup events</title>
+</head>
+<body>
+  <h1>Simple input field validation using the 'input' event</h1>
+  <p>Just type a name in the input field and see what happens! <span style="color:red"> TRY TO TYPE A "!" too</span></p>
+<label>
+  <span>Name (required):</span>
+  <input type="text" 
+         name="nom" 
+         maxlength="32" 
+         required
+         onkeyup = "validateName(event)">
+</label>
+  <p>
+  <span id="keyTyped"></span>
+</p>  
+</body>
+</html>
+```
+
+```javascript
+function validateName(evt) {
+  // this is the input field text content
+  var key = evt.key;  
+  
+  // get the output div
+  var output = document.querySelector('#keyTyped');
+  // display the value typed in the div 
+  output.innerHTML = "Valid key: " + key;
+  
+  // You can do validation here, set the input field to
+  // invalid is the name contains forbidden characters
+  // or is too short
+  // for example, let's forbid names with length < 5 chars
+  if(key === "!") {
+    output.innerHTML = "This key is forbidden!";
+    // remove the forbodden char
+    // current typed value
+    var name = evt.target.value;
+    // we use the substring JavaScript function
+    // to remove the last character
+    // first parameter = start index
+    // second = last index
+    evt.target.value = name.substring(0, name.length-1);
+  }
+}
+```
+
+#### JavaScript can be used for a more global validation before sending a form to a remote server
+
+Example: checking that a password entered twice is identical in two different input fields, that some values are coherent (e.g. a birthday cannot be in the future), etc.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Example of using the validation API</title>
+     <meta charset="utf-8">
+  </head>
+  <body>
+<form class="myForm" onsubmit="return submitForm();">
+  <fieldset>
+    <legend>Example use of the validation API: try to submit with different passwords, and with same passwords</legend>
+ <label for="password1" >Password:</label> <input type="password" id="password1" oninput="checkPasswords()" required>
+ <p>
+ <label for="password2">Repeat password:</label> <input type="password" id="password2" oninput="checkPasswords()" required>
+ <p>
+   <button>Submit</button>
+  </fieldset>
+</form>
+</body>
+</html>
+```
+
+
+```css
+.myForm input:invalid { 
+  background-color: lightPink;
+}
+.myForm input:valid { 
+  background-color:lightGreen; 
+}
+ .myForm input:required {
+   border: 2px solid red;
+}
+ .myForm input:optional {
+   border: 2px solid green;
+}
+.myForm label { 
+  display: inline-block; 
+  width: 140px; 
+  text-align: right; 
+} 
+```
+
+
+
+```javascript
+ function checkPasswords() {
+    var password1 = document.querySelector('#password1');
+    var password2 = document.querySelector('#password2');
+   
+    // Use HTML5 form validation API
+    if (password1.value !== password2.value) {
+       // password2 input field is invalid
+       password2.setCustomValidity('Passwords are different');
+    } else {
+      // call to setCustomValidity with an empty arguments
+      // indicates that the input field is valid
+       password2.setCustomValidity('');
+    }
+}
+
+function submitForm() {
+  document.body.append("We can submit, the form is valid!");
+  
+  // Here, for example, we can do what we want with the data
+  // Send to a server using Ajax,
+  // show the data in a table,
+  // save data client-side, etc.
+  
+  // returning false will not submit the form
+  return false;
+}
+```
+JavaScript can be used to make a WebApp that uses form data locally, perhaps with some client-side persistence API
+
+For example, a contact manager that will work offline, saving data locally, in a database inside the browser. Data will be displayed in a dynamic HTML table, without the need for a remote database.
+
+This is the small project we will build together at the end of the course. :-)
+
+---
+
+### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   Discussion topics and project
+# Discussion topics and project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for suggested topics of discussion and an optional project.
+
+#### Suggested topics
+
++ HTML5 tables are some of the most complicated elements, and there are lots of tricks to make them nice and reactive using CSS3 styles. Please share in the forum some of the best looking tables you find.
++ There exist external JavaScript libraries for making "datatables", i.e., HTML tables especially made for displaying structured data. Do you know some of them and can you share your experiences and examples that use them in the forum? What do you think of them?
+
+#### Optional project
+
++ Add a search input field + a search button to the dynamic table example. Add some more data in the table. Implement a search feature: when you search for "Ian Solo", for example, highlight the table row that contains it. If not found, display a message in the page, next to the search form.
+
+
+---
+
+#### Module 5: Working with forms   5.3 HTML5 tables, forms and input fields   Projects (verified cohort)
+
+### Projects for the verified cohort
+
+Please make a big table (with a few hundred rows containing structured data). Tip: use loops and random values. For example, use an array of names, an array of cities, an array of zip codes; use Math.random()  and Math.round() to generate random indexes. Then pick data from the arrays, build an object with random names, cities, zip codes, etc. and add it as a row in the table.
+Ah, but this table looks too long now!!! Try to paginate it by using a previous and a next page button. You will display the table with 15 rows per page, not more!
+
+---
+
+#### Module 5: Working with forms   5.4 The JSON notation   What is JSON?
+
+# What is JSON?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
