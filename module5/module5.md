@@ -3044,3 +3044,283 @@ See below for a suggested topic of discussion.
 #### Module 5: Working with forms   5.5 A small application   Part 1: a contact manager
 
 # Part 1: a contact manager
+
+A small project that uses ES6 classes, local storage, the HTML table JavaScript API and forms
+
+#### Introduction
+
+In this final part of the course, we will build together a minimal contact manager that shows how to use ES6 classes and some JavaScript APIs.
+
+This is a play project that you can easily improve:
+
+A contact, in this application, is just a person with a name and an email. Feel free to add other properties and methods to the Contact class.
+The contactManager is also an ES6 class with methods for adding, removing, sorting, saving and loading contacts on your hard disk. We will add new functionalities, step by step, in the next sections, but you can improve the examples provided by adding your own new features (build a better HTML table, add new sorting options, etc.)
+Let's start with a simple skeleton (no GUI), beginning with the Contact class
+
+```javascript
+class Contact {
+   constructor(name, email) {
+      this.name = name;
+      this.email = email;
+   }
+}
+```
+As you can see, a contact is just a name and an email. We will use the above class like this:
+
+```javascript
+var c1 = new Contact("Jimi Hendrix", "jimi@rip.com");
+var c2 = new Contact("Robert Fripp", "robert.fripp@kingcrimson.com");
+```
+Then you can print the properties of contact c1 or c2 using for example console.log(c1.name), console.log(c2.email), etc.
+
+A minimal ContactManager class
+
+```javascript
+class ContactManager {
+    constructor() {
+        // when we build the contact manager, it
+        // has an empty list of contacts
+        this.listOfContacts = [];
+    }
+    add(contact) {
+        this.listOfContacts.push(contact);
+    }
+    remove(contact) {
+        // we iterate on the list of contacts until we find the contact
+        // passed as a parameter (we say that they are equal if emails match)
+        for(let i = 0; i < this.listOfContacts.length; i++) {
+            var c = this.listOfContacts[i];
+ 
+            if(c.email === contact.email) {
+                // remove the contact at index i
+                this.listOfContacts.splice(i, i);
+                // stop/exit the loop
+                break;
+            }
+         };
+    }
+    printContactsToConsole() {
+        this.listOfContacts.forEach(function(c) {
+            console.log(c.name);
+        });
+    };
+}
+```
+
+#### Explanations:
+
+This is a minimal ES6 class for building a contact manager. It has only one property: the list of contacts, and a method for adding a new contact (line 8), one for removing a contact (line 12), that iterate on the list of contacts until the contact passed as a parameter is found (when email properties match), then the contact is removed using the splice method, and we go out from the loop using the break statement (line 22).
+
+It also has a utility method for printing to the console the list of contacts (line 27).
+
+We can use the contact manager like this:
+
+
+```javascript
+var cm = new ContactManager();
+var c1 = new Contact("Jimi Hendrix", "jimi@rip.com");
+var c2 = new Contact("Robert Fripp", "robert.fripp@kingcrimson.com");
+var c3 = new Contact("Angus Young", "angus@acdc.com");
+var c4 = new Contact("Arnold Schwarzenneger", "T2@terminator.com");
+ 
+console.log("--- Adding 4 contacts ---")
+cm.add(c1);
+cm.add(c2);
+cm.add(c3);
+cm.add(c4);
+ 
+cm.printContactsToConsole();
+```
+
+As you can see, this is a very minimal version. It's always a good idea to start with very simple structures/classes, and a few methods. Then type the code on CodePen or jsBin and use the devtool console. Check that there are no syntax errors, that everything runs smoothly.
+
+Here is the CodePen of this minimal version. Click on the CodePen label on the top right, and once in CodePen, open the console:
+https://codepen.io/w3devcampus/pen/yXoXER
+
+```javascript
+class Contact {
+	constructor(name, email) {
+		this.name = name;
+		this.email = email;
+	}
+}
+
+class ContactManager {
+	constructor() {
+		// when we build the contact manager, it
+		// has an empty list of contacts
+		this.listOfContacts = [];
+	}
+	
+	add(contact) {
+		this.listOfContacts.push(contact);
+	}
+	
+		remove(contact) {
+			for(let i = 0; i < this.listOfContacts.length; i++) { 
+				var c = this.listOfContacts[i];
+
+				if(c.email === contact.email) {
+					// remove the contact at index i
+					this.listOfContacts.splice(i, i);
+					// stop/exit the loop
+					break;
+				}
+			}	
+		}
+	
+		printContactsToConsole() {
+		    this.listOfContacts.forEach(function(c) {
+			       console.log(c.name);
+		    });
+	  }
+	}
+	
+// ALWAYS TEST YOUR CODE WITH SIMPLE EXAMPLES, or by typing in the devtool console
+var cm = new ContactManager();
+var c1 = new Contact("Jimi Hendrix", "jimi@rip.com");
+var c2 = new Contact("Robert Fripp", "robert.fripp@kingcrimson.com");
+var c3 = new Contact("Angus Young", "angus@acdc.com");
+var c4 = new Contact("Arnold Schwarzenneger", "T2@terminator.com");
+
+console.log("--- Adding 4 contacts ---")
+cm.add(c1);
+cm.add(c2);
+cm.add(c3);
+cm.add(c4);
+
+cm.printContactsToConsole();
+
+// trying to remove c2
+console.log("--- Removing the second one! ---");
+cm.remove(c2);
+cm.printContactsToConsole();
+
+```
+
+#### Adding a method for sorting the list of contacts by name
+
+Do you remember the sort() method you can use on arrays? We saw it in modules 2 or 3. Since our array contains objects, we must provide a callback for comparing two elements by name. Here is the code for the new sort() method we added to the ContactManager class:
+
+
+```javascript
+sort() {
+    // As our array contains objects, we need to pass as argument
+    // a method that can compare two contacts.
+    // we use a class method, which is similar to the distance(p1, p2)
+    // method we saw in the ES6 Point class in module 4
+    // We always call such methods using the name of the class followed
+    // by the dot operator
+    this.listOfContacts.sort(ContactManager.compareByName);
+}
+// class method for comparing two contacts by name
+static compareByName(c1, c2) {
+    // JavaScript has built in capabilities for comparing strings
+    // in alphabetical order
+    if (c1.name < c2.name)
+        return -1;
+    if (c1.name > c2.name)
+        return 1;
+    return 0; // c1.name = c2.name
+}
+```
+The important thing here is to notice that we declared the `compareByName` method as a class method (using the `static` keyword). This is similar to what we did in the Point class example from module 4, when we explained the "class properties and methods". This method compareByName does not depend on any instance of the contact manager, consequently: it's a class method.
+
+CodePen that uses this new method:
+https://codepen.io/w3devcampus/pen/MovoBz
+
+```javascript
+class Contact {
+	constructor(name, email) {
+		this.name = name;
+		this.email = email;
+	}
+}
+
+class ContactManager {
+	constructor() {
+		// when we build the contact manager, it
+		// has an empty list of contacts
+		this.listOfContacts = [];
+	}
+	
+	add(contact) {
+		this.listOfContacts.push(contact);
+	}
+	
+	remove(contact) {
+		for(let i = 0; i < this.listOfContacts.length; i++) { 
+			var c = this.listOfContacts[i];
+
+			if(c.email === contact.email) {
+				// remove the contact at index i
+				this.listOfContacts.splice(i, i);
+				// stop/exit the loop
+				break;
+			}
+		}
+	}
+	
+	sort() {
+		// As our array contains objects, we need to pass as argument
+		// a method that can compare two contacts.
+		// we use for that a class method, similar to the distance(p1, p2)
+		// method we saw in the ES6 Point class in module 4
+		// We always call such methods using the name of the class followed
+		// by the dot operator
+		this.listOfContacts.sort(ContactManager.compareByName);
+	}
+	
+	// class method for comparing two contacts by name
+	static compareByName(c1, c2) {
+		// JavaScript has builtin capabilities for comparing strings
+		// in alphabetical order
+		if (c1.name < c2.name)
+     		return -1;
+		
+    	if (c1.name > c2.name)
+     		return 1;
+  
+    	return 0;
+	}
+	
+	printContactsToConsole() {
+		this.listOfContacts.forEach(function(c) {
+			console.log(c.name);
+		});
+	}
+}
+
+// ALWAYS TEST YOUR CODE WITH SIMPLE EXAMPLES, or by typing in the devtool console
+var cm = new ContactManager();
+var c1 = new Contact("Jimi Hendrix", "jimi@rip.com");
+var c2 = new Contact("Robert Fripp", "robert.fripp@kingcrimson.com");
+var c3 = new Contact("Angus Young", "angus@acdc.com");
+var c4 = new Contact("Arnold Schwarzenneger", "T2@terminator.com");
+
+console.log("--- Adding 4 contacts ---")
+cm.add(c1);
+cm.add(c2);
+cm.add(c3);
+cm.add(c4);
+
+cm.printContactsToConsole();
+
+// trying to remove c2
+console.log("--- Removing the second one! ---");
+cm.remove(c2);
+cm.printContactsToConsole();
+
+console.log("--- sorting contacts ---");
+cm.sort();
+cm.printContactsToConsole();
+
+---
+
+#### Module 5: Working with forms   5.5 A small application   Part 2: persistence
+
+# Part 2: persistence
+```
+
+
+
