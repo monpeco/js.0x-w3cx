@@ -2941,3 +2941,106 @@ The fetch API will also be covered in an advanced JavaScript course to come. In 
 #### Module 5: Working with forms   5.4 The JSON notation   Example of use: the LocalStorage API
 
 # Example of use: the LocalStorage API
+
+#### Example of use: the LocalStorage API as a client-side database for JavaScript objects
+
+#### The Web Storage API (localStorage, sessionStorage)
+
+The Web storage API (see the [related W3C specification](https://www.w3.org/TR/webstorage/)) introduces "two related mechanisms, similar to HTTP session cookies, for storing structured data on the client side".
+
+Indeed, Web Storage provides two interfaces - `sessionStorage` and `localStorage` - whose main difference is data longevity. This specification defines an API for persistent data storage of key-value pair data in Web clients.
+
+> With `localStorage` the data will remain until it is deleted, whereas with `sessionStorage` the data is erased when the tab/browser is closed.
+
+For convenience, we will mainly illustrate the `localStorage` object. Just change "local" to "session" and it should work (this time with a session lifetime)
+
+### Simple key-value stores, one per domain (following the [same origin policy](https://en.wikipedia.org/wiki/Same-origin_policy))!
+
+`localStorage` is a simple key-value store, in which the keys and values are strings. There is only one store per domain. This functionality is exposed through the globally 
+available `localStorage` object. The same applies to `sessionStorage`.
+
+Example:
+
+```javascript
+// Using localStorage
+// store data
+localStorage.lastName = "Bunny";
+localStorage.firstName = "Bugs";
+localStorage.location = "Earth";
+// retrieve data
+var lastName = localStorage.lastName;
+var firstName = localStorage.firstName;
+var location = localStorage.location;
+```
+
+This data is located in a store attached to the origin of the page. We've created a [JsBin](http://jsbin.com/hebino/1/edit?html,output) example in which we've included the above code.
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <script>
+    // Using localStorage
+    // store data
+    localStorage.lastName = "Bunny";
+    localStorage.firstName = "Bugs";
+    localStorage.location = "Earth";
+    
+    // retrieve data
+    var lastName = localStorage.lastName;
+    var firstName = localStorage.firstName;
+    var location = localStorage.location;
+    
+    console.log("lastName just retrieved from the localStorage of your browser, for this particular web site: " + lastName);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+``
+
+Once opened in your browser, the JavaScript code is executed. With the browser dev. tools, we can check what has been stored in the localStorage for this domain:
+
+### Differences with cookies?
+
+Cookies are also a popular way to store key-value pairs. Web Storage, however, is a more powerful technique than cookies. The main difference is in size limits: cookies are limited to a few KBytes whereas Web Storage may extend to several MBytes. Also, cookies generate additional HTTP request traffic (whether to request a Web page, an image, a stylesheet, a JavaScript file, etc.).
+
+Objects managed by Web Storage are no longer carried on the network and HTTP, and are easily accessible (read, change and delete) from JavaScript, using the Web Storage API.
+
+External resources
+
+* [The W3C Web Storage API recommendation (published on 9 June 2015)](https://www.w3.org/TR/webstorage/)
+* [Interesting article on html5rocks that compares the different ways of doing client side persistence with HTML5, including Web Storage.](https://www.html5rocks.com/en/tutorials/offline/storage/)
+
+---
+
+#### Module 5: Working with forms   5.4 The JSON notation   Discussion
+
+# Discussion
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for a suggested topic of discussion.
+
+#### Suggested topic
+
+* Did you know that using XhR2 for getting remote data, you can also monitor the download progression using n xhr.onprogress = event listener and a <progress> HTML element. See this [example](https://jsbin.com/nuxanaf/edit?html,output) from the HTML5 Apps and Games MOOC! This is not yet possible using the new [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+
+---
+
+#### Module 5: Working with forms   5.4 The JSON notation   Projects (verified cohort)
+
+# Projects for the verified cohort
+
+* Please display the data from this [URL](https://gist.githubusercontent.com/heiswayi/7fde241975ed8a80535a/raw/ff1caaeaf62bd6740ab7cafcd61f1215de173379/datatables-data.json) in a dynamic table.
+* Try to add a "hi-score" table to the game developed during this course. The table will be displayed when you lose, and will show only the 10 best scores.
+
+---
+
+#### Module 5: Working with forms   5.5 A small application   Part 1: a contact manager
+
+# Part 1: a contact manager
