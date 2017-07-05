@@ -3864,3 +3864,359 @@ code we used in previous examples for testing the class by adding four contacts 
 #### Module 5: Working with forms   5.5 A small application   Part 4: use a form to enter new contacts
 
 # Part 4: use a form to enter new contacts
+
+### Part 4: use a form to enter new contacts in an HTML5 table
+
+Some reminders about HTML forms
+
+In the previous example, we added a form for entering a new contact, and an "add" button.
+
+Here is the HTML code of the form:
+
+
+```html
+<form onsubmit="return formSubmitted();">
+    <fieldset>
+        <legend>Personal informations</legend>
+        <label>
+            Name :
+            <input type="text" id="name" required>
+        </label>
+        <label>
+            Email :
+            <input type="email" id="email" required>
+        </label>
+        <br>
+        <button>Add new Contact</button>
+    </fieldset>
+</form>
+```
+* The button at line 13 will submit the form by default (it's equivalent to an <input type="submit">). 
+
+The event listener at line 1: 
+
+```html
+<form onsubmit="return formSubmitted();">
+```
+... will call the `formSubmitted` function when the form is submitted. It is interesting that we use `onclick="return formSubmitted();"`:
+
+* If the returned value is true, the form will be submitted by your browser (this would reload the HTML page).
+* If the returned value is false, the form will not be submitted (this is what we want, so we will return false in the `formSubmitted` function).
+
+Here is the code of the formSubmitted function:
+
+```javascript
+function formSubmitted() {
+    // Get the values from input fields
+    let name = document.querySelector("#name");
+    let email = document.querySelector("#email");
+    let newContact = new Contact(name.value, email.value);
+    cm.add(newContact);
+    // Empty the input fields
+    name.value = "";
+    email.value = "";
+    // refresh the table
+    cm.displayContactsAsATable("contacts");
+    // do not let your browser submit the form using HTTP
+    return false;
+}
+```
+#### Explanations:
+
+* Lines 2-7: we get the values entered in the form's input fields, build a new contact and add it to the contact list
+* Lines 10-11: we reset the content of the input fields (we empty them)
+* Line 14: we display the HTML table with the new added contact
+* Line 17: we return false so that the form will not be submitted. This will prevent the browser from reloading the HTML page.
+
+
+CodePen example:
+https://codepen.io/w3devcampus/pen/awypEg
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>A contact manager, v4</title>
+  <meta charset="utf-8"/>
+</head>
+<body> 
+	<form onsubmit="return formSubmitted();">
+	 <fieldset>
+    <legend>Personal informations</legend>
+		<label>
+			Name : 
+			<input type="text" id="name" required>
+		</label>
+		<label>
+			Email : 
+			<input type="email" id="email" required>
+		</label>
+		<br>
+		<button>Add new Contact</button>
+		 </fieldset>
+	</form>
+	
+  <h2>List of contacts</h2> 
+  <div id="contacts"></div>
+	<p><button onclick="emptyList();">Empty</button> 
+	 <button onclick="cm.save();">Save</button> 
+   <button onclick="loadList();">Load</button>
+	</p>
+
+</body>
+</html>
+```
+
+
+```css
+table {
+  margin-top: 20px;
+}
+table, tr, td {
+  border: 1px solid;
+} 
+
+fieldset {
+  padding:10px;
+  border-radius:10px;
+}
+
+label {
+  display:inline-block;
+  margin-bottom:10px;
+}
+
+input {
+  float:right;
+  margin-right:70px;
+  width:150px;
+}
+
+input:invalid {
+  background-color:pink;
+}
+
+input:valid {
+  background-color:lightgreen;
+}
+```
+
+
+```javascript
+window.onload= init;
+
+// The contact manager as a global variable
+let cm; 
+
+function init() { 
+	// create an instance of the contact manager
+	cm = new ContactManager();
+	
+  	cm.addTestData();
+  	cm.printContactsToConsole();
+
+	  // Display contacts in a table
+	  // Pass the id of the HTML element that will contain the table
+	  cm.displayContactsAsATable("contacts");
+}
+
+function formSubmitted() {
+	// Get the values from input fields
+	let name = document.querySelector("#name");
+  	let email = document.querySelector("#email");
+	let newContact = new Contact(name.value, email.value);
+	cm.add(newContact);
+	
+	// Empty the input fields
+	name.value = "";
+	email.value = "";
+	
+	// refresh the html table
+	cm.displayContactsAsATable("contacts");
+	
+	// do not let your browser submit the form using HTTP
+	return false;
+}
+
+function emptyList() {
+	cm.empty();
+  	cm.displayContactsAsATable("contacts");
+}
+
+function loadList() {
+	cm.load();
+  	cm.displayContactsAsATable("contacts");
+}
+
+
+class Contact {
+	constructor(name, email) {
+		this.name = name;
+		this.email = email;
+	}
+}
+
+class ContactManager {
+	constructor() {
+		// when we build the contact manager, it
+		// has an empty list of contacts
+		this.listOfContacts = [];
+	}
+	
+	addTestData() {
+		var c1 = new Contact("Jimi Hendrix", "jimi@rip.com");
+  		var c2 = new Contact("Robert Fripp", "robert.fripp@kingcrimson.com");
+  		var c3 = new Contact("Angus Young", "angus@acdc.com");
+  		var c4 = new Contact("Arnold Schwarzenneger", "T2@terminator.com");
+		
+		this.add(c1);
+		this.add(c2);
+		this.add(c3);
+		this.add(c4);
+		
+		// Let's sort the list of contacts by Name
+		this.sort();
+	}
+	
+	// Will erase all contacts
+	empty() {
+		this.listOfContacts = [];
+	}
+	
+	add(contact) {
+		this.listOfContacts.push(contact);
+	}
+	
+	remove(contact) {
+		for(let i = 0; i < this.listOfContacts.length; i++) { 
+			var c = this.listOfContacts[i];
+
+			if(c.email === contact.email) {
+				// remove the contact at index i
+				this.listOfContacts.splice(i, i);
+				// stop/exit the loop
+				break;
+			}
+		}
+	}
+	
+	sort() {
+		// As our array contains objects, we need to pass as argument
+		// a method that can compare two contacts.
+		// we use for that a class method, similar to the distance(p1, p2)
+		// method we saw in the ES6 Point class in module 4
+		// We always call such methods using the name of the class followed
+		// by the dot operator
+		this.listOfContacts.sort(ContactManager.compareByName);
+	}
+	
+	// class method for comparing two contacts by name
+	static compareByName(c1, c2) {
+		// JavaScript has builtin capabilities for comparing strings
+		// in alphabetical order
+		if (c1.name < c2.name)
+     		return -1;
+		
+    	if (c1.name > c2.name)
+     		return 1;
+  
+    	return 0;
+	}
+	
+	printContactsToConsole() {
+		this.listOfContacts.forEach(function(c) {
+			console.log(c.name);
+		});
+	}
+	
+	load() {
+		if(localStorage.contacts !== undefined) {
+			// the array of contacts is savec in JSON, let's convert
+			// it back to a reak JavaScript object.
+			this.listOfContacts = JSON.parse(localStorage.contacts);
+		}
+	}
+	
+	save() {
+		// We can only save strings in local Storage. So, let's convert
+		// ou array of contacts to JSON
+		localStorage.contacts = JSON.stringify(this.listOfContacts);
+	} 
+	
+  	displayContactsAsATable(idOfContainer) {
+		// empty the container that contains the results
+    	let container = document.querySelector("#" + idOfContainer);
+    	container.innerHTML = "";
+
+		
+		if(this.listOfContacts.length === 0) {
+			container.innerHTML = "<p>No contacts to display!</p>";
+			// stop the execution of this method
+			return;
+		}  
+  
+    	// creates and populate the table with users
+    	var table = document.createElement("table");
+          
+    	// iterate on the array of users
+    	this.listOfContacts.forEach(function(currentContact) {
+        	// creates a row
+        	var row = table.insertRow();
+        
+			row.innerHTML = "<td>" + currentContact.name + "</td>"
+							+ "<td>" + currentContact.email + "</td>"
+     	});
+  
+     	// adds the table to the div
+     	container.appendChild(table);
+  	}
+}
+```
+Notice that we've also added some buttons for playing with the load/save features we implemented in the previous page:
+
+Add some new contacts to the list using the form,
+Save them by clicking on the save button,
+Empty the list, click the empty button,
+Reload the list... you can see that contacts have been correctly saved and restored!
+
+---
+
+#### Module 5: Working with forms   5.5 A small application   Discussion and project
+
+# Discussion and project
+
+Here is the discussion forum for this part of the course. Please either post your comments/observations/questions or share your creations.
+
+See below for a suggested optional project.
+
+#### Optional project
+
+* Improve the CSS of the contact manager table, add some new fields.
+
+---
+
+#### Module 5: Working with forms   5.5 A small application   Discusion and optional projects (verified cohort)
+
+# Discusion and optional projects (verified cohort)
+
+Optional projects for the verified cohort
+
+* Add more complicated features to the contact manager:
+* Add an extra column with a trash bin icon in it (you can use this one). When you click on this icon, delete the contact. 
+
+Hint: find a way to get the index of the current row in the click event listener, so that you can easily delete the contact from the array. You can add a "HTML data attribute" using trashbin.dataset.contactId = 3; for example, when you create the img element of the trash bin, do something like this:
+
+```javascript
+let trashbin = document.createElement("img"); 
+trashbin.src =  "http://i.imgur.com/yHyDPio.png"; 
+trashbin.dataset.contactId = 3; // 3 is the current row index and corresponds 
+                                // to contact at index = 3 in the array of contacts
+```
+
+It's like adding a `data-contactId` attribute to the HTML of the img element. Then in the event listener, use `evt.target.dataset.contactId` to get it back. 
+
+* Add a search form for searching a contact by name: rebuild the table to display only contacts that match. More difficult: reduce the table as you type!
+* Improve the CSS of this ugly-looking table! ;-)
+* Add a header on the table and try to make the table sortable when you click on the header of one column (e.g., clicking on "email" will sort the table by email).
+* [ADVANCED] Using [the classList JavaScript interface](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList): elem.classList.add("name of a CSS class"), remove, and toggle methods, allow the user to manipulate CSS classes from JavaScript. Try to make the table of contacts editable. Click on a cell and it will become editable (tip: use both a label and an input field). When you click, you hide the label and show the input field, and when you click outside of the input field, you do the reverse. Use the "blur" event to detect when clicks occur outside).
+
