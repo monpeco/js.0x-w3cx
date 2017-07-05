@@ -3546,3 +3546,321 @@ Lines 26-36 test the load/save/empty functionalities. You can try this yourself 
 #### Module 5: Working with forms   5.5 A small application   Part 3: display contacts in an HTML5 table
 
 # Part 3: display contacts in an HTML5 table
+
+Adapt the code we saw in a previous part of this module, that generates an HTML5 table dynamically
+
+We're going to reuse the code from this CodePen (example taken from a previous section of the course, the one about working with remote data), and adapt it to our needs:
+
+https://codepen.io/w3devcampus/pen/vmLMRN
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Working with remote data suing XhR2</title>
+  <meta charset="utf-8"/>
+</head>
+<body>
+  <p>Working with remote data suing XhR2</p>
+  <button onclick="search();">Get a remote list of users' names and emails</button>
+  <div id="users"></div>
+</body>
+</html>
+```
+
+```css
+table {
+  margin-top: 20px;
+}
+table, tr, td {
+  border: 1px solid;
+} 
+```
+
+```javascript
+  function search() {    
+    var queryURL = "https://jsonplaceholder.typicode.com/users";
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', queryURL, true);
+
+    // called when the response is arrived
+    xhr.onload = function(e) {
+      var jsonResponse = xhr.response;
+
+      // turn the response into a JavaScript object
+      var users = JSON.parse(jsonResponse);
+      displayUsersAsATable(users);
+    }
+    
+    // in case of error
+    xhr.onerror = function(err) {
+      console.log("Error: " + err);
+    }
+    
+    // sends the request
+    xhr.send();
+} 
+  
+function displayUsersAsATable(users) {
+    // users is a JavaScript object
+  
+    // empty the div that contains the results
+    var usersDiv = document.querySelector("#users");
+    usersDiv.innerHTML = "";
+  
+    // creates and populate the table with users
+    var table = document.createElement("table");
+          
+    // iterate on the array of users
+    users.forEach(function(currentUser) {
+        // creates a row
+        var row = table.insertRow();
+        // insert cells in the row
+        var nameCell = row.insertCell();
+        nameCell.innerHTML = currentUser.name;
+        var cityCell = row.insertCell();
+        cityCell.innerHTML = currentUser.address.city;
+     });
+  
+     // adds the table to the div
+     usersDiv.appendChild(table);
+}
+```
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>A contact manager, v3</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+    <p>List of contacts</p>
+    <div id="contacts"></div>
+</body>
+</html>
+```
+The div at line 9 is where we're going to dynamically insert an HTML table with one row for each contact. We will keep the same minimal CSS for displaying table, row and cell borders (we encourage you to improve this):
+```javascript
+table {
+   margin-top: 20px;
+}
+ 
+table, tr, td {
+   border: 1px solid;
+}
+```
+And here is the method we add in our `ContactManager` class; an adaptation of the function `displayUsersAsATable(users)` from the previous CodePen:
+
+```javascript
+class ContactManager {
+    .....
+    displayContactsAsATable(idOfContainer) {
+        // to empty the container that contains the results
+        let container = document.querySelector("#" + idOfContainer);
+        container.innerHTML = "";
+ 
+        if(this.listOfContacts.length === 0) {
+            container.innerHTML = "<p>No contacts to display!</p>";
+            // stops the execution of this method
+            return;
+        }
+        // creates and populates the table with users
+        let table = document.createElement("table");
+        // iterates on the array of users
+        this.listOfContacts.forEach(function(currentContact) {
+            // creates a row
+            let row = table.insertRow();
+            row.innerHTML = "<td>" + currentContact.name + "</td>"
+                          + "<td>" + currentContact.email + "</td>"
+        });
+        // adds the table to the div
+        container.appendChild(table);
+    }
+}
+```
+Explanations:
+
+* Line 3: the method displayContactsAsATable takes as a parameter the id of the HTML element in which the table will be inserted after being built. This id is used by the querySelector call at line 5.
+* Lines 9-13: if the list of contacts is empty, we just return, but first we display in the HTML container a message: "No contact to display!"
+* Lines 16-25: we create a table, and for each contact we insert and fill a new row in the table. 
+* Line 28: the table is inserted (appended) in the HTML container.
+
+CodePen of this example:
+https://codepen.io/w3devcampus/pen/yXoVdp
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>A contact manager, v3</title>
+  <meta charset="utf-8"/>
+</head>
+<body> 
+  <p>List of contacts</p> 
+  <div id="contacts"></div>
+</body>
+</html>
+```
+
+```css
+table {
+  margin-top: 20px;
+}
+
+table, tr, td {
+  border: 1px solid;
+} 
+```
+
+```javascript
+window.onload= init;
+
+// The contact manager as a global variable
+let cm; 
+
+function init() { 
+	// create an instance of the contact manager
+	cm = new ContactManager();
+	
+  	cm.addTestData();
+  	cm.printContactsToConsole();
+
+	// Display contacts in a table
+	// Pass the id of the HTML element that will contain the table
+	cm.displayContactsAsATable("contacts");
+}
+
+class Contact {
+	constructor(name, email) {
+		this.name = name;
+		this.email = email;
+	}
+}
+
+class ContactManager {
+	constructor() {
+		// when we build the contact manager, it
+		// has an empty list of contacts
+		this.listOfContacts = [];
+	}
+	
+	addTestData() {
+		let c1 = new Contact("Jimi Hendrix", "jimi@rip.com");
+  		let c2 = new Contact("Robert Fripp", "robert.fripp@kingcrimson.com");
+  		let c3 = new Contact("Angus Young", "angus@acdc.com");
+  		let c4 = new Contact("Arnold Schwarzenneger", "T2@terminator.com");
+		
+		this.add(c1);
+		this.add(c2);
+		this.add(c3);
+		this.add(c4);
+		
+		// Let's sort the list of contacts by Name
+		this.sort();
+	}
+	
+	// Will erase all contacts
+	empty() {
+		this.listOfContacts = [];
+	}
+	
+	add(contact) {
+		this.listOfContacts.push(contact);
+	}
+	
+	remove(contact) {
+		for(let i = 0; i < this.listOfContacts.length; i++) { 
+			let c = this.listOfContacts[i];
+
+			if(c.email === contact.email) {
+				// remove the contact at index i
+				this.listOfContacts.splice(i, i);
+				// stop/exit the loop
+				break;
+			}
+		}
+	}
+	
+	sort() {
+		// As our array contains objects, we need to pass as argument
+		// a method that can compare two contacts.
+		// we use for that a class method, similar to the distance(p1, p2)
+		// method we saw in the ES6 Point class in module 4
+		// We always call such methods using the name of the class followed
+		// by the dot operator
+		this.listOfContacts.sort(ContactManager.compareByName);
+	}
+	
+	// class method for comparing two contacts by name
+	static compareByName(c1, c2) {
+		// JavaScript has builtin capabilities for comparing strings
+		// in alphabetical order
+		if (c1.name < c2.name)
+     		return -1;
+		
+    	if (c1.name > c2.name)
+     		return 1;
+  
+    	return 0;
+	}
+	
+	printContactsToConsole() {
+		this.listOfContacts.forEach(function(c) {
+			console.log(c.name);
+		});
+	}
+	
+	load() {
+		if(localStorage.contacts !== undefined) {
+			// the array of contacts is savec in JSON, let's convert
+			// it back to a reak JavaScript object.
+			this.listOfContacts = JSON.parse(localStorage.contacts);
+		}
+	}
+	
+	save() {
+		// We can only save strings in local Storage. So, let's convert
+		// ou array of contacts to JSON
+		localStorage.contacts = JSON.stringify(this.listOfContacts);
+	} 
+	
+  	displayContactsAsATable(idOfContainer) {
+		// empty the container that contains the results
+    	let container = document.querySelector("#" + idOfContainer);
+    	container.innerHTML = "";
+
+		
+		if(this.listOfContacts.length === 0) {
+			container.innerHTML = "<p>No contacts to display!</p>";
+			// stop the execution of this method
+			return;
+		}  
+  
+    	// creates and populate the table with users
+    	let table = document.createElement("table");
+          
+    	// iterate on the array of users
+    	this.listOfContacts.forEach(function(currentContact) {
+        	// creates a row
+        	let row = table.insertRow();
+        
+			row.innerHTML = "<td>" + currentContact.name + "</td>"
+							+ "<td>" + currentContact.email + "</td>"
+     	});
+  
+     	// adds the table to the div
+     	container.appendChild(table);
+	}
+}
+```
+
+Notice that we also added a method called `addTestData()` to the `ContactManager` class, as this is a way to make testing the class easier. The code in this method is similar to all the 
+code we used in previous examples for testing the class by adding four contacts to it and displaying messages in the devtool console.
+
+---
+
+#### Module 5: Working with forms   5.5 A small application   Part 4: use a form to enter new contacts
+
+# Part 4: use a form to enter new contacts
