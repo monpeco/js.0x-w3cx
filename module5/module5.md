@@ -3314,13 +3314,235 @@ cm.printContactsToConsole();
 console.log("--- sorting contacts ---");
 cm.sort();
 cm.printContactsToConsole();
-
+```
 ---
 
 #### Module 5: Working with forms   5.5 A small application   Part 2: persistence
 
 # Part 2: persistence
+
+We will use load/save methods is for loading and saving the list of contacts in Local Storage.
+
+#### Our task: load and save methods (persistence)
+
+This time, we will add to the `ContactManager` class a `load()` and a `save()` method for loading/saving from disk (from a key/value pair database located on your hard disk, and associated to the domain of your Web application).
+
+Saving the list of contacts in JSON, checking the saved value using the devtools
+
+Here is the code we added to the ES6 class for saving the list of contacts in JSON:
+
+```javascript
+class ContactManager {
+    constructor() {
+        // when we build the contact manager, it
+        // has an empty list of contacts
+        this.listOfContacts = [];
+    }
+    ...
+ 
+    save() {
+        // We can only save strings in local storage. So, let's convert
+        // our array of contacts to JSON
+        localStorage.contacts = JSON.stringify(this.listOfContacts);
+     }
+}
+```
+You write data identified by a key in localStorage like this:
+
+* `localStorage.keyName = a string value`
+
+In our case, line 13 saves the list of contacts with a key named "contacts" in the local storage. In order to save the list of contacts as a string, we convert it to the JSON format using 
+the  `JSON.stringify(...)` method (JSON = string based)
+
+Try an example on CodePen, save some contacts...
+https://codepen.io/w3devcampus/pen/PjKbVP
+```javascript
+class Contact {
+	constructor(name, email) {
+		this.name = name;
+		this.email = email;
+	}
+}
+
+class ContactManager {
+	constructor() {
+		// when we build the contact manager, it
+		// has an empty list of contacts
+		this.listOfContacts = [];
+	}
+	
+	// Will erase all contacts
+	empty() {
+		this.listOfContacts = [];
+	}
+	
+	add(contact) {
+		this.listOfContacts.push(contact);
+	}
+	
+	remove(contact) {
+		for(let i = 0; i < this.listOfContacts.length; i++) { 
+			var c = this.listOfContacts[i];
+
+			if(c.email === contact.email) {
+				// remove the contact at index i
+				this.listOfContacts.splice(i, i);
+				// stop/exit the loop
+				break;
+			}
+		}
+	}
+	
+	sort() {
+		// As our array contains objects, we need to pass as argument
+		// a method that can compare two contacts.
+		// we use for that a class method, similar to the distance(p1, p2)
+		// method we saw in the ES6 Point class in module 4
+		// We always call such methods using the name of the class followed
+		// by the dot operator
+		this.listOfContacts.sort(ContactManager.compareByName);
+	}
+	
+	// class method for comparing two contacts by name
+	static compareByName(c1, c2) {
+		// JavaScript has builtin capabilities for comparing strings
+		// in alphabetical order
+		if (c1.name < c2.name)
+     		return -1;
+		
+    		if (c1.name > c2.name)
+     			return 1;
+  
+    	return 0;
+	}
+	
+	printContactsToConsole() {
+		if(this.listOfContacts.length === 0) {
+			console.log("EMPTY LIST!");
+			return;
+		}
+		
+		this.listOfContacts.forEach(function(c) {
+			console.log(c.name);
+		});
+	}
+	
+	load() {
+		if(localStorage.contacts !== undefined) {
+			// the array of contacts is saved in JSON, let's convert
+			// it back to a reak JavaScript object.
+			this.listOfContacts = JSON.parse(localStorage.contacts);
+		}
+	}
+	
+	save() {
+		// We can only save strings in local Storage. So, let's convert
+		// ou array of contacts to JSON
+		localStorage.contacts = JSON.stringify(this.listOfContacts);
+	}
+}
+
+var cm = new ContactManager();
+var c1 = new Contact("Jimi Hendrix", "jimi@rip.com");
+var c2 = new Contact("Robert Fripp", "robert.fripp@kingcrimson.com");
+var c3 = new Contact("Angus Young", "angus@acdc.com");
+var c4 = new Contact("Arnold Schwarzenneger", "T2@terminator.com");
+
+console.log("--- Adding 4 contacts ---")
+cm.add(c1);
+cm.add(c2);
+cm.add(c3);
+cm.add(c4);
+
+cm.printContactsToConsole();
+
+// trying to remove c2
+console.log("--- Removing the second one! ---");
+cm.remove(c2); 
+cm.printContactsToConsole();
+
+console.log("--- Sorting contacts ---");
+cm.sort();
+cm.printContactsToConsole();
+
+console.log("--- Saving contacts to local storage ---");
+cm.save(); 
+
+console.log("--- Emptying the list of contacts ---");
+cm.empty();
+cm.printContactsToConsole();
+
+console.log("--- Loading contacts from local storage ---");
+cm.load();
+cm.printContactsToConsole();
+console.log("Do you notice: contacts have all been restored!");
+```
+Then we can check in the devtools that the list has been saved
+
+In Google Chrome, click the Application tab, then `LocalStorage`:
+
+![Application tab](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/2d5f785476ed3c369762f15329f9087a/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/ChromeContactDevtools.jpg)
+
+In Firefox, you first need to activate the storage view like this:
+
+![firefox](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/d8cad0cef9d86dc2d8431bde4be3e113/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/FFContactDevtools1.jpg)
+
+You will see the list of contacts when you click on the newly appeared "Storage" tab:
+
+![Storage](https://d37djvu3ytnwxt.cloudfront.net/assets/courseware/v1/600644d940fbf5c1f12c490d0ca670f0/asset-v1:W3Cx+JS.0x+1T2017+type@asset+block/FFContactDevtools2.jpg)
+
+#### Restoring the list of contacts
+
+This time, we've added a load() method that will check if a list of contacts has been saved. If this is the case, it will read it from LocalStorage, convert it back from JSON into a JavaScript object. In order to test this, in the following CodePen, we first save the list, then we empty the list in memory (setting the array to an empty array), print the list of contacts (that displays a message "LIST EMPTY!"), then we load the contacts from LocalStorage and print the list again: it has been restored to its previous value.
+
+
+
+```javascript
+class ContactManager {
+    constructor() {
+        // when we build the contact manager, it
+        // has an empty list of contacts
+        this.listOfContacts = [];
+    }
+    // Will erase all contacts
+    empty() {
+        this.listOfContacts = [];
+    }
+ 
+    ...
+ 
+    load() {
+        if(localStorage.contacts !== undefined) {
+            // the array of contacts is saved in JSON, let's convert
+            // it back to a reak JavaScript object.
+            this.listOfContacts = JSON.parse(localStorage.contacts);
+        }
+    }
+}
+ 
+...
+ 
+console.log("--- Saving contacts to local storage ---");
+cm.save();
+ 
+console.log("--- Emptying the list of contacts ---");
+cm.empty();
+cm.printContactsToConsole();
+ 
+console.log("--- Loading contacts from local storage ---");
+cm.load();
+cm.printContactsToConsole();
+console.log("Do you notice: contacts have all been restored!");
 ```
 
+#### Explanations:
 
+At line 16, we check if a previous version has been saved.
+At line 19, we read the string value associated to the key named "contacts", and use JSON.parse(...) to turn it into a JavaScript object we can work with.
+Lines 26-36 test the load/save/empty functionalities. You can try this yourself live: click on the CodePen label below, on the top right corner, and once in CodePen, open the CodePen console (or the read devtool console) to see the result of the execution of these tests.
 
+---
+
+#### Module 5: Working with forms   5.5 A small application   Part 3: display contacts in an HTML5 table
+
+# Part 3: display contacts in an HTML5 table
