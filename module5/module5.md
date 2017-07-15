@@ -4220,3 +4220,27 @@ It's like adding a `data-contactId` attribute to the HTML of the img element. Th
 * Add a header on the table and try to make the table sortable when you click on the header of one column (e.g., clicking on "email" will sort the table by email).
 * [ADVANCED] Using [the classList JavaScript interface](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList): elem.classList.add("name of a CSS class"), remove, and toggle methods, allow the user to manipulate CSS classes from JavaScript. Try to make the table of contacts editable. Click on a cell and it will become editable (tip: use both a label and an input field). When you click, you hide the label and show the input field, and when you click outside of the input field, you do the reverse. Use the "blur" event to detect when clicks occur outside).
 
+---
+
+#### Module 5: Working with forms   5.6 Further reading   i18n further reading
+
+# i18n further reading
+
+### Web internationalization: further reading (suggested but not mandatory)
+
+This page lists links to resources available from the [W3C Internationalization Activity site](http://www.w3.org/International/) that will help you author HTML and CSS for internationalization.
+
+#### Declaring the character encoding
+* [Character encodings for beginners](https://www.w3.org/International/questions/qa-what-is-encoding): What is a character encoding, and why should I care?
+
+* [Handling character encodings in HTML and CSS](https://www.w3.org/International/tutorials/tutorial-char-enc/): Articles that help you understand the essentials for characters and character encodings.
+
+#### Declaring the language of content
+* [Language on the Web](https://www.w3.org/International/getting-started/language): An overview of language topics for newcomers to HTML authoring.
+* [Language tags in HTML and XML](https://www.w3.org/International/articles/language-tags/): A simple overview of the syntax for language tags in BCP 47.
+* [Setting language preferences in a browser](https://www.w3.org/International/questions/qa-lang-priorities): How do I use the language settings of my browser to specify the language in which a server should send me pages?
+* [Choosing a Language Tag](https://www.w3.org/International/questions/qa-choosing-language-tags): Which language tag is right for me? How do I choose language and other subtags?
+
+#### Other HTML internationalization topics
+* [Internationalization Techniques, Authoring HTML & CSS](https://www.w3.org/International/techniques/authoring-html-dynamic): Links from this page help you find information about many other important ways to write HTML that works for an international audience.
+
